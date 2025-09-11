@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asset & Vehicle Due Diligence · KYC Orchestrator</title>
+  <style>
+:root{
+  --page:#ffffff;              /* white background */
+  --text:#0f172a;              /* deep slate for text */
+  --muted:#475569;             /* slate-600 for muted text */
+  --line:#e5e7eb;              /* gray-200 borders */
+  --card:#ffffff;              /* white surfaces */
+  --sidebar: rgba(33,207,178,0.20);  /* 20% teal */
+  --btn: rgba(33,207,178,0.60);      /* 60% teal */
+  --btn-border: rgba(33,207,178,0.60);
+  --btn-text:#0b1220;          /* dark text on light teal */
+  --link:#0ea5e9;              /* cyan-500 */
+  --task:#a399ff;              /* action task chips */
+  --success:#059669;           /* green-600 */
+  --warn:#d97706;              /* amber-600 */
+  --danger:#dc2626;            /* red-600 */
+  --info:#2563eb;              /* blue-600 */
+  --progress:#21cfb2;          /* teal solid for progress fill */
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial;
+  background: var(--page);
+  color:var(--text);
+  line-height:1.45;
+}
+a{color:var(--link); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.app{display:grid; grid-template-columns: 280px 1fr; min-height:100vh}
+.sidebar{
+  background: var(--sidebar);
+  border-right:1px solid var(--line);
+  padding:18px 14px;
+  position:sticky; top:0; height:100vh; overflow:auto;
+}
+.brand{
+  display:flex; align-items:center; gap:10px; margin:8px 6px 14px 6px;
+}
+.brand .logo{
+  width:34px; height:34px; border-radius:8px;
+  background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%);
+  box-shadow:0 8px 24px rgba(33,207,178,.35);
+}
+.brand h1{font-size:18px; letter-spacing:.3px; margin:0}
+.nav{margin-top:10px}
+.nav a{
+  display:flex; align-items:center; gap:12px;
+  padding:10px 12px; border-radius:10px; color:#0b1220;
+  border:1px solid transparent;
+}
+.nav a:hover{background:rgba(33,207,178,0.12); border-color:rgba(33,207,178,0.18); text-decoration:none}
+.nav a.active{
+  background: rgba(33,207,178,0.18);
+  border-color:rgba(33,207,178,0.28); color:#0b1220;
+  box-shadow: inset 0 0 0 1px rgba(33,207,178,0.20);
+}
+.nav .icon{width:18px; height:18px; display:inline-block}
+.nav .tag{margin-left:auto; font-size:12px; padding:2px 8px; border-radius:999px; background:rgba(33,207,178,0.18); color:#0b1220; border:1px solid rgba(33,207,178,0.28)}
+.footer-note{margin-top:18px; font-size:12px; color:var(--muted); opacity:.85; padding:0 6px}
+
+/* Top bar */
+.header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 22px; position:sticky; top:0; z-index:5;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+.search{
+  display:flex; align-items:center; gap:8px; border:1px solid var(--line);
+  background: var(--card);
+  padding:10px 12px; border-radius:12px; width:52%;
+}
+.search input{
+  flex:1; background:transparent; border:none; outline:none; color:var(--text);
+}
+.actions{display:flex; align-items:center; gap:10px}
+.btn{
+  background: var(--btn);
+  border:1px solid var(--btn-border);
+  color:var(--btn-text); padding:10px 12px; border-radius:10px; cursor:pointer;
+  transition: filter .15s ease, transform .02s ease;
+}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background: var(--btn); border-color: var(--btn-border)}
+.btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)}
+.btn.small{padding:6px 10px; font-size:12px}
+.kbd{font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border-radius:6px; border:1px solid var(--line); color:var(--muted)}
+
+/* Content */
+.content{padding:14px 22px 40px}
+.page-title{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:12px 0 8px 0}
+.page-title h2{margin:0; font-size:22px}
+.page-title .sub{color:var(--muted)}
+
+/* Cards & sections */
+.cards{display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap:14px; margin:14px 0 6px}
+.card{
+  background: var(--card);
+  border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-height:72px;
+  box-shadow: 0 8px 28px rgba(2,6,23,.06);
+}
+.card .label{color:var(--muted); font-size:12px}
+.card .value{font-size:22px; margin-top:2px}
+.card .trend{font-size:12px; color:#047857}
+.card .danger{color:var(--danger)}
+
+.grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px}
+.grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
+.section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px}
+.section h3{margin:0 0 10px 0; font-size:16px}
+
+/* Table */
+.table{width:100%; border-collapse:separate; border-spacing:0 8px; font-size:14px}
+.table th{color:var(--muted); text-align:left; font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line)}
+.table td{padding:10px; background:#ffffff; border:1px solid var(--line)}
+.table tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
+.table tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
+
+/* Badges & pills */
+.badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; color:#0b1220}
+.badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46}
+.badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
+.badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d}
+.badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a}
+/* Action task badge in requested color */
+.badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
+
+.pills{display:flex; gap:8px; flex-wrap:wrap}
+.pill{padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; cursor:pointer; font-size:12px; color:#0b1220}
+.pill.active{background:rgba(33,207,178,0.18); border-color:rgba(33,207,178,0.28)}
+
+/* Progress */
+.progress{width:100%; height:10px; border-radius:999px; background:#f1f5f9; border:1px solid var(--line); overflow:hidden}
+.progress > span{display:block; height:100%; background:linear-gradient(90deg, var(--progress), rgba(33,207,178,0.85)); width:0%}
+
+/* Stepper */
+.stepper{display:flex; gap:10px; flex-wrap:wrap}
+.step{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; border:1px dashed #94a3b8; background:#f8fafc; color:#0b1220}
+.step.current{border-style:solid; background:rgba(33,207,178,0.10)}
+.step .dot{width:10px; height:10px; border-radius:50%; background:#94a3b8; border:2px solid #cbd5e1}
+.step.done .dot{background:#059669; border-color:#059669}
+.step.current .dot{background:var(--progress)}
+
+/* Forms */
+.form-grid{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px}
+.label{font-size:12px; color:var(--muted); margin-bottom:6px}
+.input, select, textarea{
+  width:100%; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 12px
+}
+.row{display:flex; gap:10px; align-items:center}
+hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
+
+/* Utilities */
+.right{margin-left:auto}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.space-top{margin-top:10px}
+.center{display:flex; align-items:center; justify-content:center}
+.hidden{display:none!important}
+
+/* Responsive */
+@media (max-width:1100px){
+  .app{grid-template-columns: 80px 1fr}
+  .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none}
+  .nav a{justify-content:center}
+  .search{width:70%}
+}
+@media (max-width:800px){
+  .cards{grid-template-columns: repeat(2, 1fr)}
+  .grid-2{grid-template-columns: 1fr}
+  .grid-3{grid-template-columns: 1fr}
+  .form-grid{grid-template-columns: 1fr}
+}
+</style>
+</head>
+<body data-page="asset">
+  <a href="#main" class="kbd" style="position:absolute; left:-9999px; top:-9999px">Skip to content</a>
+  <div class="app">
+    
+    <aside class="sidebar" aria-label="Sidebar Navigation">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>KYC Orchestrator</h1>
+      </div>
+      <nav class="nav">
+        <a href="index.html" data-nav="dashboard" aria-label="Dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12l9-9 9 9" stroke="#0b1220" stroke-width="1.5"/><path d="M5 10v10h5v-6h4v6h5V10" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Dashboard</span>
+        </a>
+        <a href="fund-launch.html" data-nav="fund-launch" aria-label="Fund Launch">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M7 19V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v12" stroke="#0b1220" stroke-width="1.5"/><path d="M9 9h6m-6 4h6" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Fund Launch</span>
+          <span class="tag">Product</span>
+        </a>
+        <a href="distributor-onboarding.html" data-nav="distributor" aria-label="Distributor Onboarding">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v6H3v-6a4 4 0 0 1 4-4z" stroke="#0b1220" stroke-width="1.5"/><path d="M7 8V6a5 5 0 0 1 10 0v2" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Distributor Onboarding</span>
+          <span class="tag">KYD</span>
+        </a>
+        <a href="investor-onboarding.html" data-nav="investor" aria-label="Investor Onboarding">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" stroke="#0b1220" stroke-width="1.5"/><path d="M3 21a9 9 0 0 1 18 0" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Investor Onboarding</span>
+          <span class="tag">KYC/KYB</span>
+        </a>
+        <a href="asset-dd.html" data-nav="asset" aria-label="Asset & Vehicle Due Diligence">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="#0b1220" stroke-width="1.5"/><path d="M8 7v12m8-12v12" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Asset & Vehicle DD</span>
+          <span class="tag">KYI</span>
+        </a>
+        <a href="monitoring.html" data-nav="monitoring" aria-label="Monitoring & Screening">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13l4 4 12-12" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <span class="text">Monitoring & Screening</span>
+          <span class="tag">KYT</span>
+        </a>
+        <a href="digital-trading.html" data-nav="digital" aria-label="Digital Trading">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/>
+          </svg>
+          <span class="text">Digital Trading</span>
+          <span class="tag">Trades</span>
+        </a>
+      </nav>
+      <div class="footer-note">Prototype • Static HTML • Local storage</div>
+    </aside>
+    
+    <main class="main">
+      <header class="header" role="banner">
+        <div class="search" role="search" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="1.5"/><path d="M20 20l-3-3" stroke="#64748b" stroke-width="1.5"/></svg>
+          <input placeholder="Search parties, products, accounts, cases… (press / to focus)" aria-label="Global search"/>
+          <span class="kbd">/</span>
+        </div>
+        <div class="actions">
+          <button class="btn ghost" aria-label="New case">New Case</button>
+          <button class="btn primary" aria-label="Add party">+ Add Party</button>
+        </div>
+      </header>
+      <section class="content" id="main">
+        <div class="page-title">
+          <h2>Asset & Vehicle Due Diligence</h2>
+          <div class="sub">Instrument screening • ESG • Restrictions • Look-through</div>
+        </div>
+        
+<div class="grid-2">
+  <div class="section">
+    <h3>Search Asset / Vehicle</h3>
+    <div class="form-grid">
+      <div><div class="label">ISIN</div><input id="isin" class="input" placeholder="e.g., LU1234567890"/></div>
+      <div><div class="label">Issuer LEI</div><input id="lei" class="input" placeholder="e.g., 5493001KJTIIGC8Y1R12"/></div>
+    </div>
+    <div class="row space-top">
+      <button class="btn primary" id="searchBtn">Search</button>
+      <button class="btn ghost" id="resetBtn">Reset</button>
+    </div>
+  </div>
+  <div class="section">
+    <h3>Pre-trade Checks</h3>
+    <div class="row small"><input type="checkbox" id="chk1"/> <label for="chk1">Restriction lists</label></div>
+    <div class="row small"><input type="checkbox" id="chk2"/> <label for="chk2">ESG exclusions</label></div>
+    <div class="row small"><input type="checkbox" id="chk3"/> <label for="chk3">Country limits</label></div>
+    <div class="row small"><input type="checkbox" id="chk4"/> <label for="chk4">Concentration rules</label></div>
+    <div class="row small"><input type="checkbox" id="chk5"/> <label for="chk5">Issuer screening</label></div>
+    <hr class="sep"/>
+    <div class="row"><span class="badge info">Result</span> <span id="pretrade">Pending</span></div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="section">
+    <h3>Asset Card</h3>
+    <div id="assetCard" class="small muted">Enter an ISIN or LEI to load sample data.</div>
+  </div>
+  <div class="section">
+    <h3>Look-through Exposures (FoF/SPV)</h3>
+    <table class="table">
+      <thead><tr><th>Holding</th><th>Country</th><th>Weight</th><th>ESG</th></tr></thead>
+      <tbody>
+        <tr><td>Acme Renewable Bond 2029</td><td>DE</td><td>14%</td><td><span class="badge ok">A</span></td></tr>
+        <tr><td>Global Commodities ETF</td><td>LU</td><td>7%</td><td><span class="badge warn">C</span></td></tr>
+        <tr><td>Private Infra SPV III</td><td>NL</td><td>5%</td><td><span class="badge">B</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(() => {
+  const sample = {
+    "LU1234567890": { name:"Northshore Growth Fund A", issuer:"Northshore GP S.à r.l.", isin:"LU1234567890", lei:"549300ABCDEF12345678", esg:"A-", controversies:"Low", restrictions:"None", country:"LU" },
+    "5493001KJTIIGC8Y1R12": { name:"Arcturus Family Office S.A.R.L.", issuer:"Arcturus FO", isin:"—", lei:"5493001KJTIIGC8Y1R12", esg:"B+", controversies:"Med", restrictions:"Watchlist", country:"LU" }
+  };
+  const pp = (obj) => `
+    <div class="row"><span class="badge info">Name</span> <div class="right"></div> ${obj.name}</div>
+    <div class="row small space-top"><div style="width:120px">Issuer</div><div>${obj.issuer}</div></div>
+    <div class="row small"><div style="width:120px">ISIN</div><div>${obj.isin}</div></div>
+    <div class="row small"><div style="width:120px">LEI</div><div>${obj.lei}</div></div>
+    <div class="row small"><div style="width:120px">Country</div><div>${obj.country}</div></div>
+    <hr class="sep"/>
+    <div class="row small"><div style="width:120px">ESG Rating</div><div><span class="badge ok">${obj.esg}</span></div></div>
+    <div class="row small"><div style="width:120px">Controversies</div><div><span class="badge">${obj.controversies}</span></div></div>
+    <div class="row small"><div style="width:120px">Restrictions</div><div><span class="badge warn">${obj.restrictions}</span></div></div>
+  `;
+  const card = document.getElementById('assetCard');
+  const isin = document.getElementById('isin');
+  const lei = document.getElementById('lei');
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const key = isin.value.trim() || lei.value.trim();
+    card.innerHTML = sample[key] ? pp(sample[key]) : '<span class="muted small">No sample found — using placeholder.</span>';
+  });
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    isin.value = ''; lei.value = ''; card.innerHTML = 'Enter an ISIN or LEI to load sample data.';
+  });
+  const chks = Array.from(document.querySelectorAll('input[type=checkbox][id^=chk]'));
+  const out = document.getElementById('pretrade');
+  const evalRes = () => {
+    const n = chks.filter(c=>c.checked).length;
+    out.textContent = n >= 4 ? 'PASS' : (n === 0 ? 'Pending' : 'PARTIAL');
+  };
+  chks.forEach(c=>c.addEventListener('change', evalRes));
+  evalRes();
+})();
+</script>
+
+      </section>
+    </main>
+  </div>
+  <script>
+(() => {
+  const body = document.body;
+  const page = body.getAttribute('data-page');
+  // Activate nav
+  document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === page) a.classList.add('active'); });
+  // Animate progress
+  const animate = () => {
+    document.querySelectorAll('.progress > span[data-value]').forEach(el => {
+      const v = parseInt(el.getAttribute('data-value'),10) || 0;
+      el.style.width = '0%';
+      setTimeout(() => el.style.width = v + '%', 120);
+    });
+  };
+  animate();
+  // "/" shortcut to focus search
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)) {
+      const i = document.querySelector('.search input'); if (i) { e.preventDefault(); i.focus(); }
+    }
+  });
+})();
+</script>
+  
+</body>
+</html>
