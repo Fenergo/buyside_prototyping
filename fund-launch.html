@@ -6,183 +6,77 @@
   <title>Fund Launch · KYC Orchestrator</title>
   <style>
 :root{
-  --page:#ffffff;              /* white background */
-  --text:#0f172a;              /* deep slate for text */
-  --muted:#475569;             /* slate-600 for muted text */
-  --line:#e5e7eb;              /* gray-200 borders */
-  --card:#ffffff;              /* white surfaces */
-  --sidebar: rgba(33,207,178,0.20);  /* 20% teal */
-  --btn: rgba(33,207,178,0.60);      /* 60% teal */
-  --btn-border: rgba(33,207,178,0.60);
-  --btn-text:#0b1220;          /* dark text on light teal */
-  --link:#0ea5e9;              /* cyan-500 */
-  --task:#a399ff;              /* action task chips */
-  --success:#059669;           /* green-600 */
-  --warn:#d97706;              /* amber-600 */
-  --danger:#dc2626;            /* red-600 */
-  --info:#2563eb;              /* blue-600 */
-  --progress:#21cfb2;          /* teal solid for progress fill */
+  --page:#ffffff; --text:#0f172a; --muted:#475569; --line:#e5e7eb; --card:#ffffff;
+  --sidebar: rgba(33,207,178,0.20); --btn: rgba(33,207,178,0.60); --btn-border: rgba(33,207,178,0.60);
+  --btn-text:#0b1220; --link:#0ea5e9; --task:#a399ff; --success:#059669; --warn:#d97706; --danger:#dc2626; --info:#2563eb; --progress:#21cfb2;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial;
-  background: var(--page);
-  color:var(--text);
-  line-height:1.45;
-}
-a{color:var(--link); text-decoration:none}
-a:hover{text-decoration:underline}
-
-/* Layout */
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; background: var(--page); color:var(--text); line-height:1.45;}
+a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
 .app{display:grid; grid-template-columns: 280px 1fr; min-height:100vh}
-.sidebar{
-  background: var(--sidebar);
-  border-right:1px solid var(--line);
-  padding:18px 14px;
-  position:sticky; top:0; height:100vh; overflow:auto;
-}
-.brand{
-  display:flex; align-items:center; gap:10px; margin:8px 6px 14px 6px;
-}
-.brand .logo{
-  width:34px; height:34px; border-radius:8px;
-  background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%);
-  box-shadow:0 8px 24px rgba(33,207,178,.35);
-}
+.sidebar{background: var(--sidebar); border-right:1px solid var(--line); padding:18px 14px; position:sticky; top:0; height:100vh; overflow:auto;}
+.brand{display:flex; align-items:center; gap:10px; margin:8px 6px 14px 6px;}
+.brand .logo{width:34px; height:34px; border-radius:8px; background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%); box-shadow:0 8px 24px rgba(33,207,178,.35);}
 .brand h1{font-size:18px; letter-spacing:.3px; margin:0}
 .nav{margin-top:10px}
-.nav a{
-  display:flex; align-items:center; gap:12px;
-  padding:10px 12px; border-radius:10px; color:#0b1220;
-  border:1px solid transparent;
-}
+.nav a{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; color:#0b1220; border:1px solid transparent;}
 .nav a:hover{background:rgba(33,207,178,0.12); border-color:rgba(33,207,178,0.18); text-decoration:none}
-.nav a.active{
-  background: rgba(33,207,178,0.18);
-  border-color:rgba(33,207,178,0.28); color:#0b1220;
-  box-shadow: inset 0 0 0 1px rgba(33,207,178,0.20);
-}
+.nav a.active{background: rgba(33,207,178,0.18); border-color:rgba(33,207,178,0.28); color:#0b1220; box-shadow: inset 0 0 0 1px rgba(33,207,178,0.20);}
 .nav .icon{width:18px; height:18px; display:inline-block}
 .nav .tag{margin-left:auto; font-size:12px; padding:2px 8px; border-radius:999px; background:rgba(33,207,178,0.18); color:#0b1220; border:1px solid rgba(33,207,178,0.28)}
 .footer-note{margin-top:18px; font-size:12px; color:var(--muted); opacity:.85; padding:0 6px}
-
-/* Top bar */
-.header{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 22px; position:sticky; top:0; z-index:5;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--line);
-}
-.search{
-  display:flex; align-items:center; gap:8px; border:1px solid var(--line);
-  background: var(--card);
-  padding:10px 12px; border-radius:12px; width:52%;
-}
-.search input{
-  flex:1; background:transparent; border:none; outline:none; color:var(--text);
-}
+.header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; position:sticky; top:0; z-index:5; background:rgba(255,255,255,0.9); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);}
+.search{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background: var(--card); padding:10px 12px; border-radius:12px; width:52%;}
+.search input{flex:1; background:transparent; border:none; outline:none; color:var(--text);}
 .actions{display:flex; align-items:center; gap:10px}
-.btn{
-  background: var(--btn);
-  border:1px solid var(--btn-border);
-  color:var(--btn-text); padding:10px 12px; border-radius:10px; cursor:pointer;
-  transition: filter .15s ease, transform .02s ease;
-}
-.btn:hover{filter:brightness(1.05)}
-.btn:active{transform:translateY(1px)}
-.btn.primary{background: var(--btn); border-color: var(--btn-border)}
-.btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)}
-.btn.small{padding:6px 10px; font-size:12px}
-.kbd{font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border-radius:6px; border:1px solid var(--line); color:var(--muted)}
-
-/* Content */
+.btn{background: var(--btn); border:1px solid var(--btn-border); color:var(--btn-text); padding:10px 12px; border-radius:10px; cursor:pointer; transition: filter .15s ease, transform .02s ease;}
+.btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)} .btn.primary{background: var(--btn); border-color: var(--btn-border)} .btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)} .btn.small{padding:6px 10px; font-size:12px}
+.kbd{font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas; padding:2px 6px; border-radius:6px; border:1px solid var(--line); color:var(--muted)}
 .content{padding:14px 22px 40px}
 .page-title{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:12px 0 8px 0}
 .page-title h2{margin:0; font-size:22px}
 .page-title .sub{color:var(--muted)}
-
-/* Cards & sections */
 .cards{display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap:14px; margin:14px 0 6px}
-.card{
-  background: var(--card);
-  border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-height:72px;
-  box-shadow: 0 8px 28px rgba(2,6,23,.06);
-}
-.card .label{color:var(--muted); font-size:12px}
-.card .value{font-size:22px; margin-top:2px}
-.card .trend{font-size:12px; color:#047857}
-.card .danger{color:var(--danger)}
-
-.grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px}
-.grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
-.section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px}
-.section h3{margin:0 0 10px 0; font-size:16px}
-
-/* Table */
+.card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-height:72px; box-shadow: 0 8px 28px rgba(2,6,23,.06);}
+.card .label{color:var(--muted); font-size:12px} .card .value{font-size:22px; margin-top:2px} .card .trend{font-size:12px; color:#047857} .card .danger{color:var(--danger)}
+.grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px} .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
+.section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px} .section h3{margin:0 0 10px 0; font-size:16px}
 .table{width:100%; border-collapse:separate; border-spacing:0 8px; font-size:14px}
 .table th{color:var(--muted); text-align:left; font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line)}
 .table td{padding:10px; background:#ffffff; border:1px solid var(--line)}
-.table tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
-.table tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
-
-/* Badges & pills */
+.table tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px} .table tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
 .badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; color:#0b1220}
-.badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46}
-.badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
-.badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d}
-.badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a}
-/* Action task badge in requested color */
-.badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
-
+.badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46} .badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
+.badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d} .badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a} .badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
 .pills{display:flex; gap:8px; flex-wrap:wrap}
 .pill{padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; cursor:pointer; font-size:12px; color:#0b1220}
 .pill.active{background:rgba(33,207,178,0.18); border-color:rgba(33,207,178,0.28)}
-
-/* Progress */
 .progress{width:100%; height:10px; border-radius:999px; background:#f1f5f9; border:1px solid var(--line); overflow:hidden}
 .progress > span{display:block; height:100%; background:linear-gradient(90deg, var(--progress), rgba(33,207,178,0.85)); width:0%}
-
-/* Stepper */
 .stepper{display:flex; gap:10px; flex-wrap:wrap}
 .step{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; border:1px dashed #94a3b8; background:#f8fafc; color:#0b1220}
-.step.current{border-style:solid; background:rgba(33,207,178,0.10)}
-.step .dot{width:10px; height:10px; border-radius:50%; background:#94a3b8; border:2px solid #cbd5e1}
-.step.done .dot{background:#059669; border-color:#059669}
-.step.current .dot{background:var(--progress)}
-
-/* Forms */
+.step.current{border-style:solid; background:rgba(33,207,178,0.10)} .step .dot{width:10px; height:10px; border-radius:50%; background:#94a3b8; border:2px solid #cbd5e1}
+.step.done .dot{background:#059669; border-color:#059669} .step.current .dot{background:var(--progress)}
 .form-grid{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px}
 .label{font-size:12px; color:var(--muted); margin-bottom:6px}
-.input, select, textarea{
-  width:100%; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 12px
-}
-.row{display:flex; gap:10px; align-items:center}
-hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
-
-/* Utilities */
-.right{margin-left:auto}
-.muted{color:var(--muted)}
-.small{font-size:12px}
-.space-top{margin-top:10px}
-.center{display:flex; align-items:center; justify-content:center}
-.hidden{display:none!important}
-
-/* Responsive */
-@media (max-width:1100px){
-  .app{grid-template-columns: 80px 1fr}
-  .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none}
-  .nav a{justify-content:center}
-  .search{width:70%}
-}
-@media (max-width:800px){
-  .cards{grid-template-columns: repeat(2, 1fr)}
-  .grid-2{grid-template-columns: 1fr}
-  .grid-3{grid-template-columns: 1fr}
-  .form-grid{grid-template-columns: 1fr}
-}
+.input, select, textarea{width:100%; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 12px}
+.row{display:flex; gap:10px; align-items:center} hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
+.right{margin-left:auto} .muted{color:var(--muted)} .small{font-size:12px} .space-top{margin-top:10px} .center{display:flex; align-items:center; justify-content:center} .hidden{display:none!important}
+/* Collapsible tracker */
+.tracker .head{display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none}
+.chev{width:12px; height:12px; border-right:2px solid #334155; border-bottom:2px solid #334155; transform:rotate(45deg); transition: transform .15s ease;}
+.tracker.collapsed .chev{transform:rotate(-135deg)}
+.tracker .meta{display:flex; gap:12px; flex-wrap:wrap; margin-left:auto}
+.stat{display:flex; gap:6px; align-items:center; font-size:12px; border:1px solid var(--line); border-radius:999px; padding:4px 8px; background:#f8fafc}
+.stat b{font-weight:700}
+.tracker-body{margin-top:10px}
+/* Modal */
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; z-index:999}
+.modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(640px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal .box h4{margin:0 0 8px 0}
+.modal .box .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px}
+@media (max-width:1100px){ .app{grid-template-columns: 80px 1fr} .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none} .nav a{justify-content:center} .search{width:70%} }
+@media (max-width:800px){ .cards{grid-template-columns: repeat(2, 1fr)} .grid-2{grid-template-columns: 1fr} .grid-3{grid-template-columns: 1fr} .form-grid{grid-template-columns: 1fr} }
 </style>
 </head>
 <body data-page="fund-launch">
@@ -225,16 +119,14 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
           <span class="tag">KYT</span>
         </a>
         <a href="digital-trading.html" data-nav="digital" aria-label="Digital Trading">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/>
-          </svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/></svg>
           <span class="text">Digital Trading</span>
           <span class="tag">Trades</span>
         </a>
       </nav>
       <div class="footer-note">Prototype • Static HTML • Local storage</div>
     </aside>
-    
+
     <main class="main">
       <header class="header" role="banner">
         <div class="search" role="search" aria-label="Search">
@@ -256,7 +148,7 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 <div class="section">
   <h3>Fund Launch — Journey</h3>
   <div class="stepper" role="list">
-    <div class="step done" role="listitem"><div class="dot" aria-hidden="true"></div> Created</div>
+    <div class="step done" role="listitem"><div class="dot" aria-hidden="true"></div> Product Intake</div>
     <div class="step current" role="listitem"><div class="dot" aria-hidden="true"></div> Policy Assessment</div>
     <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> Distributor Readiness</div>
     <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> ESG Pack (SFDR/EET)</div>
@@ -265,28 +157,28 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
   </div>
 </div>
 
-<div class="grid-2">
+<div class="grid-2" id="launchForm" data-id="">
   <div class="section">
     <h3>Product Details</h3>
     <div class="form-grid">
-      <div><div class="label">Fund Name</div><input class="input" placeholder="e.g., Northshore Growth AIF"/></div>
+      <div><div class="label">Fund Name</div><input id="fName" class="input" placeholder="e.g., Northshore Growth AIF"/></div>
       <div><div class="label">Jurisdiction</div>
-        <select>
+        <select id="fJur">
           <option>Luxembourg</option><option>Ireland</option><option>UK</option><option>US</option>
         </select>
       </div>
-      <div><div class="label">Vehicle Type</div><select><option>UCITS</option><option>AIF</option></select></div>
+      <div><div class="label">Vehicle Type</div><select id="fVeh"><option>UCITS</option><option>AIF</option></select></div>
       <div><div class="label">SFDR Classification</div><select id="sfdrSel"><option>Article 6</option><option>Article 8</option><option>Article 9</option></select></div>
-      <div><div class="label">Leverage</div><input class="input" placeholder="e.g., 2.0x"/></div>
-      <div><div class="label">Liquidity</div><select><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Quarterly</option></select></div>
-      <div><div class="label">Target Market</div><input class="input" placeholder="e.g., Professional investors in DE/FR/NL"/></div>
-      <div><div class="label">Custodian</div><input class="input" placeholder="e.g., Apex Bank Luxembourg"/></div>
+      <div><div class="label">Leverage</div><input id="fLev" class="input" placeholder="e.g., 2.0x"/></div>
+      <div><div class="label">Liquidity</div><select id="fLiq"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Quarterly</option></select></div>
+      <div><div class="label">Target Market</div><input id="fTgt" class="input" placeholder="e.g., Professional investors in DE/FR/NL"/></div>
+      <div><div class="label">Custodian</div><input id="fCust" class="input" placeholder="e.g., Apex Bank Luxembourg"/></div>
     </div>
     <hr class="sep"/>
     <div class="row">
-      <button class="btn primary">Save Product</button>
-      <button class="btn ghost">Generate KID/KIID</button>
-      <div class="right small muted">Last saved 2 mins ago</div>
+      <button class="btn primary" id="saveLaunchBtn">Save Launch</button>
+      <button class="btn ghost" id="markLaunchedBtn">Mark Launched</button>
+      <div class="right small muted">ID: <span id="fId">—</span> • Last saved <span id="fSaved">—</span></div>
     </div>
   </div>
 
@@ -326,13 +218,27 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
   </div>
 </div>
 
-<script>
+      </section>
+    </main>
+  </div>
+  <script>
+  (() => {
+    // Activate nav
+    document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === 'fund-launch') a.classList.add('active'); });
+  })();
+  </script>
+  <script>
 (() => {
+  const $ = (sel) => document.querySelector(sel);
+  const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+  const FL_KEY = 'kyc_fund_launches';
+
+  // SFDR dynamic bits (from earlier)
   const sel = document.getElementById('sfdrSel');
   const lab = document.getElementById('sfdrLabel');
   const pai = document.getElementById('paiProg');
   const req = document.getElementById('policyReq');
-  const update = () => {
+  const updateSFDR = () => {
     const v = sel.value;
     lab.textContent = v;
     let pct = 45;
@@ -348,37 +254,95 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
     req.innerHTML = base + extra;
     requestAnimationFrame(() => { pai.style.width = '0%'; requestAnimationFrame(() => pai.style.width = pct+'%'); });
   };
-  sel.addEventListener('change', update);
-  update();
-})();
-</script>
+  sel.addEventListener('change', updateSFDR);
+  updateSFDR();
 
-      </section>
-    </main>
-  </div>
-  <script>
-(() => {
-  const body = document.body;
-  const page = body.getAttribute('data-page');
-  // Activate nav
-  document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === page) a.classList.add('active'); });
-  // Animate progress
-  const animate = () => {
-    document.querySelectorAll('.progress > span[data-value]').forEach(el => {
-      const v = parseInt(el.getAttribute('data-value'),10) || 0;
-      el.style.width = '0%';
-      setTimeout(() => el.style.width = v + '%', 120);
-    });
+  // Fund Launch localStorage wiring
+  const form = document.getElementById('launchForm');
+  const idSpan = document.getElementById('fId');
+  const savedSpan = document.getElementById('fSaved');
+  const saveBtn = document.getElementById('saveLaunchBtn');
+  const markBtn = document.getElementById('markLaunchedBtn');
+
+  const readLaunches = () => { try { return JSON.parse(localStorage.getItem(FL_KEY) || '[]'); } catch(e){ return []; } };
+  const writeLaunches = (list) => { localStorage.setItem(FL_KEY, JSON.stringify(list)); window.dispatchEvent(new StorageEvent('storage', {key:FL_KEY, newValue:JSON.stringify(list)})); };
+  const nextId = (list) => {
+    const max = list.reduce((m,t)=> Math.max(m, parseInt((t.id||'').split('-')[1]||'0',10)), 0);
+    return `FL-${(max+1).toString().padStart(4,'0')}`;
   };
-  animate();
-  // "/" shortcut to focus search
-  window.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)) {
-      const i = document.querySelector('.search input'); if (i) { e.preventDefault(); i.focus(); }
-    }
+  // Compute pending reviews by counting 'task' badges and unticked distributor items
+  const countPending = () => {
+    let n = document.querySelectorAll('#policyReq .badge.task').length;
+    ['lic','tgt','train','agr'].forEach(id => { if (!document.getElementById(id).checked) n++; });
+    // Add SFDR completeness rule: < 70 => +1
+    const pct = parseInt(pai.getAttribute('data-value'), 10) || 0;
+    if (pct < 70) n++;
+    return n;
+  };
+  const currentId = () => form.getAttribute('data-id') || null;
+
+  const populateFromRecord = (r) => {
+    document.getElementById('fName').value = r.name || '';
+    document.getElementById('fJur').value = r.jurisdiction || 'Luxembourg';
+    document.getElementById('fVeh').value = r.vehicle || 'UCITS';
+    document.getElementById('sfdrSel').value = r.sfdr || 'Article 6';
+    updateSFDR();
+    idSpan.textContent = r.id; savedSpan.textContent = fmtTS(r.updatedAt);
+    form.setAttribute('data-id', r.id);
+  };
+
+  // Load by hash if provided
+  const hash = location.hash && location.hash.startsWith('#FL-') ? location.hash.slice(1) : null;
+  let launches = readLaunches();
+  if (!launches.length) {
+    // seed some if empty (same as dashboard seeds)
+    const now = new Date(); const jan = new Date(now.getFullYear(),0,15).getTime(); const mar = new Date(now.getFullYear(),2,5).getTime();
+    const jul = new Date(now.getFullYear(),6,10).getTime(); const aug = new Date(now.getFullYear(),7,22).getTime();
+    const thisMon = new Date(now.getFullYear(), now.getMonth(), 2).getTime();
+    launches = [
+      {id:'FL-0001', name:'Silver Birch UCITS', jurisdiction:'Ireland', vehicle:'UCITS', sfdr:'Article 8', stage:'launched', startDate:jan, launchedDate:mar, pendingReviews:0, updatedAt:mar},
+      {id:'FL-0002', name:'Northshore Growth AIF', jurisdiction:'Luxembourg', vehicle:'AIF', sfdr:'Article 8', stage:'esg', startDate:aug, launchedDate:null, pendingReviews:3, updatedAt:Date.now()-86400000*5},
+      {id:'FL-0003', name:'Sustainable Credit A', jurisdiction:'Luxembourg', vehicle:'UCITS', sfdr:'Article 9', stage:'policy', startDate:thisMon, launchedDate:null, pendingReviews:5, updatedAt:Date.now()-86400000*2},
+      {id:'FL-0004', name:'Global Macro Fund', jurisdiction:'UK', vehicle:'AIF', sfdr:'Article 6', stage:'screening', startDate:jul, launchedDate:null, pendingReviews:2, updatedAt:Date.now()-86400000*9},
+    ];
+    writeLaunches(launches);
+  }
+  if (hash) {
+    const rec = launches.find(x => x.id === hash);
+    if (rec) populateFromRecord(rec);
+  } else {
+    // New launch session (not yet saved)
+    idSpan.textContent = '—'; savedSpan.textContent = '—';
+  }
+
+  // Save handler
+  saveBtn.addEventListener('click', () => {
+    launches = readLaunches();
+    const id = currentId() || nextId(launches);
+    const rec = launches.find(x => x.id === id) || { id, startDate: Date.now(), stage: 'policy' };
+    rec.name = document.getElementById('fName').value.trim() || 'Untitled Launch';
+    rec.jurisdiction = document.getElementById('fJur').value;
+    rec.vehicle = document.getElementById('fVeh').value;
+    rec.sfdr = document.getElementById('sfdrSel').value;
+    rec.pendingReviews = countPending();
+    rec.updatedAt = Date.now();
+    if (!launches.find(x => x.id === id)) launches.push(rec);
+    writeLaunches(launches);
+    populateFromRecord(rec);
+  });
+
+  // Mark Launched
+  markBtn.addEventListener('click', () => {
+    const id = currentId();
+    if (!id) return alert('Save the launch first.');
+    launches = readLaunches();
+    const rec = launches.find(x => x.id === id);
+    if (!rec) return;
+    rec.stage = 'launched'; rec.launchedDate = Date.now(); rec.pendingReviews = 0; rec.updatedAt = Date.now();
+    writeLaunches(launches);
+    populateFromRecord(rec);
   });
 })();
 </script>
-  
 </body>
 </html>
