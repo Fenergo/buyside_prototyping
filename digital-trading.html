@@ -243,9 +243,9 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 <div class="grid-2">
   <div class="section">
     <div class="row">
-      <h3>My Trades</h3>
+      <h3>My Fund Portfolio</h3>
       <div class="right">
-        <button class="btn small" id="newTradeBtn">+ New Trade</button>
+        <button class="btn small" id="newTradeBtn">+ New Trade Document</button>
       </div>
     </div>
     <div class="row space-top">
@@ -255,7 +255,7 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
         <span class="pill" data-f="closed">Closed</span>
       </div>
       <div class="right row">
-        <input class="input" id="openById" placeholder="Enter Trade ID e.g., DT-0001" style="width:240px"/>
+        <input class="input" id="openById" placeholder="Enter Fund ID e.g., DT-0001" style="width:240px"/>
         <button class="btn small" id="openByIdBtn">Open</button>
       </div>
     </div>
@@ -263,11 +263,11 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
       <thead><tr><th>ID</th><th>Name</th><th>Stage</th><th>Accepted</th><th>Onboarding</th><th>Invested</th><th>Updated</th></tr></thead>
       <tbody></tbody>
     </table>
-    <div class="small muted">Click a row to open the trade. “Open” = not archived; “Closed” = marked Live & Closed.</div>
+    <div class="small muted">Click a row to open the trade document builder. “Open” = not archived; “Closed” = marked Live & Closed.</div>
   </div>
 
   <div class="section">
-    <h3>Trade Builder</h3>
+    <h3>Trade Document Builder</h3>
     <div id="noTrade" class="small muted">Select a trade from the left or create a new one.</div>
     <div id="tradePanel" class="hidden">
       <div class="row"><span class="badge info">Trade ID</span> <strong id="tId">—</strong><div class="right small muted">Updated <span id="tUpdated">—</span></div></div>
@@ -281,9 +281,9 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
       </div>
 
       <hr class="sep"/>
-      <h3>Trade Setup</h3>
+      <h3>Digital Trade Setup</h3>
       <div class="form-grid">
-        <div><div class="label">Trade Name</div><input class="input" id="tName" placeholder="e.g., Sustainable Credit A — Oct 2025"/></div>
+        <div><div class="label">Fund Name</div><input class="input" id="tName" placeholder="e.g., Sustainable Credit A — Oct 2025"/></div>
         <div><div class="label">Closing Date</div><input class="input" id="tClose" placeholder="YYYY-MM-DD"/></div>
         <div style="grid-column: 1 / -1"><div class="label">T&Cs (paste text or load file)</div>
           <textarea id="tTerms" rows="6" placeholder="Enter legal terms and conditions... Use {{placeholders}} to indicate data tags."></textarea>
@@ -345,7 +345,7 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
         <button class="btn small" id="toInviteBtn">Invite Investors</button>
         <button class="btn small" id="markLiveBtn">Mark Live & Close</button>
         <div class="right">
-          <button class="btn primary small" id="saveBtn">Save Trade</button>
+          <button class="btn primary small" id="saveBtn">Save Trade Document</button>
         </div>
       </div>
     </div>
@@ -397,7 +397,7 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
     try { list = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ list = []; }
     if (!list.length) { // seed one
       list = [{
-        id:'DT-0001', name:'Seed Trade — Sustainable Credit A', closingDate:'2025-10-31',
+        id:'DT-0001', name:'Seed Fund — Sustainable Credit A', closingDate:'2025-10-31',
         stage:'invite', closed:false, terms:'Subscription Terms for {{investor_name}} to invest {{amount}} {{currency}} by {{closing_date}}.',
         tags:[{name:'investor_name',type:'text',required:true},{name:'amount',type:'number',required:true},{name:'currency',type:'dropdown',required:true,options:'USD,EUR'}],
         investors:[{email:'investor1@example.com', status:'accepted'},{email:'investor2@example.com', status:'onboarding'}],
