@@ -6,6 +6,11 @@
   <title>Fund Launch · KYC Orchestrator</title>
   <style>
 :root{
+  --sidebar-width: 170px;
+  --sidebar-font-size: 11px;
+  --sidebar-title-size: 13px;
+  --sidebar-tag-size: 10px;
+  --sidebar-icon-size: 18px;
   --page:#ffffff; --text:#0f172a; --muted:#475569; --line:#e5e7eb; --card:#ffffff;
   --sidebar: rgba(33,207,178,0.20); --btn: rgba(33,207,178,0.60); --btn-border: rgba(33,207,178,0.60);
   --btn-text:#0b1220; --link:#0ea5e9; --task:#a399ff; --success:#059669; --warn:#d97706; --danger:#dc2626; --info:#2563eb; --progress:#21cfb2;
@@ -13,18 +18,19 @@
 *{box-sizing:border-box} html,body{height:100%}
 body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; background: var(--page); color:var(--text); line-height:1.45;}
 a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
-.app{display:grid; grid-template-columns: 280px 1fr; min-height:100vh}
-.sidebar{background: var(--sidebar); border-right:1px solid var(--line); padding:18px 14px; position:sticky; top:0; height:100vh; overflow:auto;}
-.brand{display:flex; align-items:center; gap:10px; margin:8px 6px 14px 6px;}
-.brand .logo{width:34px; height:34px; border-radius:8px; background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%); box-shadow:0 8px 24px rgba(33,207,178,.35);}
-.brand h1{font-size:18px; letter-spacing:.3px; margin:0}
-.nav{margin-top:10px}
-.nav a{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; color:#0b1220; border:1px solid transparent;}
+
+.app{display:grid; grid-template-columns: var(--sidebar-width) 1fr; min-height:100vh}
+.sidebar{background: var(--sidebar); border-right:1px solid var(--line); padding:10px 4px; position:sticky; top:0; height:100vh; overflow:auto; font-size:var(--sidebar-font-size); min-width:var(--sidebar-width); max-width:var(--sidebar-width);}
+.brand{display:flex; align-items:center; gap:6px; margin:6px 2px 10px 2px;}
+.brand .logo{width:24px; height:24px; border-radius:8px; background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%); box-shadow:0 8px 24px rgba(33,207,178,.35);}
+.brand h1{font-size:var(--sidebar-title-size); letter-spacing:.3px; margin:0}
+.nav{margin-top:4px}
+.nav a{display:flex; align-items:center; gap:8px; padding:6px 6px; border-radius:8px; color:#0b1220; border:1px solid transparent; font-size:var(--sidebar-font-size);}
 .nav a:hover{background:rgba(33,207,178,0.12); border-color:rgba(33,207,178,0.18); text-decoration:none}
 .nav a.active{background: rgba(33,207,178,0.18); border-color:rgba(33,207,178,0.28); color:#0b1220; box-shadow: inset 0 0 0 1px rgba(33,207,178,0.20);}
-.nav .icon{width:18px; height:18px; display:inline-block}
-.nav .tag{margin-left:auto; font-size:12px; padding:2px 8px; border-radius:999px; background:rgba(33,207,178,0.18); color:#0b1220; border:1px solid rgba(33,207,178,0.28)}
-.footer-note{margin-top:18px; font-size:12px; color:var(--muted); opacity:.85; padding:0 6px}
+.nav .icon{width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); display:inline-block}
+.nav .tag{margin-left:auto; font-size:var(--sidebar-tag-size); padding:2px 6px; border-radius:999px; background:rgba(33,207,178,0.18); color:#0b1220; border:1px solid rgba(33,207,178,0.28)}
+.footer-note{margin-top:10px; font-size:10px; color:var(--muted); opacity:.85; padding:0 3px}
 .header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; position:sticky; top:0; z-index:5; background:rgba(255,255,255,0.9); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);}
 .search{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background: var(--card); padding:10px 12px; border-radius:12px; width:52%;}
 .search input{flex:1; background:transparent; border:none; outline:none; color:var(--text);}
@@ -72,9 +78,19 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
 .tracker-body{margin-top:10px}
 /* Modal */
 .modal{position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; z-index:999}
-.modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(640px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(700px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .modal .box h4{margin:0 0 8px 0}
 .modal .box .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px}
+/* Mini timeline */
+.timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
+.tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
+.tl-dot{width:10px; height:10px; border-radius:50%; background:#e2e8f0; border:2px solid #cbd5e1}
+.tl-step.done .tl-dot{background:#059669; border-color:#059669}
+.tl-step.pending .tl-dot{background:#e2e8f0}
+.tl-label{font-size:12px; color:#0f172a}
+.tl-time{font-size:11px; color:#475569}
+.tl-line{width:28px; height:2px; background:#cbd5e1}
+.timeline .tl-step.pending .tl-label{opacity:0.7}
 @media (max-width:1100px){ .app{grid-template-columns: 80px 1fr} .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none} .nav a{justify-content:center} .search{width:70%} }
 @media (max-width:800px){ .cards{grid-template-columns: repeat(2, 1fr)} .grid-2{grid-template-columns: 1fr} .grid-3{grid-template-columns: 1fr} .form-grid{grid-template-columns: 1fr} }
 </style>
@@ -126,7 +142,7 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
       </nav>
       <div class="footer-note">Prototype • Static HTML • Local storage</div>
     </aside>
-
+    
     <main class="main">
       <header class="header" role="banner">
         <div class="search" role="search" aria-label="Search">
@@ -223,7 +239,6 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   </div>
   <script>
   (() => {
-    // Activate nav
     document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === 'fund-launch') a.classList.add('active'); });
   })();
   </script>
@@ -233,7 +248,6 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
   const FL_KEY = 'kyc_fund_launches';
 
-  // SFDR dynamic bits (from earlier)
   const sel = document.getElementById('sfdrSel');
   const lab = document.getElementById('sfdrLabel');
   const pai = document.getElementById('paiProg');
@@ -257,7 +271,6 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   sel.addEventListener('change', updateSFDR);
   updateSFDR();
 
-  // Fund Launch localStorage wiring
   const form = document.getElementById('launchForm');
   const idSpan = document.getElementById('fId');
   const savedSpan = document.getElementById('fSaved');
@@ -270,11 +283,9 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     const max = list.reduce((m,t)=> Math.max(m, parseInt((t.id||'').split('-')[1]||'0',10)), 0);
     return `FL-${(max+1).toString().padStart(4,'0')}`;
   };
-  // Compute pending reviews by counting 'task' badges and unticked distributor items
   const countPending = () => {
     let n = document.querySelectorAll('#policyReq .badge.task').length;
     ['lic','tgt','train','agr'].forEach(id => { if (!document.getElementById(id).checked) n++; });
-    // Add SFDR completeness rule: < 70 => +1
     const pct = parseInt(pai.getAttribute('data-value'), 10) || 0;
     if (pct < 70) n++;
     return n;
@@ -291,31 +302,25 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     form.setAttribute('data-id', r.id);
   };
 
-  // Load by hash if provided
+  // Seed if empty and open by hash
   const hash = location.hash && location.hash.startsWith('#FL-') ? location.hash.slice(1) : null;
   let launches = readLaunches();
   if (!launches.length) {
-    // seed some if empty (same as dashboard seeds)
     const now = new Date(); const jan = new Date(now.getFullYear(),0,15).getTime(); const mar = new Date(now.getFullYear(),2,5).getTime();
     const jul = new Date(now.getFullYear(),6,10).getTime(); const aug = new Date(now.getFullYear(),7,22).getTime();
     const thisMon = new Date(now.getFullYear(), now.getMonth(), 2).getTime();
     launches = [
-      {id:'FL-0001', name:'Silver Birch UCITS', jurisdiction:'Ireland', vehicle:'UCITS', sfdr:'Article 8', stage:'launched', startDate:jan, launchedDate:mar, pendingReviews:0, updatedAt:mar},
-      {id:'FL-0002', name:'Northshore Growth AIF', jurisdiction:'Luxembourg', vehicle:'AIF', sfdr:'Article 8', stage:'esg', startDate:aug, launchedDate:null, pendingReviews:3, updatedAt:Date.now()-86400000*5},
-      {id:'FL-0003', name:'Sustainable Credit A', jurisdiction:'Luxembourg', vehicle:'UCITS', sfdr:'Article 9', stage:'policy', startDate:thisMon, launchedDate:null, pendingReviews:5, updatedAt:Date.now()-86400000*2},
-      {id:'FL-0004', name:'Global Macro Fund', jurisdiction:'UK', vehicle:'AIF', sfdr:'Article 6', stage:'screening', startDate:jul, launchedDate:null, pendingReviews:2, updatedAt:Date.now()-86400000*9},
+      {id:'FL-0001', name:'Silver Birch UCITS', jurisdiction:'Ireland', vehicle:'UCITS', sfdr:'Article 8', stage:'launched', startDate:jan, launchedDate:mar, pendingReviews:0, updatedAt:mar, timeline:{policy:jan, kyd:jan+1000*60*60*24*14, esg:new Date(new Date(jan).getFullYear(),1,10).getTime(), screening:new Date(new Date(mar).getFullYear(),2,1).getTime(), launch:mar}},
+      {id:'FL-0002', name:'Northshore Growth AIF', jurisdiction:'Luxembourg', vehicle:'AIF', sfdr:'Article 8', stage:'esg', startDate:aug, launchedDate:null, pendingReviews:3, updatedAt:Date.now()-86400000*5, timeline:{policy:aug, kyd:aug+1000*60*60*24*7, esg:Date.now()-86400000*5}},
+      {id:'FL-0003', name:'Sustainable Credit A', jurisdiction:'Luxembourg', vehicle:'UCITS', sfdr:'Article 9', stage:'policy', startDate:thisMon, launchedDate:null, pendingReviews:5, updatedAt:Date.now()-86400000*2, timeline:{policy:thisMon}},
+      {id:'FL-0004', name:'Global Macro Fund', jurisdiction:'UK', vehicle:'AIF', sfdr:'Article 6', stage:'screening', startDate:jul, launchedDate:null, pendingReviews:2, updatedAt:Date.now()-86400000*9, timeline:{policy:jul, kyd:jul+1000*60*60*24*10, esg:jul+1000*60*60*24*20, screening:Date.now()-86400000*9}},
     ];
     writeLaunches(launches);
   }
-  if (hash) {
-    const rec = launches.find(x => x.id === hash);
-    if (rec) populateFromRecord(rec);
-  } else {
-    // New launch session (not yet saved)
-    idSpan.textContent = '—'; savedSpan.textContent = '—';
-  }
+  if (hash) { const rec = launches.find(x => x.id === hash); if (rec) populateFromRecord(rec); }
+  else { idSpan.textContent = '—'; savedSpan.textContent = '—'; }
 
-  // Save handler
+  // Save
   saveBtn.addEventListener('click', () => {
     launches = readLaunches();
     const id = currentId() || nextId(launches);
@@ -326,6 +331,8 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     rec.sfdr = document.getElementById('sfdrSel').value;
     rec.pendingReviews = countPending();
     rec.updatedAt = Date.now();
+    rec.timeline = rec.timeline || {};
+    if (!rec.timeline.policy) rec.timeline.policy = rec.startDate || Date.now();
     if (!launches.find(x => x.id === id)) launches.push(rec);
     writeLaunches(launches);
     populateFromRecord(rec);
@@ -339,6 +346,7 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     const rec = launches.find(x => x.id === id);
     if (!rec) return;
     rec.stage = 'launched'; rec.launchedDate = Date.now(); rec.pendingReviews = 0; rec.updatedAt = Date.now();
+    rec.timeline = rec.timeline || {}; rec.timeline.launch = rec.launchedDate;
     writeLaunches(launches);
     populateFromRecord(rec);
   });
