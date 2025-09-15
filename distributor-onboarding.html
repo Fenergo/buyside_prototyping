@@ -6,6 +6,15 @@
   <title>Distributor Onboarding · KYC Orchestrator</title>
   <style>
 :root{
+  --sidebar-bg: #f7fafd;
+  --sidebar-icon: #4976a4;
+  --sidebar-text: #4976a4;
+  --sidebar-width: 80px;
+  --sidebar-font-size: 12px;
+  --sidebar-title-size: 13px;
+  --sidebar-tag-size: 10px;
+  --sidebar-icon-size: 28px;
+  --sidebar-active: #e3eefa;
   --sidebar-width: 170px;
   --sidebar-font-size: 11px;
   --sidebar-title-size: 13px;
@@ -43,17 +52,85 @@ a:hover{text-decoration:underline}
 /* Layout */
 
 .app{display:grid; grid-template-columns: var(--sidebar-width) 1fr; min-height:100vh}
-.sidebar{background: var(--sidebar); border-right:1px solid var(--line); padding:10px 4px; position:sticky; top:0; height:100vh; overflow:auto; font-size:var(--sidebar-font-size); min-width:var(--sidebar-width); max-width:var(--sidebar-width);}
-.brand{display:flex; align-items:center; gap:6px; margin:6px 2px 10px 2px;}
-.brand .logo{width:24px; height:24px; border-radius:8px; background: radial-gradient(circle at 25% 20%, rgba(33,207,178,0.9) 0%, rgba(33,207,178,0.6) 45%, rgba(33,207,178,0.4) 80%); box-shadow:0 8px 24px rgba(33,207,178,.35);}
-.brand h1{font-size:var(--sidebar-title-size); letter-spacing:.3px; margin:0}
-.nav{margin-top:4px}
-.nav a{display:flex; align-items:center; gap:8px; padding:6px 6px; border-radius:8px; color:#0b1220; border:1px solid transparent; font-size:var(--sidebar-font-size);}
-.nav a:hover{background:rgba(33,207,178,0.12); border-color:rgba(33,207,178,0.18); text-decoration:none}
-.nav a.active{background: rgba(33,207,178,0.18); border-color:rgba(33,207,178,0.28); color:#0b1220; box-shadow: inset 0 0 0 1px rgba(33,207,178,0.20);}
-.nav .icon{width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); display:inline-block}
-.nav .tag{margin-left:auto; font-size:var(--sidebar-tag-size); padding:2px 6px; border-radius:999px; background:rgba(33,207,178,0.18); color:#0b1220; border:1px solid rgba(33,207,178,0.28)}
-.footer-note{margin-top:10px; font-size:10px; color:var(--muted); opacity:.85; padding:0 3px}
+.sidebar {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  padding: 0;
+}
+.sidebar .brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px 0 0 0;
+}
+.sidebar .logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: radial-gradient(circle at 25% 20%, #4976a4 0%, #e3eefa 100%);
+  margin-bottom: 8px;
+}
+.sidebar .brand h1 {
+  font-size: 14px;
+  color: var(--sidebar-text);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin-top: 24px;
+}
+.sidebar .nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: var(--sidebar-font-size);
+  padding: 0;
+  border-radius: 8px;
+  width: 100%;
+  transition: background 0.15s;
+}
+.sidebar .nav a.active, .sidebar .nav a:hover {
+  background: var(--sidebar-active);
+}
+.sidebar .nav .icon {
+  width: var(--sidebar-icon-size);
+  height: var(--sidebar-icon-size);
+  color: var(--sidebar-icon);
+  display: block;
+}
+.sidebar .nav .text {
+  font-size: var(--sidebar-font-size);
+  color: var(--sidebar-text);
+  text-align: center;
+  margin-top: 2px;
+}
+.sidebar .nav .tag {
+  display: none;
+}
+.sidebar .footer-note {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--muted);
+  opacity: .85;
+  padding: 0 3px;
+  margin-bottom: 18px;
+}
 
 /* Top bar */
 .header{
@@ -171,11 +248,33 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
   .form-grid{grid-template-columns: 1fr}
 }
 </style>
+<style>
+
+/* === Enhancements: modal + timeline + stat chips === */
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; z-index:999}
+.modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(720px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal .box h4{margin:0 0 8px 0}
+.modal .box .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px}
+
+.timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
+.tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
+.tl-dot{width:10px; height:10px; border-radius:50%; background:#e2e8f0; border:2px solid #cbd5e1}
+.tl-step.done .tl-dot{background:#059669; border-color:#059669}
+.tl-step.pending .tl-dot{background:#e2e8f0}
+.tl-label{font-size:12px; color:#0f172a}
+.tl-time{font-size:11px; color:#475569}
+.tl-line{width:28px; height:2px; background:#cbd5e1}
+.timeline .tl-step.pending .tl-label{opacity:0.7}
+
+.stat{display:flex; gap:6px; align-items:center; font-size:12px; border:1px solid var(--line); border-radius:999px; padding:4px 8px; background:#f8fafc}
+.stat b{font-weight:700}
+
+</style>
 </head>
 <body data-page="distributor">
+
   <a href="#main" class="kbd" style="position:absolute; left:-9999px; top:-9999px">Skip to content</a>
   <div class="app">
-    
     <aside class="sidebar" aria-label="Sidebar Navigation">
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
@@ -183,40 +282,34 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
       </div>
       <nav class="nav">
         <a href="index.html" data-nav="dashboard" aria-label="Dashboard">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12l9-9 9 9" stroke="#0b1220" stroke-width="1.5"/><path d="M5 10v10h5v-6h4v6h5V10" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12l9-9 9 9" stroke="#4976a4" stroke-width="2"/><path d="M5 10v10h5v-6h4v6h5V10" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Dashboard</span>
         </a>
         <a href="fund-launch.html" data-nav="fund-launch" aria-label="Fund Launch">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M7 19V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v12" stroke="#0b1220" stroke-width="1.5"/><path d="M9 9h6m-6 4h6" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M7 19V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v12" stroke="#4976a4" stroke-width="2"/><path d="M9 9h6m-6 4h6" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Fund Launch</span>
-          <span class="tag">Product</span>
         </a>
         <a href="distributor-onboarding.html" data-nav="distributor" aria-label="Distributor Onboarding">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v6H3v-6a4 4 0 0 1 4-4z" stroke="#0b1220" stroke-width="1.5"/><path d="M7 8V6a5 5 0 0 1 10 0v2" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v6H3v-6a4 4 0 0 1 4-4z" stroke="#4976a4" stroke-width="2"/><path d="M7 8V6a5 5 0 0 1 10 0v2" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Distributor Onboarding</span>
-          <span class="tag">KYD</span>
         </a>
         <a href="investor-onboarding.html" data-nav="investor" aria-label="Investor Onboarding">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" stroke="#0b1220" stroke-width="1.5"/><path d="M3 21a9 9 0 0 1 18 0" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" stroke="#4976a4" stroke-width="2"/><path d="M3 21a9 9 0 0 1 18 0" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Investor Onboarding</span>
-          <span class="tag">KYC/KYB</span>
         </a>
         <a href="asset-dd.html" data-nav="asset" aria-label="Asset & Vehicle Due Diligence">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="#0b1220" stroke-width="1.5"/><path d="M8 7v12m8-12v12" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="#4976a4" stroke-width="2"/><path d="M8 7v12m8-12v12" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Asset & Vehicle DD</span>
-          <span class="tag">KYI</span>
         </a>
         <a href="monitoring.html" data-nav="monitoring" aria-label="Monitoring & Screening">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13l4 4 12-12" stroke="#0b1220" stroke-width="1.5"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13l4 4 12-12" stroke="#4976a4" stroke-width="2"/></svg>
           <span class="text">Monitoring & Screening</span>
-          <span class="tag">KYT</span>
         </a>
         <a href="digital-trading.html" data-nav="digital" aria-label="Digital Trading">
           <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/>
+            <path d="M4 6h16v12H4z" stroke="#4976a4" stroke-width="2"/><path d="M8 10h8M8 14h5" stroke="#4976a4" stroke-width="2"/>
           </svg>
           <span class="text">Digital Trading</span>
-          <span class="tag">Trades</span>
         </a>
       </nav>
       <div class="footer-note">Prototype • Static HTML • Local storage</div>
@@ -307,7 +400,45 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 })();
 </script>
 
-      </section>
+      
+<div class="section" id="distTracker" aria-label="My Distributors">
+  <div class="row">
+    <h3>My Distributors</h3>
+    <div class="right row">
+      <div class="pills" id="distFilters">
+        <span class="pill active" data-f="all">All</span>
+        <span class="pill" data-f="onboarding">Onboarding</span>
+        <span class="pill" data-f="active">Active</span>
+        <span class="pill" data-f="recertify">Recertify</span>
+      </div>
+      <div class="right row">
+        <input class="input" id="openDistById" placeholder="Open by ID e.g., D-0001" style="width:200px; margin-left:8px"/>
+        <button class="btn small" id="openDistByIdBtn">Open</button>
+      </div>
+    </div>
+  </div>
+  <div class="row small space-top">
+    <span class="stat"><span class="muted">Onboarding</span> <b id="dOnYTD">0</b> YTD • <b id="dOnMTD">0</b> MTD</span>
+    <span class="stat"><span class="muted">Active</span> <b id="dActYTD">0</b> YTD • <b id="dActMTD">0</b> MTD</span>
+    <span class="stat"><span class="muted">Pending reviews</span> <b id="dPendYTD">0</b> YTD • <b id="dPendMTD">0</b> MTD</span>
+  </div>
+  <table class="table space-top" id="distTable">
+    <thead><tr><th>ID</th><th>Name</th><th>Jurisdictions</th><th>Status</th><th>Pending</th><th>Next Review</th><th>Updated</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <div class="small muted">Click a row for details. Use “Save & Continue” to add/update the current distributor. New action buttons (**Approve Onboarding** / **Start Recertification**) have been added inline.</div>
+</div>
+
+<!-- Detail Modal -->
+<div id="distModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Distributor detail">
+  <div class="box">
+    <h4 id="distModalTitle">Distributor</h4>
+    <div id="distModalBody" class="small"></div>
+    <div class="actions"><button class="btn" id="distModalClose">Close</button></div>
+  </div>
+</div>
+
+</section>
     </main>
   </div>
   <script>
@@ -334,5 +465,317 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 })();
 </script>
   
+<script>
+
+(() => {
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+  const pad = (n) => n.toString().padStart(4,'0');
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth();
+  const inYear = (ts) => ts && new Date(ts).getFullYear() === y;
+  const inMonth = (ts) => ts && new Date(ts).getFullYear() === y && new Date(ts).getMonth() === m;
+
+  // Storage
+  const KEY = 'kyc_distributors';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; } };
+  const write = (list) => { localStorage.setItem(KEY, JSON.stringify(list)); window.dispatchEvent(new StorageEvent('storage', {key:KEY, newValue:JSON.stringify(list)})); };
+  const nextId = (list) => {
+    const max = list.reduce((m,t)=> Math.max(m, parseInt((t.id||'').split('-')[1]||'0',10)), 0);
+    return `D-${pad(max+1)}`;
+  };
+
+  // Seed if empty with a sample
+  let recs = read();
+  if (!recs.length) {
+    recs = [{
+      id:'D-0001', name:'Alpha Distrib GmbH', lei:'529900T8BM49AURSDO55', hq:'Munich, DE', contact:'compliance@alpha-distrib.de',
+      type:'Full', bookedBy:'S. Weber', jurisdictions:['DE','FR'], att:{att1:true, att2:false, att3:false},
+      files:{ddq:['AIMA_DDQ_v1.3.pdf'], soc:['ISAE3402_2024.pdf']},
+      riskScore:52, status:'onboarding', pendingReviews:3, startDate: Date.now()-86400000*21, approvedDate:null,
+      nextReviewDate:null, updatedAt: Date.now()-86400000*1,
+      timeline:{kyb: Date.now()-86400000*20, licensing: Date.now()-86400000*15, attestations: null, screening: Date.now()-86400000*7, approved: null}
+    }];
+    write(recs);
+  }
+
+  // Helper: read form fields by label text
+  const getFieldByLabel = (labelText) => {
+    const lbl = $$('.label').find(d => (d.textContent||'').trim().toLowerCase() === labelText.toLowerCase());
+    if (!lbl) return null;
+    const wrap = lbl.parentElement;
+    return $('input, select, textarea', wrap);
+  };
+  const getFormValues = () => {
+    const name = (getFieldByLabel('Legal Name')?.value || '').trim();
+    const lei = (getFieldByLabel('LEI')?.value || '').trim();
+    const hq = (getFieldByLabel('Headquarters')?.value || '').trim();
+    const contact = (getFieldByLabel('Contact')?.value || '').trim();
+    const type = (getFieldByLabel('Onboarding Type')?.value || '').trim();
+    const bookedBy = (getFieldByLabel('Booked By')?.value || '').trim();
+    const jurisdictions = [
+      $('#j1')?.checked ? 'DE' : null,
+      $('#j2')?.checked ? 'FR' : null,
+      $('#j3')?.checked ? 'NL' : null,
+      $('#j4')?.checked ? 'ES' : null
+    ].filter(Boolean);
+    const att = { att1: $('#att1')?.checked || false, att2: $('#att2')?.checked || false, att3: $('#att3')?.checked || false };
+    return { name, lei, hq, contact, type, bookedBy, jurisdictions, att };
+  };
+
+  const computeRisk = (vals) => {
+    let risk = 30;
+    risk += (vals.jurisdictions.length * 12);
+    risk += (!vals.lei ? 10 : 0);
+    risk += (vals.type === 'Full' ? 6 : 0);
+    const attCount = ['att1','att2','att3'].reduce((n,k)=> n + (vals.att[k] ? 1 : 0), 0);
+    risk -= attCount * 6;
+    return Math.min(100, Math.max(0, risk));
+  };
+  const computePending = (vals, files) => {
+    let n = 0;
+    n += (!vals.lei ? 1 : 0);
+    n += ['att1','att2','att3'].reduce((c,k)=> c + (vals.att[k] ? 0 : 1), 0);
+    n += (!files?.ddq?.length ? 1 : 0);
+    return n;
+  };
+
+  // Inject action buttons next to "Save & Continue"
+  const profileSection = $$('.section').find(s => $('h3', s)?.textContent.trim() === 'Distributor Profile');
+  if (profileSection) {
+    const btnRow = $$('.row', profileSection).reverse().find(r => $$('button', r).length > 0);
+    if (btnRow && !$('#approveBtn')) {
+      const approve = document.createElement('button');
+      approve.id = 'approveBtn'; approve.className = 'btn small'; approve.textContent = 'Approve Onboarding';
+      const recert = document.createElement('button');
+      recert.id = 'recertBtn'; recert.className = 'btn ghost small'; recert.textContent = 'Start Recertification';
+      btnRow.insertBefore(approve, btnRow.firstChild.nextSibling); // after the first button
+      btnRow.insertBefore(recert, approve.nextSibling);
+    }
+  }
+
+  // Hidden file inputs for DDQ/SOC capture
+  const ddqInput = document.createElement('input'); ddqInput.type = 'file'; ddqInput.multiple = true; ddqInput.className = 'hidden';
+  const socInput = document.createElement('input'); socInput.type = 'file'; socInput.multiple = true; socInput.className = 'hidden';
+  document.body.appendChild(ddqInput); document.body.appendChild(socInput);
+
+  // Wire buttons by label text
+  const allButtons = $$('button');
+  const btnSave = allButtons.find(b => (b.textContent||'').toLowerCase().includes('save') && (b.textContent||'').toLowerCase().includes('continue'));
+  const btnDDQ = allButtons.find(b => (b.textContent||'').toLowerCase().includes('ddq'));
+  const btnSOC = allButtons.find(b => (b.textContent||'').toLowerCase().includes('soc'));
+  const btnApprove = $('#approveBtn');
+  const btnRecert = $('#recertBtn');
+
+  // Current working record id is kept on the content section dataset
+  const page = $('#main'); if (page && !page.dataset.distId) page.dataset.distId = '';
+
+  // Save handler
+  const saveHandler = () => {
+    const vals = getFormValues();
+    if (!vals.name) { alert('Enter Legal Name before saving.'); return; }
+    let list = read();
+    const id = page.dataset.distId || nextId(list);
+    let rec = list.find(x => x.id === id);
+    if (!rec) {
+      rec = { id, startDate: Date.now(), status:'onboarding', files:{ddq:[], soc:[]}, timeline:{} };
+      list.push(rec);
+    }
+    // update record
+    rec.name = vals.name; rec.lei = vals.lei; rec.hq = vals.hq; rec.contact = vals.contact;
+    rec.type = vals.type || 'Full'; rec.bookedBy = vals.bookedBy || '';
+    rec.jurisdictions = vals.jurisdictions; rec.att = vals.att;
+    // timeline heuristics
+    rec.timeline = rec.timeline || {};
+    if (vals.lei && !rec.timeline.kyb) rec.timeline.kyb = Date.now();
+    if (vals.jurisdictions.length && !rec.timeline.licensing) rec.timeline.licensing = Date.now();
+    if (vals.att.att1 && vals.att.att2 && vals.att.att3 && !rec.timeline.attestations) rec.timeline.attestations = Date.now();
+    if (!rec.timeline.screening) rec.timeline.screening = Date.now(); // simple demo assumption
+    rec.riskScore = computeRisk(vals);
+    rec.pendingReviews = computePending(vals, rec.files);
+    rec.updatedAt = Date.now();
+    page.dataset.distId = rec.id;
+    write(list);
+    renderList(currentFilter());
+    animateRisk(rec.riskScore);
+  };
+
+  if (btnSave) btnSave.addEventListener('click', saveHandler);
+
+  // Attach DDQ/SOC capture
+  if (btnDDQ) btnDDQ.addEventListener('click', () => ddqInput.click());
+  if (btnSOC) btnSOC.addEventListener('click', () => socInput.click());
+  const onFiles = (kind, files) => {
+    if (!files || !files.length) return;
+    const list = read(); const id = page.dataset.distId || null;
+    if (!id) { alert('Save the distributor first so files can be associated.'); return; }
+    const rec = list.find(x => x.id === id); if (!rec) return;
+    rec.files = rec.files || {ddq:[], soc:[]};
+    const names = Array.from(files).map(f => f.name);
+    rec.files[kind] = (rec.files[kind] || []).concat(names);
+    rec.updatedAt = Date.now();
+    write(list); renderList(currentFilter());
+  };
+  ddqInput.addEventListener('change', (e) => onFiles('ddq', e.target.files));
+  socInput.addEventListener('change', (e) => onFiles('soc', e.target.files));
+
+  // Approve & Recertify
+  if (btnApprove) btnApprove.addEventListener('click', () => {
+    const list = read(); const id = page.dataset.distId || null; if (!id) return alert('Save first.');
+    const rec = list.find(x => x.id === id); if (!rec) return;
+    rec.status = 'active'; rec.approvedDate = Date.now(); rec.pendingReviews = 0; rec.timeline = rec.timeline || {}; rec.timeline.approved = rec.approvedDate;
+    // next review 12 months
+    const d = new Date(rec.approvedDate); d.setMonth(d.getMonth()+12); rec.nextReviewDate = d.getTime();
+    rec.updatedAt = Date.now(); write(list); renderList(currentFilter());
+  });
+  if (btnRecert) btnRecert.addEventListener('click', () => {
+    const list = read(); const id = page.dataset.distId || null; if (!id) return alert('Save first.');
+    const rec = list.find(x => x.id === id); if (!rec) return;
+    rec.status = 'recertify'; const d = new Date(); d.setMonth(d.getMonth()+1); rec.nextReviewDate = d.getTime();
+    rec.updatedAt = Date.now(); write(list); renderList(currentFilter());
+  });
+
+  // Risk bar animation
+  const riskBar = $('#riskBar');
+  const animateRisk = (val) => {
+    if (!riskBar) return;
+    riskBar.setAttribute('data-value', val);
+    riskBar.style.width = '0%'; requestAnimationFrame(() => { riskBar.style.width = val + '%'; });
+  };
+  // Recalc risk on jurisdiction/attestation change
+  ['#j1','#j2','#j3','#j4','#att1','#att2','#att3'].forEach(s => {
+    const el = $(s); if (el) el.addEventListener('change', () => {
+      const vals = getFormValues(); animateRisk(computeRisk(vals));
+    });
+  });
+
+  // My Distributors list & modal
+  const tableBody = $('#distTable tbody');
+  const filters = $('#distFilters');
+  const openById = $('#openDistById'); const openBtn = $('#openDistByIdBtn');
+
+  const currentFilter = () => (filters.querySelector('.pill.active')?.dataset.f) || 'all';
+
+  const renderMIS = (list) => {
+    const onYTD = list.filter(r => r.status==='onboarding' && inYear(r.startDate)).length;
+    const onMTD = list.filter(r => r.status==='onboarding' && inMonth(r.startDate)).length;
+    const actYTD = list.filter(r => r.status==='active' && inYear(r.approvedDate)).length;
+    const actMTD = list.filter(r => r.status==='active' && inMonth(r.approvedDate)).length;
+    const pendYTD = list.filter(r => r.status!=='active' && inYear(r.startDate)).reduce((a,r)=> a + (r.pendingReviews||0), 0);
+    const pendMTD = list.filter(r => r.status!=='active' && inMonth(r.startDate)).reduce((a,r)=> a + (r.pendingReviews||0), 0);
+    $('#dOnYTD').textContent = onYTD; $('#dOnMTD').textContent = onMTD;
+    $('#dActYTD').textContent = actYTD; $('#dActMTD').textContent = actMTD;
+    $('#dPendYTD').textContent = pendYTD; $('#dPendMTD').textContent = pendMTD;
+  };
+
+  const renderList = (flt='all') => {
+    const list = read();
+    renderMIS(list);
+    const view = list.filter(r => flt==='all' ? true : r.status===flt);
+    tableBody.innerHTML = view.map(r => `
+      <tr data-id="${r.id}" style="cursor:pointer">
+        <td>${r.id}</td>
+        <td>${r.name||'—'}</td>
+        <td>${(r.jurisdictions||[]).join(', ')||'—'}</td>
+        <td><span class="badge ${r.status==='active' ? 'ok' : (r.status==='recertify' ? 'warn' : 'task')}">${r.status||'onboarding'}</span></td>
+        <td>${r.pendingReviews||0}</td>
+        <td>${r.nextReviewDate ? new Date(r.nextReviewDate).toLocaleDateString() : '—'}</td>
+        <td>${fmtTS(r.updatedAt)}</td>
+      </tr>
+    `).join('');
+    // Row click => modal
+    $$('#distTable tbody tr').forEach(tr => tr.addEventListener('click', () => {
+      const id = tr.getAttribute('data-id'); const rec = read().find(x=>x.id===id); if (!rec) return;
+      const tl = rec.timeline || {};
+      const steps = [
+        {key:'kyb', label:'KYB', ts: tl.kyb || null},
+        {key:'licensing', label:'Licensing', ts: tl.licensing || null},
+        {key:'attestations', label:'Attestations', ts: tl.attestations || null},
+        {key:'screening', label:'Screening', ts: tl.screening || null},
+        {key:'approved', label:'Approved', ts: tl.approved || rec.approvedDate || null},
+      ];
+      const tlHtml = steps.map((s, i) => {
+        const done = !!s.ts;
+        const timeTxt = done ? new Date(s.ts).toLocaleString() : '—';
+        return `
+          <div class="tl-step ${done ? 'done':'pending'}">
+            <div class="tl-dot"></div>
+            <div class="tl-label">${s.label}</div>
+            <div class="tl-time">${timeTxt}</div>
+          </div>
+          ${i < steps.length - 1 ? '<div class="tl-line"></div>' : ''}
+        `;
+      }).join('');
+      $('#distModalTitle').textContent = `Distributor ${rec.id}`;
+      $('#distModalBody').innerHTML = `
+        <div class="row small"><div style="width:140px">Name</div><div>${rec.name}</div></div>
+        <div class="row small"><div style="width:140px">LEI</div><div>${rec.lei||'—'}</div></div>
+        <div class="row small"><div style="width:140px">HQ</div><div>${rec.hq||'—'}</div></div>
+        <div class="row small"><div style="width:140px">Contact</div><div>${rec.contact||'—'}</div></div>
+        <div class="row small"><div style="width:140px">Type</div><div>${rec.type||'—'}</div></div>
+        <div class="row small"><div style="width:140px">Jurisdictions</div><div>${(rec.jurisdictions||[]).join(', ')||'—'}</div></div>
+        <div class="row small"><div style="width:140px">Status</div><div>${rec.status}</div></div>
+        <div class="row small"><div style="width:140px">Pending reviews</div><div>${rec.pendingReviews||0}</div></div>
+        <div class="row small"><div style="width:140px">Started</div><div>${fmtTS(rec.startDate)}</div></div>
+        <div class="row small"><div style="width:140px">Approved</div><div>${fmtTS(rec.approvedDate)}</div></div>
+        <hr class="sep"/>
+        <div class="small"><b>Timeline</b></div>
+        <div class="timeline">${tlHtml}</div>
+        <div class="actions"><button class="btn" id="openInEditor">Open in Editor</button></div>
+      `;
+      $('#distModal').classList.remove('hidden');
+      $('#openInEditor').addEventListener('click', () => { $('#distModal').classList.add('hidden'); loadIntoForm(rec.id); });
+    }));
+  };
+
+  // Filter pills & open by ID
+  filters.addEventListener('click', (e) => {
+    const p = e.target.closest('.pill'); if (!p) return;
+    $$('.pill', filters).forEach(x => x.classList.remove('active')); p.classList.add('active');
+    renderList(p.dataset.f);
+  });
+  openBtn.addEventListener('click', () => { const id = (openById.value||'').trim(); if (id) loadIntoForm(id); });
+  openById.addEventListener('keydown', (e) => { if (e.key==='Enter') openBtn.click(); });
+
+  // Load a record into the form
+  const loadIntoForm = (id) => {
+    const rec = read().find(x => x.id === id);
+    if (!rec) { alert('Not found: ' + id); return; }
+    page.dataset.distId = rec.id;
+    // Text/select fields
+    const setVal = (label, v) => { const el = getFieldByLabel(label); if (el) { if (el.tagName==='SELECT') { el.value = v; } else { el.value = v||''; } } };
+    setVal('Legal Name', rec.name);
+    setVal('LEI', rec.lei);
+    setVal('Headquarters', rec.hq);
+    setVal('Contact', rec.contact);
+    setVal('Onboarding Type', rec.type);
+    setVal('Booked By', rec.bookedBy);
+    // Jurisdictions
+    const map = {DE:'#j1', FR:'#j2', NL:'#j3', ES:'#j4'};
+    ['#j1','#j2','#j3','#j4'].forEach(s => { const el = $(s); if (el) el.checked = false; });
+    (rec.jurisdictions||[]).forEach(code => { const s = map[code]; const el = s && $(s); if (el) el.checked = true; });
+    // Attestations
+    if ($('#att1')) $('#att1').checked = !!(rec.att?.att1);
+    if ($('#att2')) $('#att2').checked = !!(rec.att?.att2);
+    if ($('#att3')) $('#att3').checked = !!(rec.att?.att3);
+    // Risk bar
+    animateRisk(rec.riskScore || 40);
+    // Scroll to top of form
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+
+  // Modal close
+  $('#distModalClose').addEventListener('click', () => $('#distModal').classList.add('hidden'));
+  $('#distModal').addEventListener('click', (e) => { if (e.target === $('#distModal')) $('#distModal').classList.add('hidden'); });
+
+  // Initial render
+  renderList('all');
+
+  // Open by URL hash (#D-0001)
+  if (location.hash && location.hash.startsWith('#D-')) { loadIntoForm(location.hash.slice(1)); }
+})();
+
+</script>
 </body>
 </html>
