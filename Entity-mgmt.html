@@ -32,6 +32,18 @@
   --danger:#dc2626;
   --info:#2563eb;
   --progress:#21cfb2;
+
+  /* Spacing variables for layout improvements */
+  --space-xs: 6px;
+  --space-sm: 10px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --card-padding: 16px;
+  --section-padding: 20px;
+  --table-cell-padding: 10px;
+  --tab-gap: 12px;
+  --kpi-gap: 14px;
+  --kpi-padding: 14px;
 }
 *{box-sizing:border-box} html,body{height:100%}
 body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; background: var(--page); color:var(--text); line-height:1.45;}
@@ -129,12 +141,17 @@ a{color:#0ea5e9; text-decoration:none} a:hover{text-decoration:underline}
 .btn{background: var(--btn); border:1px solid var(--btn-border); color:var(--btn-text); padding:10px 12px; border-radius:10px; cursor:pointer; transition: filter .15s ease, transform .02s ease;}
 .btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)} .btn.primary{background: var(--btn); border-color: var(--btn-border)} .btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)} .btn.small{padding:6px 10px; font-size:12px}
 .kbd{font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas; padding:2px 6px; border-radius:6px; border:1px solid var(--line); color:var(--muted)}
-.content{padding:14px 22px 40px}
+.content{padding: var(--space-lg) var(--space-lg) calc(var(--space-lg) + 16px);}
 .page-title{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:12px 0 8px 0}
 .page-title h2{margin:0; font-size:22px}
 .page-title .sub{color:var(--muted)}
 .grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px}
-.section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px} .section h3{margin:0 0 10px 0; font-size:16px}
+.section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: var(--section-padding);
+}
 /* Right rail adjustments */
 nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:14px; padding:12px; position:sticky; top:84px; height:auto; max-height:calc(100vh - 120px); overflow:auto}
 /* Keep original entity components looking good */
@@ -151,7 +168,7 @@ nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:
 .em-main .toolbar{display:flex; gap:8px; justify-content:flex-end}
 .em-main input, .em-main select, .em-main textarea{width:100%; padding:10px 12px; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px}
 .em-main table{width:100%; border-collapse:collapse}
-.em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:8px; text-align:left; vertical-align:top}
+.em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:var(--table-cell-padding); text-align:left; vertical-align:top}
 @media (max-width:1100px){ .app{grid-template-columns: 72px 1fr;} .nav.sb-nav a .text, .sb-brand .name, .sb-foot a span{display:none} .nav.sb-nav a{justify-content:center} .sb-foot a{justify-content:center} }
 @media (max-width:800px){ .grid-2{grid-template-columns: 1fr} }
 
@@ -163,6 +180,24 @@ nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:
 .panel > .card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow: 0 8px 28px rgba(2,6,23,.06)}
 .toolbar{display:flex; gap:8px; align-items:center; margin-bottom:8px}
 .note{color:var(--muted); font-size:12px}
+.card {
+  /* ...existing card styles... */
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.em-main table {
+  width: 100%;
+  min-width: 900px;
+  table-layout: auto;
+  overflow-x: auto;
+  display: block;
+}
+
+.table th, .table td {
+  text-align: center;
+}
 
 </style>
 <style>
@@ -171,14 +206,14 @@ nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:
 #entityKpis.cards {
   display: grid;
   grid-template-columns: repeat(6, minmax(0,1fr));
-  gap: 14px;
-  margin: 14px 0 6px;
+  gap: var(--kpi-gap);
+  margin: var(--space-md) 0 var(--space-xs) 0;
 }
 #entityKpis .card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: var(--kpi-padding);
   min-height: 72px;
   box-shadow: 0 8px 28px rgba(2,6,23,.06);
 }
@@ -247,9 +282,9 @@ nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:
 
   *{box-sizing:border-box}
   html,
-/* body block removed to adopt global shell styles */
-/* body block removed to adopt global shell styles */
-/* header block removed (using shell header) */
+  /* body block removed to adopt global shell styles */
+  /* body block removed to adopt global shell styles */
+  /* header block removed (using shell header) */
 
   .btn{
     padding:10px 12px; border-radius:8px; border:1px solid var(--line);
@@ -281,7 +316,7 @@ nav.entity-rail{
   .chip.warn{color:var(--warn, #f5a524); border-color:rgba(245,165,36,.25)}
   .chip.bad{color:var(--bad, #f31260); border-color:rgba(243,18,96,.25)}
 .em-main{padding:16px; overflow:auto}
-  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px}
+  .tabs{display:flex; gap:var(--tab-gap); flex-wrap:wrap; margin-bottom:var(--space-md)}
   .tab{padding:10px 12px; border-radius:8px; border:1px solid var(--line); background:var(--tab-bg); cursor:pointer}
   .tab[aria-selected="true"]{
     background:linear-gradient(180deg, var(--accent-20), rgba(0,0,0,.02));
@@ -308,7 +343,7 @@ nav.entity-rail{
   }
 
   table{width:100%; border-collapse:collapse}
-  .em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:8px; text-align:left; vertical-align:top}
+  .em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:var(--table-cell-padding); text-align:left; vertical-align:top}
   th{font-weight:600; color:var(--table-th)}
 
   .toolbar{display:flex; gap:8px; justify-content:flex-end}
@@ -334,6 +369,23 @@ nav.entity-rail{
 nav.entity-rail{position:relative; height:auto; top:auto}
   }
 
+  /* Add CSS to support new order for grid-2 children */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+  .grid-2 > .section {
+    order: unset;
+  }
+  @media (max-width: 900px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+    .grid-2 > .section {
+      order: unset !important;
+    }
+  }
 </style>
 </head>
 <body data-page="entities">
@@ -410,236 +462,282 @@ nav.entity-rail{position:relative; height:auto; top:auto}
 </header>
 
 <section class="content" id="main">
-<div class="page-title"><h2>Entity 360</h2><div class="sub">Entity master record • 360 profile</div></div>
-<div class="cards" id="entityKpis">
-  <div class="card"><div class="label">Total Entities</div><div class="value" id="entTotal">0</div></div>
-  <div class="card"><div class="label">Active</div><div class="value" id="entActive">0</div></div>
-  <div class="card"><div class="label">Pending Reviews</div><div class="value" id="entPending">0</div></div>
-  <div class="card"><div class="label">High Risk (≥70)</div><div class="value" id="entHigh">0</div></div>
-  <div class="card"><div class="label">With Documents</div><div class="value" id="entDocd">0</div></div>
-  <div class="card"><div class="label">Relationships</div><div class="value" id="entRelCount">0</div></div>
-</div>
-<div class="grid-2">
-  <div class="section" style="min-width:340px;">
-    <div class="em-main">
-      <div class="tabs" role="tablist" aria-label="Entity sections">
-        <button class="tab" role="tab" aria-selected="true" aria-controls="panel-profile" id="tab-profile">Profile</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-owners" id="tab-owners">Ownership & Control</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tax" id="tab-tax">Regulatory & Tax</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-banking" id="tab-banking">Banking & Mandates</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-gov" id="tab-gov">Governance</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-docs" id="tab-docs">Documents</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tasks" id="tab-tasks">Tasks & Reviews</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-audit" id="tab-audit">Audit</button>
-      </div>
-      <!-- PROFILE -->
-      <section id="panel-profile" class="panel active" role="tabpanel" aria-labelledby="tab-profile">
-        <div class="card">
-          <div class="grid-3">
-            <div>
-              <label>Legal name</label>
-              <input id="legalName" value="Lux SPV Holdings Sàrl" required />
-            </div>
-            <div>
-              <label>Jurisdiction / Domicile</label>
-              <input id="domicile" value="Luxembourg" />
-            </div>
-            <div>
-              <label>Legal form</label>
-              <select id="legalForm">
-                <option>Sàrl</option><option>SA</option><option>SCSp</option><option>LLC</option><option>Ltd</option><option>Trust</option>
-              </select>
+  <div class="page-title"><h2>Entity 360</h2><div class="sub">Entity master record • 360 profile</div></div>
+  <div class="cards" id="entityKpis">
+    <div class="card"><div class="label">Total Entities</div><div class="value" id="entTotal">0</div></div>
+    <div class="card"><div class="label">Active</div><div class="value" id="entActive">0</div></div>
+    <div class="card"><div class="label">Pending Reviews</div><div class="value" id="entPending">0</div></div>
+    <div class="card"><div class="label">High Risk (≥70)</div><div class="value" id="entHigh">0</div></div>
+    <div class="card"><div class="label">With Documents</div><div class="value" id="entDocd">0</div></div>
+    <div class="card"><div class="label">Relationships</div><div class="value" id="entRelCount">0</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="section" style="min-width:340px; order:2;">
+      <div class="em-main">
+        <div class="tabs" role="tablist" aria-label="Entity sections">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="panel-profile" id="tab-profile">Profile</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-owners" id="tab-owners">Ownership & Control</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tax" id="tab-tax">Regulatory & Tax</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-banking" id="tab-banking">Banking & Mandates</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-gov" id="tab-gov">Governance</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-docs" id="tab-docs">Documents</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tasks" id="tab-tasks">Tasks & Reviews</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-audit" id="tab-audit">Audit</button>
+        </div>
+        <!-- PROFILE -->
+        <section id="panel-profile" class="panel active" role="tabpanel" aria-labelledby="tab-profile">
+          <div class="card">
+            <div class="grid-3">
+              <div>
+                <label>Legal name</label>
+                <input id="legalName" value="Lux SPV Holdings Sàrl" required />
+              </div>
+              <div>
+                <label>Jurisdiction / Domicile</label>
+                <input id="domicile" value="Luxembourg" />
+              </div>
+              <div>
+                <label>Legal form</label>
+                <select id="legalForm">
+                  <option>Sàrl</option><option>SA</option><option>SCSp</option><option>LLC</option><option>Ltd</option><option>Trust</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <!-- OWNERSHIP & CONTROL -->
+        <section id="panel-owners" class="panel" role="tabpanel" aria-labelledby="tab-owners">
+          <div class="card">
+            <div class="toolbar"><button class="btn" id="addOwnerRow">Add owner</button></div>
+            <table id="ownersTable">
+              <thead><tr><th>Holder</th><th>Type</th><th>Economic rights</th><th>Voting rights</th><th>Country</th><th>CP?</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>Master Fund LP</td><td>Entity</td><td>80</td><td>80</td><td>Luxembourg</td><td>No</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                <tr><td>Jane Doe</td><td>Individual</td><td>20</td><td>20</td><td>UK</td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <!-- REGULATORY & TAX -->
+        <section id="panel-tax" class="panel" role="tabpanel" aria-labelledby="tab-tax">
+          <div class="card">
+            <div class="grid-3">
+              <div>
+                <label>LEI</label>
+                <input id="lei" placeholder="20-char LEI (ISO 17442)" value="5493001KJTIIGC8Y1R12" />
+              </div>
+              <div>
+                <label>LEI last renewed</label>
+                <input type="date" id="leiRenewed" value="2024-11-15" />
+              </div>
+              <div>
+                <label>LEI issuer</label>
+                <input id="leiIssuer" placeholder="e.g., WM Datenservice / GS1 / Bloomberg" />
+              </div>
+            </div>
+            <div class="grid-3" style="margin-top:12px">
+              <div>
+                <label>FATCA classification</label>
+                <select id="fatcaClass">
+                  <option>Passive NFE</option><option>Active NFE</option><option>FFI</option><option>Exempt Beneficial Owner</option>
+                </select>
+              </div>
+              <div>
+                <label>GIIN (if FFI)</label>
+                <input id="giin" placeholder="XXXXXX.XXXXX.XX.XXX" />
+              </div>
+              <div>
+                <label>W‑8/W‑9 form on file</label>
+                <select id="w8">
+                  <option>W‑8BEN‑E</option><option>W‑8IMY</option><option>W‑9</option><option>None</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-3" style="margin-top:12px">
+              <div>
+                <label>CRS classification</label>
+                <select id="crsClass">
+                  <option>Passive NFE</option><option>Active NFE</option><option>Financial Institution</option>
+                </select>
+              </div>
+              <div>
+                <label>Tax residency (primary)</label>
+                <input id="taxRes" placeholder="e.g., LU" value="LU" />
+              </div>
+              <div>
+                <label>TIN</label>
+                <input id="tin" placeholder="Tax Identification Number" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BANKING & MANDATES -->
+        <section id="panel-banking" class="panel" role="tabpanel" aria-labelledby="tab-banking">
+          <div class="card">
+            <div class="toolbar"><button class="btn" id="addBankRow">Add account</button></div>
+            <table id="bankTable">
+              <thead><tr><th>Bank</th><th>IBAN / Acct #</th><th>Currency</th><th>Purpose</th><th>Signatory rule</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>Bank of Luxembourg</td><td>LU28 0019 4006 4475 0000</td><td>EUR</td><td>Operating</td><td>A+B</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- GOVERNANCE -->
+        <section id="panel-gov" class="panel" role="tabpanel" aria-labelledby="tab-gov">
+          <div class="card">
+            <div class="toolbar"><button class="btn" id="addDirectorRow">Add person</button></div>
+            <table id="directorsTable">
+              <thead><tr><th>Name</th><th>Role</th><th>Start</th><th>End</th><th>Independent?</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>Alex Smith</td><td>Director</td><td>2022-01-15</td><td></td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                <tr><td>Maria Rossi</td><td>Company Secretary</td><td>2023-06-01</td><td></td><td>—</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="toolbar"><button class="btn" id="addResolution">Log resolution</button></div>
+            <table id="resolutionsTable">
+              <thead><tr><th>Date</th><th>Type</th><th>Reference</th><th>Notes</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>2025-03-20</td><td>Board meeting</td><td>MIN‑2025‑03</td><td>Approved new bank account & mandate</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- DOCUMENTS -->
+        <section id="panel-docs" class="panel" role="tabpanel" aria-labelledby="tab-docs">
+          <div class="card">
+            <div class="toolbar"><button class="btn" id="uploadDoc">Upload</button></div>
+            <table id="docsTable">
+              <thead><tr><th>Category</th><th>Name</th><th>Version</th><th>Date</th><th>Retention</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Formation</td><td>Certificate of Incorporation</td><td>1</td><td>2021-06-30</td><td>Permanent</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+              <tr><td>Tax</td><td>W‑8BEN‑E</td><td>3</td><td>2024-12-01</td><td>6y</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+            </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TASKS -->
+        <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700">Upcoming deadlines</div>
+                <div class="note">Auto‑generated from data (LEI/W‑8/board attestations)</div>
+              </div>
+              <button class="btn" id="addTask">Add task</button>
+            </div>
+            <table id="tasksTable">
+              <thead><tr><th>Due</th><th>Task</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td id="leiDueCell">2025-11-15</td><td>Renew LEI</td><td>Entity Ops</td><td class="warning">Due soon</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
+                <tr><td>2026-01-31</td><td>KYC refresh (Low risk)</td><td>Compliance</td><td>Planned</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- AUDIT -->
+        <section id="panel-audit" class="panel" role="tabpanel" aria-labelledby="tab-audit">
+          <div class="card">
+            <table id="auditTable">
+              <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Field</th><th>Old → New</th></tr></thead>
+              <tbody>
+                <tr><td>2025-09-15 10:02</td><td>k.ng</td><td>Update</td><td>FATCA class</td><td>Active NFE → FFI</td></tr>
+                <tr><td>2025-09-15 10:03</td><td>m.rossi</td><td>Approve</td><td>FATCA class</td><td>—</td></tr>
+              </tbody>
+            </table>
+            <div class="note">Prototype illustrates immutable log display; in production store cryptographic hash and user/session IDs.</div>
+          </div>
+        </section>
+      </div>
     </div>
-  </div>
-  <div class="section" id="entityListSection" aria-label="Entity Registry" style="min-width:420px;">
-    <div class="row">
-      <h3>Entity Registry</h3>
-      <div class="right row">
-        <div class="pills" id="entFilters">
-          <span class="pill active" data-f="all">All</span>
-          <span class="pill" data-f="active">Active</span>
-          <span class="pill" data-f="pending">Pending</span>
-          <span class="pill" data-f="high">High Risk</span>
-        </div>
-        <input class="input" id="openEntById" placeholder="Open by ID e.g., E-0001" style="width:200px; margin-left:8px" />
-        <button class="btn small" id="openEntBtn">Open</button>
-      </div>
-    </div>
-    <table class="table space-top" id="entTable">
-      <thead><tr><th>ID</th><th>Name</th><th>Domicile</th><th>Status</th><th>Risk</th><th>Docs</th><th>Rels</th><th>Updated</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="small muted">Click a row to view details; use <b>Save Draft</b> to add/update the current entity.</div>
-  </div>
-
-<!-- Detail Modal -->
-<div id="entModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Entity details">
-  <div class="box">
-    <h4 id="entModalTitle">Entity</h4>
-    <div id="entModalBody" class="small"></div>
-    <div class="actions"><button class="btn" id="entModalClose">Close</button></div>
-  </div>
-</div>
-        <div class="grid-3" style="margin-top:12px">
-          <div>
-            <label>Registration number</label>
-            <input id="regNo" value="B123456" />
+    <div class="section" id="entityListSection" aria-label="Entity Registry" style="min-width:420px; order:1;">
+      <div class="row">
+        <h3>Entity Registry</h3>
+        <div class="right row">
+          <div class="pills" id="entFilters">
+            <span class="pill active" data-f="all">All</span>
+            <span class="pill" data-f="active">Active</span>
+            <span class="pill" data-f="pending">Pending</span>
+            <span class="pill" data-f="high">High Risk</span>
           </div>
-          <div>
-            <label>Status</label>
-            <select id="status">
-              <option>Active</option><option>In wind-down</option><option>Suspended</option><option>Dissolved</option>
-            </select>
-          </div>
-
-    <!-- REGULATORY & TAX -->
-    <section id="panel-tax" class="panel" role="tabpanel" aria-labelledby="tab-tax">
-      <div class="card">
-        <div class="grid-3">
-          <div>
-            <label>LEI</label>
-            <input id="lei" placeholder="20-char LEI (ISO 17442)" value="5493001KJTIIGC8Y1R12" />
-          </div>
-          <div>
-            <label>LEI last renewed</label>
-            <input type="date" id="leiRenewed" value="2024-11-15" />
-          </div>
-          <div>
-            <label>LEI issuer</label>
-            <input id="leiIssuer" placeholder="e.g., WM Datenservice / GS1 / Bloomberg" />
-          </div>
-        </div>
-        <div class="grid-3" style="margin-top:12px">
-          <div>
-            <label>FATCA classification</label>
-            <select id="fatcaClass">
-              <option>Passive NFE</option><option>Active NFE</option><option>FFI</option><option>Exempt Beneficial Owner</option>
-            </select>
-          </div>
-          <div>
-            <label>GIIN (if FFI)</label>
-            <input id="giin" placeholder="XXXXXX.XXXXX.XX.XXX" />
-          </div>
-          <div>
-            <label>W‑8/W‑9 form on file</label>
-            <select id="w8">
-              <option>W‑8BEN‑E</option><option>W‑8IMY</option><option>W‑9</option><option>None</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid-3" style="margin-top:12px">
-          <div>
-            <label>CRS classification</label>
-            <select id="crsClass">
-              <option>Passive NFE</option><option>Active NFE</option><option>Financial Institution</option>
-            </select>
-          </div>
-          <div>
-            <label>Tax residency (primary)</label>
-            <input id="taxRes" placeholder="e.g., LU" value="LU" />
-          </div>
-          <div>
-            <label>TIN</label>
-            <input id="tin" placeholder="Tax Identification Number" />
-          </div>
+          <input class="input" id="openEntById" placeholder="Open by ID e.g., E-0001" style="width:200px; margin-left:8px" />
+          <button class="btn small" id="openEntBtn">Open</button>
         </div>
       </div>
-    </section>
-
-    <!-- BANKING & MANDATES -->
-    <section id="panel-banking" class="panel" role="tabpanel" aria-labelledby="tab-banking">
-      <div class="card">
-        <div class="toolbar"><button class="btn" id="addBankRow">Add account</button></div>
-        <table id="bankTable">
-          <thead><tr><th>Bank</th><th>IBAN / Acct #</th><th>Currency</th><th>Purpose</th><th>Signatory rule</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr><td>Bank of Luxembourg</td><td>LU28 0019 4006 4475 0000</td><td>EUR</td><td>Operating</td><td>A+B</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- GOVERNANCE -->
-    <section id="panel-gov" class="panel" role="tabpanel" aria-labelledby="tab-gov">
-      <div class="card">
-        <div class="toolbar"><button class="btn" id="addDirectorRow">Add person</button></div>
-        <table id="directorsTable">
-          <thead><tr><th>Name</th><th>Role</th><th>Start</th><th>End</th><th>Independent?</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr><td>Alex Smith</td><td>Director</td><td>2022-01-15</td><td></td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-            <tr><td>Maria Rossi</td><td>Company Secretary</td><td>2023-06-01</td><td></td><td>—</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card">
-        <div class="toolbar"><button class="btn" id="addResolution">Log resolution</button></div>
-        <table id="resolutionsTable">
-          <thead><tr><th>Date</th><th>Type</th><th>Reference</th><th>Notes</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr><td>2025-03-20</td><td>Board meeting</td><td>MIN‑2025‑03</td><td>Approved new bank account & mandate</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- DOCUMENTS -->
-    <section id="panel-docs" class="panel" role="tabpanel" aria-labelledby="tab-docs">
-      <div class="card">
-        <div class="toolbar"><button class="btn" id="uploadDoc">Upload</button></div>
-        <table id="docsTable">
-          <thead><tr><th>Category</th><th>Name</th><th>Version</th><th>Date</th><th>Retention</th><th>Status</th><th>Actions</th></tr></thead>
+      <table class="table space-top" id="entTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Domicile</th>
+            <th>Status</th>
+            <th>Risk</th>
+            <th>Docs</th>
+            <th>Rels</th>
+            <th>Updated</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>Formation</td><td>Certificate of Incorporation</td><td>1</td><td>2021-06-30</td><td>Permanent</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-          <tr><td>Tax</td><td>W‑8BEN‑E</td><td>3</td><td>2024-12-01</td><td>6y</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+          <tr><td>E-0001</td><td>Lux SPV Holdings Sàrl</td><td>Luxembourg</td><td>Active</td><td>Low</td><td>Yes</td><td>3</td><td>2025-09-01</td></tr>
+          <tr><td>E-0002</td><td>Global Fund LLC</td><td>USA</td><td>Pending</td><td>Medium</td><td>No</td><td>1</td><td>2025-08-15</td></tr>
+          <tr><td>E-0003</td><td>Alpha Trust</td><td>UK</td><td>Active</td><td>High</td><td>Yes</td><td>2</td><td>2025-07-20</td></tr>
+          <tr><td>E-0004</td><td>Beta Investments Ltd</td><td>Ireland</td><td>Suspended</td><td>Medium</td><td>No</td><td>0</td><td>2025-06-10</td></tr>
+          <tr><td>E-0005</td><td>Omega Partners SCSp</td><td>Luxembourg</td><td>Active</td><td>Low</td><td>Yes</td><td>4</td><td>2025-05-05</td></tr>
         </tbody>
-        </table>
-      </div>
-    </section>
+      </table>
+      <div class="small muted">Click a row to view details; use <b>Save Draft</b> to add/update the current entity.</div>
+    </div>
 
-    <!-- TASKS -->
-    <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-weight:700">Upcoming deadlines</div>
-            <div class="note">Auto‑generated from data (LEI/W‑8/board attestations)</div>
-          </div>
-          <button class="btn" id="addTask">Add task</button>
-        </div>
-        <table id="tasksTable">
-          <thead><tr><th>Due</th><th>Task</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr><td id="leiDueCell">2025-11-15</td><td>Renew LEI</td><td>Entity Ops</td><td class="warning">Due soon</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
-            <tr><td>2026-01-31</td><td>KYC refresh (Low risk)</td><td>Compliance</td><td>Planned</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- AUDIT -->
-    <section id="panel-audit" class="panel" role="tabpanel" aria-labelledby="tab-audit">
-      <div class="card">
-        <table id="auditTable">
-          <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Field</th><th>Old → New</th></tr></thead>
-          <tbody>
-            <tr><td>2025-09-15 10:02</td><td>k.ng</td><td>Update</td><td>FATCA class</td><td>Active NFE → FFI</td></tr>
-            <tr><td>2025-09-15 10:03</td><td>m.rossi</td><td>Approve</td><td>FATCA class</td><td>—</td></tr>
-          </tbody>
-        </table>
-        <div class="note">Prototype illustrates immutable log display; in production store cryptographic hash and user/session IDs.</div>
-      </div>
-    </section>
+<!-- Detail Popup for Entity Registry -->
+<div id="entPopup" class="card" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; min-width:320px; max-width:420px; width:90vw; box-shadow:0 8px 32px rgba(0,0,0,.18);">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h4 id="entPopupTitle" style="margin:0;">Entity Details</h4>
+    <button id="entPopupClose" style="background:none; border:none; font-size:22px; cursor:pointer; color:#64748b;">&times;</button>
   </div>
+  <div id="entPopupBody" class="small" style="margin-top:18px;"></div>
+  <div class="actions" style="margin-top:18px; text-align:right;"><button class="btn" id="entPopupCloseBtn">Close</button></div>
 </div>
-</div>
-</section>
-</main>
-</div>
+
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const entTable = document.getElementById('entTable');
+  const entPopup = document.getElementById('entPopup');
+  const entPopupBody = document.getElementById('entPopupBody');
+  const entPopupClose = document.getElementById('entPopupClose');
+  const entPopupCloseBtn = document.getElementById('entPopupCloseBtn');
+  if (entTable && entPopup) {
+    entTable.addEventListener('click', function(e) {
+      let tr = e.target.closest('tr');
+      if (!tr || !tr.parentElement || tr.parentElement.nodeName !== 'TBODY') return;
+      // Remove highlight from all rows
+      Array.from(entTable.querySelectorAll('tbody tr')).forEach(row => row.classList.remove('selected'));
+      // Highlight clicked row
+      tr.classList.add('selected');
+      // Show popup
+      let cells = tr.querySelectorAll('td');
+      if (cells.length === 0) return;
+      let html = `<table style='width:100%; border-collapse:separate; border-spacing:0 10px;'>`;
+      ['ID','Name','Domicile','Status','Risk','Docs','Rels','Updated'].forEach((label, i) => {
+        html += `<tr><td style='font-weight:600; padding:6px 12px; text-align:right; width:40%; vertical-align:top;'>${label}:</td><td style='padding:6px 12px; text-align:left; vertical-align:top;'>${cells[i]?.textContent || ''}</td></tr>`;
+      });
+      html += `</table>`;
+      entPopupBody.innerHTML = html;
+      entPopup.style.display = 'block';
+    });
+    [entPopupClose, entPopupCloseBtn].forEach(btn => {
+      btn.addEventListener('click', function() {
+        entPopup.style.display = 'none';
+      });
+    });
+  }
+});
 
 document.addEventListener('keydown', function(e){
   if(e.key === '/'){
@@ -647,9 +745,6 @@ document.addEventListener('keydown', function(e){
     if(i){ e.preventDefault(); i.focus(); }
   }
 });
-
-</script>
-<script>
 
 /** Theme toggle (Light default, saved in localStorage) **/
 
@@ -1036,7 +1131,7 @@ setTimeout(computeEvidence, 100);
         <td>${fmtTS(r.updatedAt)}</td>
       </tr>
     `).join('');
-    // Row click => modal
+    // Row click => details modal
     $$('#entTable tbody tr').forEach(tr => tr.addEventListener('click', () => {
       const id = tr.getAttribute('data-id'); const rec = read().find(x=>x.id===id); if (!rec) return;
       const tl = rec.timeline || {};
@@ -1074,8 +1169,7 @@ setTimeout(computeEvidence, 100);
         <div class="timeline">${tlHtml}</div>
         <div class="actions"><button class="btn" id="loadIntoEditor">Load into Editor</button></div>
       `;
-      $('#entModal').classList.remove('hidden');
-      $('#loadIntoEditor').addEventListener('click', () => { $('#entModal').classList.add('hidden'); loadIntoForm(rec.id); });
+      entModal.style.display = 'block';
     }));
   };
 
