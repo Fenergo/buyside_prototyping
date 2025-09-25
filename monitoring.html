@@ -303,7 +303,7 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
       <div class="footer-note">Prototype • Static HTML • Local storage</div>
     </aside>
     
-    <main class="main">
+        <main class="main">
       <header class="header" role="banner">
         <div class="search" role="search" aria-label="Search">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="1.5"/><path d="M20 20l-3-3" stroke="#64748b" stroke-width="1.5"/></svg>
@@ -424,7 +424,101 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 })();
 </script>
 
-      </section>
+      
+<!-- Monitoring Controls & KPIs -->
+<div class="cards" id="monKpis">
+  <div class="card"><div class="label">Trades in Period</div><div class="value" id="kpiTrades">0</div></div>
+  <div class="card"><div class="label">Total Value</div><div class="value" id="kpiValue">$0</div></div>
+  <div class="card"><div class="label">Investors Flagged</div><div class="value" id="kpiFlagged">0</div></div>
+  <div class="card"><div class="label">Blocked Attempts</div><div class="value" id="kpiBlocked">0</div></div>
+  <div class="card"><div class="label">Post-Amendment Reds</div><div class="value" id="kpiPostAmend">0</div></div>
+  <div class="card"><div class="label">Countries In Scope</div><div class="value" id="kpiCountries">0</div></div>
+</div>
+
+<div class="section" id="monControls">
+  <h3>Rules & Thresholds</h3>
+  <div class="form-grid">
+    <div>
+      <div class="label">Reporting Period</div>
+      <select id="periodSel">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="180">Last 180 days</option>
+        <option value="custom">Custom range</option>
+      </select>
+    </div>
+    <div>
+      <div class="label">Custom: From</div>
+      <input type="date" id="fromDate" class="input"/>
+    </div>
+    <div>
+      <div class="label">Custom: To</div>
+      <input type="date" id="toDate" class="input"/>
+    </div>
+    <div>
+      <div class="label">Country Filter</div>
+      <select id="countryFilter"><option value="all">All Countries</option></select>
+    </div>
+    <div>
+      <div class="label"># Trades threshold (per investor)</div>
+      <input id="thCount" class="input" type="number" value="4"/>
+    </div>
+    <div>
+      <div class="label">Value threshold (per investor, base ccy)</div>
+      <input id="thValue" class="input" type="number" value="500000"/>
+    </div>
+    <div>
+      <div class="label">Value vs Balance ratio</div>
+      <input id="thRatio" class="input" type="number" step="0.1" value="1.0"/>
+    </div>
+    <div>
+      <div class="label">Post-amendment window (days)</div>
+      <input id="thAmendDays" class="input" type="number" value="30"/>
+    </div>
+  </div>
+  <div class="row space-top">
+    <button class="btn primary" id="runBtn">Run Scenarios</button>
+    <button class="btn ghost" id="seedBtn">Load Sample Data</button>
+  </div>
+</div>
+
+<div class="section" id="alertsSection">
+  <h3>Scenario Alerts</h3>
+  <table class="table" id="alertsTable">
+    <thead>
+      <tr>
+        <th>Investor</th><th>Country</th><th>Trades</th><th>Value</th><th>Balance</th><th>Value/Balance</th><th>Blocked?</th><th>Post‑Amend Red?</th><th>Triggered Rules</th><th>Last Trade</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="small muted">Rules: Count, Value, Ratio, Blocked, Post-Amend. Click a row to view investor detail & trades.</div>
+</div>
+
+<div class="section" id="ledgerSection">
+  <h3 style="cursor:pointer; user-select:none" id="ledgerToggle">
+    <span id="ledgerArrow" style="display:inline-block; transition:transform 0.2s;">&#9654;</span> Trade Ledger (in period)
+  </h3>
+  <div id="ledgerContent" style="display:none;">
+    <table class="table" id="ledgerTable">
+      <thead>
+        <tr><th>Date</th><th>Trade ID</th><th>Investor</th><th>Type</th><th>Amount</th><th>Allowed?</th><th>Outcome</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div id="monModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Monitoring details">
+  <div class="box">
+    <h4 id="monModalTitle">Investor Details</h4>
+    <div id="monModalBody" class="small"></div>
+    <div class="actions"><button class="btn" id="monModalClose">Close</button></div>
+  </div>
+</div>
+</section>
     </main>
   </div>
   <script>
@@ -449,7 +543,259 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
     }
   });
 })();
+document.getElementById('ledgerToggle').addEventListener('click', function() {
+  var content = document.getElementById('ledgerContent');
+  var arrow = document.getElementById('ledgerArrow');
+  var isCollapsed = content.style.display === 'none';
+  content.style.display = isCollapsed ? '' : 'none';
+  arrow.style.transform = isCollapsed ? 'rotate(90deg)' : 'rotate(0deg)';
+});
 </script>
   
+<script>
+
+(() => {
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+  const fmtD = (ts) => ts ? new Date(ts).toISOString().slice(0,10) : '—';
+  const fmtC = (n) => (n||0).toLocaleString(undefined, {style:'currency', currency:'USD', maximumFractionDigits:0});
+
+  const ACC_KEY = 'kmt_accounts';
+  const TRD_KEY = 'kmt_trades';
+
+  const read = (k) => { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch(e){ return []; } };
+  const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
+  // --- Sample data seeding (if none) ---
+  const seed = () => {
+    let acc = read(ACC_KEY);
+    let trd = read(TRD_KEY);
+    if (acc.length && trd.length) return;
+    const now = Date.now(), d = (n)=> now - 86400000*n;
+    acc = [
+      {id:'INV-1001', name:'Riverton Capital SICAV', country:'FR', balance: 900000, blockType:'none', allowTypes:['subscription','redemption'], staticAmend: d(40)},
+      {id:'INV-1002', name:'Arcturus Family Office', country:'ES', balance: 250000, blockType:'soft', allowTypes:['subscription'], staticAmend: d(12)},
+      {id:'INV-1003', name:'Blue Cove Partners LLP', country:'GB', balance: 1200000, blockType:'hard', allowTypes:[], staticAmend: d(5)},
+      {id:'INV-1004', name:'Solaris Bank AG', country:'DE', balance: 180000, blockType:'none', allowTypes:['subscription','redemption'], staticAmend: d(100)},
+      {id:'INV-1005', name:'Tawny Holdings Ltd', country:'MT', balance: 80000, blockType:'none', allowTypes:['subscription','redemption'], staticAmend: d(2)},
+    ];
+    trd = [
+      {id:'T-90001', investorId:'INV-1001', date:d(14), type:'subscription', amount:180000, status:'booked'},
+      {id:'T-90002', investorId:'INV-1001', date:d(7), type:'subscription', amount:220000, status:'booked'},
+      {id:'T-90003', investorId:'INV-1001', date:d(4), type:'redemption', amount:100000, status:'booked'},
+
+      {id:'T-90011', investorId:'INV-1002', date:d(10), type:'redemption', amount:150000, status:'booked'}, // soft block -> violation
+      {id:'T-90012', investorId:'INV-1002', date:d(6), type:'subscription', amount:120000, status:'booked'},
+
+      {id:'T-90021', investorId:'INV-1003', date:d(3), type:'subscription', amount:50000, status:'rejected'}, // hard block
+      {id:'T-90022', investorId:'INV-1003', date:d(1), type:'redemption', amount:20000, status:'rejected'},
+
+      {id:'T-90031', investorId:'INV-1004', date:d(20), type:'subscription', amount:30000, status:'booked'},
+      {id:'T-90032', investorId:'INV-1004', date:d(12), type:'redemption', amount:20000, status:'booked'},
+
+      {id:'T-90041', investorId:'INV-1005', date:d(1), type:'redemption', amount:50000, status:'booked'}, // within 30d of static amend
+      {id:'T-90042', investorId:'INV-1005', date:d(0), type:'subscription', amount:90000, status:'booked'},
+    ];
+    write(ACC_KEY, acc); write(TRD_KEY, trd);
+  };
+
+  const inPeriod = (ts, start, end) => ts>=start && ts<=end;
+
+  // --- Controls
+  const periodSel = $('#periodSel');
+  const fromDate = $('#fromDate');
+  const toDate = $('#toDate');
+  const country = $('#countryFilter');
+  const thCount = $('#thCount');
+  const thValue = $('#thValue');
+  const thRatio = $('#thRatio');
+  const thAmend = $('#thAmendDays');
+
+  const kTrades = $('#kpiTrades'), kVal = $('#kpiValue'), kFlag = $('#kpiFlagged'), kBlocked = $('#kpiBlocked'), kPost = $('#kpiPostAmend'), kCtry = $('#kpiCountries');
+
+  const alertsBody = $('#alertsTable tbody');
+  const ledgerBody = $('#ledgerTable tbody');
+
+  const modal = $('#monModal'), modalTitle = $('#monModalTitle'), modalBody = $('#monModalBody');
+  const openModal = (title, html) => { modalTitle.textContent = title; modalBody.innerHTML = html; modal.classList.remove('hidden'); };
+  $('#monModalClose').addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+
+  // Build country filter options
+  const refreshCountries = (accounts) => {
+    const set = new Set(accounts.map(a => a.country||'??'));
+    country.innerHTML = '<option value="all">All Countries</option>' + Array.from(set).sort().map(c => `<option value="${c}">${c}</option>`).join('');
+  };
+
+  const getPeriod = () => {
+    const now = new Date();
+    if (periodSel.value !== 'custom') {
+      const days = parseInt(periodSel.value, 10);
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime();
+      const start = end - (days*86400000);
+      return {start, end};
+    } else {
+      const s = new Date(fromDate.value + 'T00:00:00').getTime();
+      const e = new Date(toDate.value + 'T23:59:59').getTime();
+      return {start: s||0, end: e||Date.now()};
+    }
+  };
+
+  const allowedByBlock = (acc, type) => {
+    if (!acc || acc.blockType === 'none') return true;
+    if (acc.blockType === 'hard') return false;
+    // soft block: allow only allowed types
+    return (acc.allowTypes||[]).includes(type);
+  };
+
+  const run = () => {
+    const accounts = read(ACC_KEY);
+    const trades = read(TRD_KEY);
+    refreshCountries(accounts);
+
+    const {start, end} = getPeriod();
+
+    // Filter trades by period and country
+    const byId = new Map(accounts.map(a => [a.id, a]));
+    const tradesInPeriod = trades.filter(t => inPeriod(t.date, start, end))
+      .filter(t => country.value === 'all' ? true : (byId.get(t.investorId)?.country === country.value));
+
+    // KPI: Trades & Value
+    kTrades.textContent = tradesInPeriod.length.toString();
+    const totalVal = tradesInPeriod.reduce((a,t)=> a + (t.amount||0), 0);
+    kVal.textContent = fmtC(totalVal);
+    kCtry.textContent = new Set(tradesInPeriod.map(t => byId.get(t.investorId)?.country||'??')).size;
+
+    // Aggregate per investor
+    const perInv = new Map();
+    tradesInPeriod.forEach(t => {
+      const acc = byId.get(t.investorId);
+      if (!perInv.has(t.investorId)) perInv.set(t.investorId, {acc, trades:[], sum:0, reds:[], violations:[], last:0});
+      const p = perInv.get(t.investorId);
+      p.trades.push(t);
+      p.sum += t.amount||0;
+      p.last = Math.max(p.last, t.date||0);
+      if (t.type === 'redemption') p.reds.push(t);
+      if (!allowedByBlock(acc, t.type)) p.violations.push(t);
+    });
+
+    // Build alerts
+    const countTh = parseInt(thCount.value||'0',10);
+    const valueTh = parseFloat(thValue.value||'0');
+    const ratioTh = parseFloat(thRatio.value||'1');
+    const amendDays = parseInt(thAmend.value||'30',10);
+
+    let flaggedRows = [];
+    let blockedAttempts = 0;
+    let postAmendFlagCount = 0;
+
+    perInv.forEach((p, invId) => {
+      const acc = p.acc || {};
+      const n = p.trades.length;
+      const sum = p.sum;
+      const bal = acc.balance || 0;
+      const ratio = bal>0 ? sum/bal : (sum>0 ? Infinity : 0);
+      const rules = [];
+      if (n > countTh) rules.push('Count');
+      if (sum > valueTh) rules.push('Value');
+      if (ratio > ratioTh) rules.push('Ratio');
+      const blocked = p.violations.length>0;
+      if (blocked) { rules.push('Blocked'); blockedAttempts += p.violations.length; }
+      // Post-amend redemptions
+      const wnd = amendDays*86400000;
+      const postAmend = p.reds.some(r => (r.date - (acc.staticAmend||0)) <= wnd);
+      if (postAmend) { rules.push('Post-Amend'); postAmendFlagCount++; }
+      if (rules.length) {
+        flaggedRows.push({
+          invId, name: acc.name||invId, country: acc.country||'—', n, sum, bal, ratio,
+          blocked, postAmend, rules, last: p.last, trades: p.trades
+        });
+      }
+    });
+
+    kFlag.textContent = flaggedRows.length.toString();
+    kBlocked.textContent = String(blockedAttempts);
+    kPost.textContent = String(postAmendFlagCount);
+
+    alertsBody.innerHTML = flaggedRows.map(r => `
+      <tr data-id="${r.invId}" style="cursor:pointer">
+        <td>${r.name} <span class="muted">(${r.invId})</span></td>
+        <td>${r.country}</td>
+        <td>${r.n}</td>
+        <td>${fmtC(r.sum)}</td>
+        <td>${fmtC(r.bal)}</td>
+        <td>${r.ratio===Infinity?'∞':r.ratio.toFixed(2)}</td>
+        <td>${r.blocked ? '<span class="badge danger">Yes</span>' : '<span class="badge ok">No</span>'}</td>
+        <td>${r.postAmend ? '<span class="badge warn">Yes</span>' : '<span class="badge ok">No</span>'}</td>
+        <td>${r.rules.join(', ')}</td>
+        <td>${fmtTS(r.last)}</td>
+      </tr>
+    `).join('');
+
+    // Wire row click -> modal
+    $$('#alertsTable tbody tr').forEach(tr => tr.addEventListener('click', () => {
+      const id = tr.getAttribute('data-id');
+      const row = flaggedRows.find(x => x.invId === id); if (!row) return;
+      // Mini timeline
+      const acc = row; const accounts = byId;
+      const a = accounts.get(id);
+      const tlSteps = [
+        {label:'Static Amended', ts: a?.staticAmend||null},
+        {label:'Blocked Set', ts: (a?.blockType && a.blockType!=='none') ? (a.staticAmend ? a.staticAmend + 3600000 : null) : null},
+        {label:'Trades', ts: row.last||null},
+        {label:'Alert', ts: Date.now()}
+      ];
+      const tlHtml = tlSteps.map((s,i)=>`
+        <div class="tl-step ${s.ts?'done':'pending'}">
+          <div class="tl-dot"></div>
+          <div class="tl-label">${s.label}</div>
+          <div class="tl-time">${s.ts?fmtTS(s.ts):'—'}</div>
+        </div>${i<tlSteps.length-1?'<div class="tl-line"></div>':''}
+      `).join('');
+
+      const list = row.trades.map(t => `<tr><td>${fmtD(t.date)}</td><td>${t.id}</td><td>${t.type}</td><td>${fmtC(t.amount)}</td><td>${allowedByBlock(a,t.type)?'Allowed':'Blocked'}</td><td>${t.status||'—'}</td></tr>`).join('');
+
+      openModal(`Investor ${a?.name||id}`, `
+        <div class="row small"><div style="width:160px">Investor ID</div><div>${id}</div></div>
+        <div class="row small"><div style="width:160px">Country</div><div>${a?.country||'—'}</div></div>
+        <div class="row small"><div style="width:160px">Balance</div><div>${fmtC(a?.balance||0)}</div></div>
+        <div class="row small"><div style="width:160px">Block Type</div><div>${(a?.blockType||'none').toUpperCase()}</div></div>
+        <div class="row small"><div style="width:160px">Static Data Amended</div><div>${fmtTS(a?.staticAmend||null)}</div></div>
+        <hr class="sep"/>
+        <div class="small"><b>Timeline</b></div>
+        <div class="timeline">${tlHtml}</div>
+        <hr class="sep"/>
+        <div class="small"><b>Trades in period</b></div>
+        <table class="table small"><thead><tr><th>Date</th><th>Trade ID</th><th>Type</th><th>Amount</th><th>Allowed?</th><th>Outcome</th></tr></thead><tbody>${list}</tbody></table>
+      `);
+    }));
+
+    // Ledger
+    ledgerBody.innerHTML = tradesInPeriod.map(t => {
+      const acc = byId.get(t.investorId);
+      const allowed = allowedByBlock(acc, t.type);
+      return `<tr>
+        <td>${fmtD(t.date)}</td><td>${t.id}</td>
+        <td>${acc?.name||t.investorId}</td>
+        <td>${t.type}</td><td>${fmtC(t.amount)}</td><td>${allowed?'<span class="badge ok">Yes</span>':'<span class="badge danger">No</span>'}</td><td>${t.status||'—'}</td>
+      </tr>`;
+    }).join('');
+  };
+
+  // Bind controls
+  $('#runBtn').addEventListener('click', run);
+  $('#seedBtn').addEventListener('click', () => { localStorage.removeItem(ACC_KEY); localStorage.removeItem(TRD_KEY); seed(); run(); });
+  periodSel.addEventListener('change', () => {
+    const custom = periodSel.value === 'custom';
+    fromDate.disabled = !custom; toDate.disabled = !custom;
+  });
+
+  // Initialize
+  seed();
+  run();
+})();
+
+</script>
 </body>
 </html>
