@@ -3,389 +3,124 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Entity 360 — Teal Theme (Light default) with Dark/Light Toggle · Shell</title>
+<title>Entity 360 · KYC Orchestrator</title>
 <style>
-
 :root{
-  --sidebar-bg: #f7fafd;
-  --sidebar-icon: #4976a4;
-  --sidebar-text: #4976a4;
-  --sidebar-width: 170px;
-  --sidebar-font-size: 11px;
-  --sidebar-title-size: 13px;
-  --sidebar-tag-size: 10px;
-  --sidebar-icon-size: 18px;
-  --sidebar-active: #e3eefa;
-  --page:#ffffff;
-  --text:#0f172a;
-  --muted:#475569;
-  --line:#e5e7eb;
-  --card:#ffffff;
-  --sidebar: rgba(33,207,178,0.20);
-  --btn: rgba(33,207,178,0.60);
-  --btn-border: rgba(33,207,178,0.60);
-  --btn-text:#0b1220;
-  --link:#0ea5e9;
-  --task:#a399ff;
-  --success:#059669;
-  --warn:#d97706;
-  --danger:#dc2626;
-  --info:#2563eb;
-  --progress:#21cfb2;
-
-  /* Spacing variables for layout improvements */
-  --space-xs: 6px;
-  --space-sm: 10px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --card-padding: 16px;
-  --section-padding: 20px;
-  --table-cell-padding: 10px;
-  --tab-gap: 12px;
-  --kpi-gap: 14px;
-  --kpi-padding: 14px;
+  --sidebar-bg:#f7fafd; --sidebar-icon:#4976a4; --sidebar-text:#4976a4; --sidebar-width:170px;
+  --sidebar-font-size:11px; --sidebar-title-size:13px; --sidebar-tag-size:10px; --sidebar-icon-size:18px; --sidebar-active:#e3eefa;
+  --page:#ffffff; --text:#0f172a; --muted:#475569; --line:#e5e7eb; --card:#ffffff;
+  --btn: rgba(33,207,178,.60); --btn-border: rgba(33,207,178,.60); --btn-text:#0b1220; --link:#0ea5e9;
+  --task:#a399ff; --success:#059669; --warn:#d97706; --danger:#dc2626; --info:#2563eb; --progress:#21cfb2;
+  --space-xs:6px; --space-sm:10px; --space-md:16px; --space-lg:24px; --card-padding:16px; --section-padding:20px;
+  --table-cell-padding:10px; --tab-gap:12px; --kpi-gap:14px; --kpi-padding:14px;
 }
 *{box-sizing:border-box} html,body{height:100%}
 body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; background: var(--page); color:var(--text); line-height:1.45;}
 a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
 .app{display:grid; grid-template-columns: var(--sidebar-width) 1fr; min-height:100vh}
-.sidebar {
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--line);
-  width: var(--sidebar-width);
-  min-width: var(--sidebar-width);
-  max-width: var(--sidebar-width);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-  padding: 0;
-}
-.sidebar .brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 24px 0 0 0;
-}
-.sidebar .logo {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 25% 20%, #4976a4 0%, #e3eefa 100%);
-  margin-bottom: 8px;
-}
-.sidebar .brand h1 {
-  font-size: 14px;
-  color: var(--sidebar-text);
-  margin: 0;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-.sidebar .nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  margin-top: 24px;
-}
-.sidebar .nav a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: var(--sidebar-text);
-  text-decoration: none;
-  font-size: var(--sidebar-font-size);
-  padding: 0;
-  border-radius: 8px;
-  width: 100%;
-  transition: background 0.15s;
-}
-.sidebar .nav a.active, .sidebar .nav a:hover {
-  background: var(--sidebar-active);
-}
-.sidebar .nav .icon {
-  width: var(--sidebar-icon-size);
-  height: var(--sidebar-icon-size);
-  color: var(--sidebar-icon);
-  display: block;
-}
-.sidebar .nav .text {
-  font-size: var(--sidebar-font-size);
-  color: var(--sidebar-text);
-  text-align: center;
-  margin-top: 2px;
-}
-.sidebar .nav .tag {
-  display: none;
-}
-.sidebar .footer-note {
-  margin-top: 10px;
-  font-size: 10px;
-  color: var(--muted);
-  opacity: .85;
-  padding: 0 3px;
-  margin-bottom: 18px;
-}
-*{box-sizing:border-box} html,body{height:100%}
-body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; background: var(--page); color:var(--text); line-height:1.45;}
-a{color:#0ea5e9; text-decoration:none} a:hover{text-decoration:underline}
-.app{display:grid; grid-template-columns: 220px 1fr; min-height:100vh}
-/* ...existing code... */
+
+/* Sidebar (keeps your latest look) */
+.sidebar{background:var(--sidebar-bg); border-right:1px solid var(--line); width:var(--sidebar-width); min-width:var(--sidebar-width); max-width:var(--sidebar-width);
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100vh; padding:0;}
+.sidebar .brand{display:flex; flex-direction:column; align-items:center; margin:24px 0 0 0;}
+.sidebar .brand h1{font-size:14px; color:var(--sidebar-text); margin:0; font-weight:600; letter-spacing:.2px}
+.sidebar .nav{display:flex; flex-direction:column; align-items:center; gap:28px; margin-top:24px;}
+.sidebar .nav a{display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--sidebar-text); font-size:var(--sidebar-font-size);
+  padding:6px 8px; border-radius:8px; width:100%; transition: background .15s}
+.sidebar .nav a.active, .sidebar .nav a:hover{background:var(--sidebar-active)}
+.sidebar .nav .icon{width:var(--sidebar-icon-size); height:var(--sidebar-icon-size); color:var(--sidebar-icon); display:block}
+.sidebar .nav .text{font-size:var(--sidebar-font-size); color:var(--sidebar-text); text-align:center; margin-top:2px}
+.sidebar .footer-note{margin-top:10px; font-size:10px; color:var(--muted); opacity:.85; padding:0 3px; margin-bottom:18px}
+
 /* Header & content */
-.header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; position:sticky; top:0; z-index:5; background:rgba(255,255,255,0.9); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);}
+.header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; position:sticky; top:0; z-index:5; background:rgba(255,255,255,.9); backdrop-filter: blur(6px); border-bottom:1px solid var(--line)}
 .search{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background: var(--card); padding:10px 12px; border-radius:12px; width:52%;}
 .search input{flex:1; background:transparent; border:none; outline:none; color:var(--text);}
 .actions{display:flex; align-items:center; gap:10px}
 .btn{background: var(--btn); border:1px solid var(--btn-border); color:var(--btn-text); padding:10px 12px; border-radius:10px; cursor:pointer; transition: filter .15s ease, transform .02s ease;}
-.btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)} .btn.primary{background: var(--btn); border-color: var(--btn-border)} .btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)} .btn.small{padding:6px 10px; font-size:12px}
+.btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)}
+.btn.primary{background: var(--btn); border-color: var(--btn-border)} .btn.ghost{background:transparent; color: var(--btn-text); border-color: var(--btn-border)} .btn.small{padding:6px 10px; font-size:12px}
 .kbd{font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas; padding:2px 6px; border-radius:6px; border:1px solid var(--line); color:var(--muted)}
 .content{padding: var(--space-lg) var(--space-lg) calc(var(--space-lg) + 16px);}
 .page-title{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:12px 0 8px 0}
 .page-title h2{margin:0; font-size:22px}
 .page-title .sub{color:var(--muted)}
+
+/* Shared components */
+.cards{display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: var(--kpi-gap); margin: var(--space-md) 0 var(--space-xs) 0;}
+.card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding: var(--kpi-padding); min-height:72px; box-shadow: 0 8px 28px rgba(2,6,23,.06);}
+.card .label{color:var(--muted); font-size:12px} .card .value{font-size:22px; margin-top:2px}
+.section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding: var(--section-padding)}
 .grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px}
-.section {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: var(--section-padding);
-}
-/* Right rail adjustments */
-nav.entity-rail{border:1px solid var(--line); background:#ffffff; border-radius:14px; padding:12px; position:sticky; top:84px; height:auto; max-height:calc(100vh - 120px); overflow:auto}
-/* Keep original entity components looking good */
-.kpis{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px}
-.kpi{background:#f8fafc; border:1px solid var(--line); border-radius:8px; padding:8px}
-.kpi .v{font-weight:700; font-size:13px}
-.status-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px}
+.label{font-size:12px; color:var(--muted); margin-bottom:6px}
+
+/* Filters pills */
+.pills{display:flex; gap:8px; flex-wrap:wrap}
+.pill{padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; cursor:pointer; font-size:12px; color:#0b1220}
+.pill.active{background:rgba(33,207,178,.18); border-color:rgba(33,207,178,.28)}
+
+/* Table */
+.table{width:100%; border-collapse:separate; border-spacing:0 8px; font-size:14px}
+.table th{color:var(--muted); text-align:left; font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line)}
+.table td{padding:10px; background:#ffffff; border:1px solid var(--line)}
+.table tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
+.table tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
+
+/* Badges */
+.badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; color:#0b1220}
+.badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46}
+.badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
+.badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d}
+.badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a}
+.badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
+
+/* Inputs */
+input, select, textarea{width:100%; padding:10px 12px; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px}
+input:focus, select:focus, textarea:focus{outline:none; border-color:rgba(33,207,178,.60); box-shadow:0 0 0 3px rgba(33,207,178,.20);}
+
+/* Evidence / chips */
+.status-chips{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0}
 .chip{background:#f8fafc; border:1px solid var(--line); color:#475569; border-radius:999px; padding:4px 8px; font-size:12px}
-.chip.ok{color:#065f46; border-color:rgba(6,95,70,.25)}
-.chip.warn{color:#92400e; border-color:rgba(146,64,14,.25)}
-.chip.bad{color:#7f1d1d; border-color:rgba(127,29,29,.25)}
-/* Cards & tables under the embedded entity UI */
-.em-main .card{background:#ffffff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:12px}
-.em-main .toolbar{display:flex; gap:8px; justify-content:flex-end}
-.em-main input, .em-main select, .em-main textarea{width:100%; padding:10px 12px; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px}
-.em-main table{width:100%; border-collapse:collapse}
-.em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:var(--table-cell-padding); text-align:left; vertical-align:top}
-@media (max-width:1100px){ .app{grid-template-columns: 72px 1fr;} .nav.sb-nav a .text, .sb-brand .name, .sb-foot a span{display:none} .nav.sb-nav a{justify-content:center} .sb-foot a{justify-content:center} }
-@media (max-width:800px){ .grid-2{grid-template-columns: 1fr} }
 
+/* Modal + mini-timeline */
+.hidden{display:none!important}
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; z-index:999}
+.modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(720px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal .box h4{margin:0 0 8px 0}
+.modal .box .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px}
+.timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
+.tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
+.tl-dot{width:10px; height:10px; border-radius:50%; background:#e2e8f0; border:2px solid #cbd5e1}
+.tl-step.done .tl-dot{background:#059669; border-color:#059669}
+.tl-label{font-size:12px; color:#0f172a}
+.tl-time{font-size:11px; color:#475569}
+.tl-line{width:28px; height:2px; background:#cbd5e1}
 
-/* === Entity page shims: map legacy blocks to shared look === */
-.kpis .kpi{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; box-shadow: 0 8px 28px rgba(2,6,23,.06)}
-.kpi .t{color:var(--muted); font-size:12px} .kpi .v{font-size:22px; margin-top:2px}
-.panel{background:transparent; border:none; padding:0}
-.panel > .card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow: 0 8px 28px rgba(2,6,23,.06)}
-.toolbar{display:flex; gap:8px; align-items:center; margin-bottom:8px}
-.note{color:var(--muted); font-size:12px}
-.card {
-  /* ...existing card styles... */
-  width: 100%;
-  max-width: none;
-  box-sizing: border-box;
-}
+@media (max-width:1100px){ .app{grid-template-columns: 72px 1fr;} .sidebar .nav .text, .sidebar .brand h1{display:none} }
+@media (max-width:900px){ .grid-2{grid-template-columns:1fr} }
 
-.em-main table {
-  width: 100%;
-  min-width: 900px;
-  table-layout: auto;
-  overflow-x: auto;
-  display: block;
-}
+/* === Compact mode for Entity editor === */
+.em-main{font-size:13px}
+.em-main .card{padding:10px; border-radius:10px}
+.grid-2, .grid-3{gap:10px}
+label{font-size:11px}
+input,select,textarea{font-size:13px; padding:8px 10px}
+.tab{font-size:12px; padding:7px 9px}
+/* Accordion */
+.acc{border:1px solid var(--line); border-radius:10px; background:var(--card); margin-bottom:10px}
+.acc[open] > summary{border-bottom:1px solid var(--line)}
+.acc > summary{list-style:none; cursor:pointer; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; font-weight:600}
+.acc .acc-body{padding:10px 12px}
+.caret{display:inline-block; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid #64748b; transform:rotate(0deg); transition:transform .15s ease}
+.acc[open] .caret{transform:rotate(180deg)}
+/* Registry header tools */
+#registryTools{display:flex; align-items:center; gap:8px}
+#entSearch{width:220px}
+/* Sort indicator */
+th.sortable{cursor:pointer; user-select:none}
+th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
-.table th, .table td {
-  text-align: center;
-}
-
-</style>
-<style>
-/* --- Scoped original styles (tuned for shell) --- */
-/* Entity running totals grid matches monitoring.html */
-#entityKpis.cards {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0,1fr));
-  gap: var(--kpi-gap);
-  margin: var(--space-md) 0 var(--space-xs) 0;
-}
-#entityKpis .card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: var(--kpi-padding);
-  min-height: 72px;
-  box-shadow: 0 8px 28px rgba(2,6,23,.06);
-}
-#entityKpis .card .label {
-  color: var(--muted);
-  font-size: 12px;
-}
-#entityKpis .card .value {
-  font-size: 22px;
-  margin-top: 2px;
-}
-
-  :root{
-    /* Teal palette (RGB 33,207,178) with requested transparencies */
-    --teal-100: rgba(33,207,178,1);
-    --teal-60:  rgba(33,207,178,.6);
-    --teal-20:  rgba(33,207,178,.2);
-
-    --accent: var(--teal-100);
-    --accent-60: var(--teal-60);
-    --accent-20: var(--teal-20);
-
-    /* LIGHT THEME (default) */
-    --bg:#ffffff;
-    --app-bg:#ffffff;
-    --panel:#ffffff;
-    --card-bg: linear-gradient(180deg, #ffffff 0%, #f9fefe 100%);
-    --chip:#edf7f5;
-    --line:var(--teal-20);
-    --text:#0f172a;
-    --muted:#64748b;
-    --header-bg: rgba(255,255,255,.90);
-    --nav-bg:#f8fcfb;
-    --btn-bg:#f3fbf9;
-    --btn-bg-hover:#e9f7f4;
-    --tab-bg:#f3fbf9;
-    --input-bg:#ffffff;
-    --table-th:#0f172a;
-
-    --shadow-sm: 0 1px 2px rgba(2,6,12,.05);
-  }
-
-  /* DARK THEME OVERRIDES */
-  [data-theme="dark"]{
-    --bg:#081312;
-    --app-bg:
-      radial-gradient(1100px 600px at 20% -10%, rgba(33,207,178,.10), transparent 60%),
-      radial-gradient(900px 500px at 80% 110%, rgba(33,207,178,.06), transparent 60%),
-      linear-gradient(180deg, #091413 0%, #070f0e 100%);
-    --panel:#0c1615;
-    --card-bg: linear-gradient(180deg, #0b1716 0%, #0a1413 100%);
-    --chip:#0f1b1a;
-    --line:var(--teal-20);
-    --text:#e6edf3;
-    --muted:#94a3b8;
-    --header-bg: rgba(8,19,18,.9);
-    --nav-bg:#0b1615;
-    --btn-bg:#0d1918;
-    --btn-bg-hover:#10201e;
-    --tab-bg:#0d1918;
-    --input-bg:#0a1413;
-    --table-th:#cbd5e1;
-
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.2);
-  }
-
-  *{box-sizing:border-box}
-  html,
-  /* body block removed to adopt global shell styles */
-  /* body block removed to adopt global shell styles */
-  /* header block removed (using shell header) */
-
-  .btn{
-    padding:10px 12px; border-radius:8px; border:1px solid var(--line);
-    background:var(--btn-bg); color:var(--text); cursor:pointer;
-    transition:.15s transform,.15s background,.15s box-shadow;
-    box-shadow: var(--shadow-sm);
-  }
-  .btn:hover{transform:translateY(-1px); background:var(--btn-bg-hover)}
-  .btn:focus{outline:2px solid var(--accent-60); outline-offset:1px; box-shadow:0 0 0 3px var(--accent-20)}
-  .btn.primary{background:var(--accent); border-color:var(--accent-60); color:#06241f; font-weight:700}
-  .btn.primary:hover{filter:saturate(1.1) brightness(1.02)}
-
-  .container{display:grid; grid-template-columns:260px 1fr; min-height:calc(100vh - 54px)}
-nav.entity-rail{
-    border-right:1px solid var(--line); background:var(--nav-bg); padding:12px;
-    position:sticky; top:54px; height:calc(100vh - 54px); overflow:auto;
-  }
-  nav .entity-card{
-    background:var(--card-bg);
-    border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px;
-  }
-  .kpis{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px}
-  .kpi{background:var(--chip); border:1px solid var(--line); border-radius:8px; padding:8px}
-  .kpi .v{font-weight:700; font-size:13px}
-
-  .status-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
-  .chip{background:var(--chip); border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:4px 8px; font-size:12px}
-  .chip.ok{color:var(--ok, #17c964); border-color:rgba(23,201,100,.25)}
-  .chip.warn{color:var(--warn, #f5a524); border-color:rgba(245,165,36,.25)}
-  .chip.bad{color:var(--bad, #f31260); border-color:rgba(243,18,96,.25)}
-.em-main{padding:16px; overflow:auto}
-  .tabs{display:flex; gap:var(--tab-gap); flex-wrap:wrap; margin-bottom:var(--space-md)}
-  .tab{padding:10px 12px; border-radius:8px; border:1px solid var(--line); background:var(--tab-bg); cursor:pointer}
-  .tab[aria-selected="true"]{
-    background:linear-gradient(180deg, var(--accent-20), rgba(0,0,0,.02));
-    border-color:var(--accent-60); font-weight:700;
-    box-shadow:0 0 0 2px var(--accent-20) inset;
-  }
-  .panel{display:none}
-  .panel.active{display:block}
-
-  .card{
-    background:var(--card-bg);
-    border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px
-  }
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-  .grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px}
-  label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
-
-  input, select, textarea{
-    width:100%; padding:10px 12px; background:var(--input-bg); color:var(--text);
-    border:1px solid var(--line); border-radius:8px; transition:border-color .15s, box-shadow .15s;
-  }
-  input:focus, select:focus, textarea:focus{
-    outline:none; border-color:var(--accent-60); box-shadow:0 0 0 3px var(--accent-20);
-  }
-
-  table{width:100%; border-collapse:collapse}
-  .em-main th, .em-main td{border-bottom:1px dashed var(--line); padding:var(--table-cell-padding); text-align:left; vertical-align:top}
-  th{font-weight:600; color:var(--table-th)}
-
-  .toolbar{display:flex; gap:8px; justify-content:flex-end}
-  .muted{color:var(--muted)}
-  .right{float:right}
-
-  .danger{color:var(--bad, #f31260)} .success{color:var(--ok, #17c964)} .warning{color:var(--warn, #f5a524)}
-
-  .scorebar{height:10px; background:var(--input-bg); border:1px solid var(--line); border-radius:999px; overflow:hidden}
-  .scorebar > span{display:block; height:100%; background:linear-gradient(90deg, var(--accent-20), var(--accent-60) 40%, var(--accent) 100%)}
-
-  .list{display:flex; flex-direction:column; gap:6px}
-  .list .item{display:flex; justify-content:space-between; align-items:center; padding:8px; border:1px solid var(--line); border-radius:8px; background:var(--chip)}
-
-  .req{font-size:12px; color:var(--muted)}
-  .req.missing{color:var(--bad, #f31260)}
-  .req.ok{color:var(--ok, #17c964)}
-  .note{font-size:12px; color:var(--muted)}
-  footer{padding:16px; color:var(--muted)}
-
-  @media (max-width: 980px){
-    .container{grid-template-columns:1fr}
-nav.entity-rail{position:relative; height:auto; top:auto}
-  }
-
-  /* Add CSS to support new order for grid-2 children */
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-  }
-  .grid-2 > .section {
-    order: unset;
-  }
-  @media (max-width: 900px) {
-    .grid-2 {
-      grid-template-columns: 1fr;
-    }
-    .grid-2 > .section {
-      order: unset !important;
-    }
-  }
 </style>
 </head>
 <body data-page="entities">
@@ -405,476 +140,415 @@ nav.entity-rail{position:relative; height:auto; top:auto}
     <a href="fund-launch.html" data-nav="fund-launch" aria-label="Fund Launch">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M7 19V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v12" stroke="#0b1220" stroke-width="1.5"/><path d="M9 9h6m-6 4h6" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Fund Launch</span>
-      <span class="tag">Product</span>
     </a>
     <a href="distributor-onboarding.html" data-nav="distributor" aria-label="Distributor Onboarding">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v6H3v-6a4 4 0 0 1 4-4z" stroke="#0b1220" stroke-width="1.5"/><path d="M7 8V6a5 5 0 0 1 10 0v2" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Distributor Onboarding</span>
-      <span class="tag">KYD</span>
     </a>
     <a href="investor-onboarding.html" data-nav="investor" aria-label="Investor Onboarding">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" stroke="#0b1220" stroke-width="1.5"/><path d="M3 21a9 9 0 0 1 18 0" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Investor Onboarding</span>
-      <span class="tag">KYC/KYB</span>
     </a>
-    <a href="Entity-mgmt.html" data-nav="entity" aria-label="Entity Management">
+    <a href="entities.html" data-nav="entities" aria-label="Entity Management" class="active">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#0b1220" stroke-width="1.5"/><path d="M8 12h8M8 16h8" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Entity Management</span>
     </a>
     <a href="asset-dd.html" data-nav="asset" aria-label="Asset & Vehicle Due Diligence">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="#0b1220" stroke-width="1.5"/><path d="M8 7v12m8-12v12" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Asset & Vehicle DD</span>
-      <span class="tag">KYI</span>
     </a>
     <a href="monitoring.html" data-nav="monitoring" aria-label="Monitoring & Screening">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13l4 4 12-12" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Monitoring & Screening</span>
-      <span class="tag">KYT</span>
     </a>
     <a href="digital-trading.html" data-nav="digital" aria-label="Digital Trading">
       <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/></svg>
       <span class="text">Digital Trading</span>
-      <span class="tag">Trades</span>
     </a>
   </nav>
   <div class="footer-note">Buyside Investments &copy; 2025</div>
 </aside>
 
 <main class="main">
-
-<header class="header" role="banner">
-  <div class="search" role="search" aria-label="Search">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="1.5"/><path d="M20 20l-3-3" stroke="#64748b" stroke-width="1.5"/></svg>
-    <input placeholder="Search entities, IDs, people… (press / to focus)" aria-label="Global search"/>
-    <span class="kbd">/</span>
-  </div>
-  <div class="actions">
-    <button class="btn" id="saveDraft">Save Draft</button>
-    <button class="btn" id="downloadJson">Download JSON</button>
-    <button class="btn primary" id="markReady">Mark Ready</button>
-  </div>
-</header>
-
-<section class="content" id="main">
-  <div class="page-title"><h2>Entity 360</h2><div class="sub">Entity master record • 360 profile</div></div>
-  <div class="cards" id="entityKpis">
-    <div class="card"><div class="label">Total Entities</div><div class="value" id="entTotal">0</div></div>
-    <div class="card"><div class="label">Active</div><div class="value" id="entActive">0</div></div>
-    <div class="card"><div class="label">Pending Reviews</div><div class="value" id="entPending">0</div></div>
-    <div class="card"><div class="label">High Risk (≥70)</div><div class="value" id="entHigh">0</div></div>
-    <div class="card"><div class="label">With Documents</div><div class="value" id="entDocd">0</div></div>
-    <div class="card"><div class="label">Relationships</div><div class="value" id="entRelCount">0</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="section" style="min-width:340px; order:2;">
-      <div class="em-main">
-        <div class="tabs" role="tablist" aria-label="Entity sections">
-          <button class="tab" role="tab" aria-selected="true" aria-controls="panel-profile" id="tab-profile">Profile</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-owners" id="tab-owners">Ownership & Control</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tax" id="tab-tax">Regulatory & Tax</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-banking" id="tab-banking">Banking & Mandates</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-gov" id="tab-gov">Governance</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-docs" id="tab-docs">Documents</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tasks" id="tab-tasks">Tasks & Reviews</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-audit" id="tab-audit">Audit</button>
-        </div>
-        <!-- PROFILE -->
-        <section id="panel-profile" class="panel active" role="tabpanel" aria-labelledby="tab-profile">
-          <div class="card">
-            <div class="grid-3">
-              <div>
-                <label>Legal name</label>
-                <input id="legalName" value="Lux SPV Holdings Sàrl" required />
-              </div>
-              <div>
-                <label>Jurisdiction / Domicile</label>
-                <input id="domicile" value="Luxembourg" />
-              </div>
-              <div>
-                <label>Legal form</label>
-                <select id="legalForm">
-                  <option>Sàrl</option><option>SA</option><option>SCSp</option><option>LLC</option><option>Ltd</option><option>Trust</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- OWNERSHIP & CONTROL -->
-        <section id="panel-owners" class="panel" role="tabpanel" aria-labelledby="tab-owners">
-          <div class="card">
-            <div class="toolbar"><button class="btn" id="addOwnerRow">Add owner</button></div>
-            <table id="ownersTable">
-              <thead><tr><th>Holder</th><th>Type</th><th>Economic rights</th><th>Voting rights</th><th>Country</th><th>CP?</th><th>Actions</th></tr></thead>
-              <tbody>
-                <tr><td>Master Fund LP</td><td>Entity</td><td>80</td><td>80</td><td>Luxembourg</td><td>No</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-                <tr><td>Jane Doe</td><td>Individual</td><td>20</td><td>20</td><td>UK</td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <!-- REGULATORY & TAX -->
-        <section id="panel-tax" class="panel" role="tabpanel" aria-labelledby="tab-tax">
-          <div class="card">
-            <div class="grid-3">
-              <div>
-                <label>LEI</label>
-                <input id="lei" placeholder="20-char LEI (ISO 17442)" value="5493001KJTIIGC8Y1R12" />
-              </div>
-              <div>
-                <label>LEI last renewed</label>
-                <input type="date" id="leiRenewed" value="2024-11-15" />
-              </div>
-              <div>
-                <label>LEI issuer</label>
-                <input id="leiIssuer" placeholder="e.g., WM Datenservice / GS1 / Bloomberg" />
-              </div>
-            </div>
-            <div class="grid-3" style="margin-top:12px">
-              <div>
-                <label>FATCA classification</label>
-                <select id="fatcaClass">
-                  <option>Passive NFE</option><option>Active NFE</option><option>FFI</option><option>Exempt Beneficial Owner</option>
-                </select>
-              </div>
-              <div>
-                <label>GIIN (if FFI)</label>
-                <input id="giin" placeholder="XXXXXX.XXXXX.XX.XXX" />
-              </div>
-              <div>
-                <label>W‑8/W‑9 form on file</label>
-                <select id="w8">
-                  <option>W‑8BEN‑E</option><option>W‑8IMY</option><option>W‑9</option><option>None</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid-3" style="margin-top:12px">
-              <div>
-                <label>CRS classification</label>
-                <select id="crsClass">
-                  <option>Passive NFE</option><option>Active NFE</option><option>Financial Institution</option>
-                </select>
-              </div>
-              <div>
-                <label>Tax residency (primary)</label>
-                <input id="taxRes" placeholder="e.g., LU" value="LU" />
-              </div>
-              <div>
-                <label>TIN</label>
-                <input id="tin" placeholder="Tax Identification Number" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- BANKING & MANDATES -->
-        <section id="panel-banking" class="panel" role="tabpanel" aria-labelledby="tab-banking">
-          <div class="card">
-            <div class="toolbar"><button class="btn" id="addBankRow">Add account</button></div>
-            <table id="bankTable">
-              <thead><tr><th>Bank</th><th>IBAN / Acct #</th><th>Currency</th><th>Purpose</th><th>Signatory rule</th><th>Actions</th></tr></thead>
-              <tbody>
-                <tr><td>Bank of Luxembourg</td><td>LU28 0019 4006 4475 0000</td><td>EUR</td><td>Operating</td><td>A+B</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- GOVERNANCE -->
-        <section id="panel-gov" class="panel" role="tabpanel" aria-labelledby="tab-gov">
-          <div class="card">
-            <div class="toolbar"><button class="btn" id="addDirectorRow">Add person</button></div>
-            <table id="directorsTable">
-              <thead><tr><th>Name</th><th>Role</th><th>Start</th><th>End</th><th>Independent?</th><th>Actions</th></tr></thead>
-              <tbody>
-                <tr><td>Alex Smith</td><td>Director</td><td>2022-01-15</td><td></td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-                <tr><td>Maria Rossi</td><td>Company Secretary</td><td>2023-06-01</td><td></td><td>—</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="card">
-            <div class="toolbar"><button class="btn" id="addResolution">Log resolution</button></div>
-            <table id="resolutionsTable">
-              <thead><tr><th>Date</th><th>Type</th><th>Reference</th><th>Notes</th><th>Actions</th></tr></thead>
-              <tbody>
-                <tr><td>2025-03-20</td><td>Board meeting</td><td>MIN‑2025‑03</td><td>Approved new bank account & mandate</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- DOCUMENTS -->
-        <section id="panel-docs" class="panel" role="tabpanel" aria-labelledby="tab-docs">
-          <div class="card">
-            <div class="toolbar"><button class="btn" id="uploadDoc">Upload</button></div>
-            <table id="docsTable">
-              <thead><tr><th>Category</th><th>Name</th><th>Version</th><th>Date</th><th>Retention</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody>
-              <tr><td>Formation</td><td>Certificate of Incorporation</td><td>1</td><td>2021-06-30</td><td>Permanent</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-              <tr><td>Tax</td><td>W‑8BEN‑E</td><td>3</td><td>2024-12-01</td><td>6y</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
-            </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- TASKS -->
-        <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-weight:700">Upcoming deadlines</div>
-                <div class="note">Auto‑generated from data (LEI/W‑8/board attestations)</div>
-              </div>
-              <button class="btn" id="addTask">Add task</button>
-            </div>
-            <table id="tasksTable">
-              <thead><tr><th>Due</th><th>Task</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody>
-                <tr><td id="leiDueCell">2025-11-15</td><td>Renew LEI</td><td>Entity Ops</td><td class="warning">Due soon</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
-                <tr><td>2026-01-31</td><td>KYC refresh (Low risk)</td><td>Compliance</td><td>Planned</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- AUDIT -->
-        <section id="panel-audit" class="panel" role="tabpanel" aria-labelledby="tab-audit">
-          <div class="card">
-            <table id="auditTable">
-              <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Field</th><th>Old → New</th></tr></thead>
-              <tbody>
-                <tr><td>2025-09-15 10:02</td><td>k.ng</td><td>Update</td><td>FATCA class</td><td>Active NFE → FFI</td></tr>
-                <tr><td>2025-09-15 10:03</td><td>m.rossi</td><td>Approve</td><td>FATCA class</td><td>—</td></tr>
-              </tbody>
-            </table>
-            <div class="note">Prototype illustrates immutable log display; in production store cryptographic hash and user/session IDs.</div>
-          </div>
-        </section>
-      </div>
+  <header class="header" role="banner">
+    <div class="search" role="search" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="1.5"/><path d="M20 20l-3-3" stroke="#64748b" stroke-width="1.5"/></svg>
+      <input placeholder="Search entities, IDs, people… (press / to focus)" aria-label="Global search"/>
+      <span class="kbd">/</span>
     </div>
-    <div class="section" id="entityListSection" aria-label="Entity Registry" style="min-width:420px; order:1;">
-      <div class="row">
-        <h3>Entity Registry</h3>
-        <div class="right row">
-          <div class="pills" id="entFilters">
-            <span class="pill active" data-f="all">All</span>
-            <span class="pill" data-f="active">Active</span>
-            <span class="pill" data-f="pending">Pending</span>
-            <span class="pill" data-f="high">High Risk</span>
-          </div>
-          <input class="input" id="openEntById" placeholder="Open by ID e.g., E-0001" style="width:200px; margin-left:8px" />
-          <button class="btn small" id="openEntBtn">Open</button>
+    <div class="actions">
+      <button class="btn" id="saveDraft">Save Draft</button>
+      <button class="btn" id="downloadJson">Download JSON</button>
+      <button class="btn primary" id="markReady">Mark Ready</button>
+    </div>
+  </header>
+
+  <section class="content" id="main">
+    <div class="page-title">
+      <div>
+        <h2>Entity 360</h2>
+        <div class="sub">Entity master record • 360 profile</div>
+        <div class="status-chips">
+          <span id="chipLEI" class="chip">LEI: —</span>
+          <span id="chipGIIN" class="chip">GIIN: —</span>
+          <span id="nextDue" class="note" style="margin-left:8px"></span>
         </div>
       </div>
-      <table class="table space-top" id="entTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Domicile</th>
-            <th>Status</th>
-            <th>Risk</th>
-            <th>Docs</th>
-            <th>Rels</th>
-            <th>Updated</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>E-0001</td><td>Lux SPV Holdings Sàrl</td><td>Luxembourg</td><td>Active</td><td>Low</td><td>Yes</td><td>3</td><td>2025-09-01</td></tr>
-          <tr><td>E-0002</td><td>Global Fund LLC</td><td>USA</td><td>Pending</td><td>Medium</td><td>No</td><td>1</td><td>2025-08-15</td></tr>
-          <tr><td>E-0003</td><td>Alpha Trust</td><td>UK</td><td>Active</td><td>High</td><td>Yes</td><td>2</td><td>2025-07-20</td></tr>
-          <tr><td>E-0004</td><td>Beta Investments Ltd</td><td>Ireland</td><td>Suspended</td><td>Medium</td><td>No</td><td>0</td><td>2025-06-10</td></tr>
-          <tr><td>E-0005</td><td>Omega Partners SCSp</td><td>Luxembourg</td><td>Active</td><td>Low</td><td>Yes</td><td>4</td><td>2025-05-05</td></tr>
-        </tbody>
-      </table>
-      <div class="small muted">Click a row to view details; use <b>Save Draft</b> to add/update the current entity.</div>
     </div>
 
-<!-- Detail Popup for Entity Registry -->
-<div id="entPopup" class="card" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; min-width:320px; max-width:420px; width:90vw; box-shadow:0 8px 32px rgba(0,0,0,.18);">
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h4 id="entPopupTitle" style="margin:0;">Entity Details</h4>
-    <button id="entPopupClose" style="background:none; border:none; font-size:22px; cursor:pointer; color:#64748b;">&times;</button>
+    <div class="cards" id="entityKpis">
+      <div class="card"><div class="label">Total Entities</div><div class="value" id="entTotal">0</div></div>
+      <div class="card"><div class="label">Active</div><div class="value" id="entActive">0</div></div>
+      <div class="card"><div class="label">Pending Reviews</div><div class="value" id="entPending">0</div></div>
+      <div class="card"><div class="label">High Risk (≥70)</div><div class="value" id="entHigh">0</div></div>
+      <div class="card"><div class="label">With Documents</div><div class="value" id="entDocd">0</div></div>
+      <div class="card"><div class="label">Relationships</div><div class="value" id="entRelCount">0</div></div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Right (editor) -->
+      <div class="section" style="min-width:340px; order:2;">
+        <div class="em-main">
+          <div class="tabs" role="tablist" aria-label="Entity sections">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="panel-profile" id="tab-profile">Profile</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-owners" id="tab-owners">Ownership & Control</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tax" id="tab-tax">Regulatory & Tax</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-banking" id="tab-banking">Banking & Mandates</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-gov" id="tab-gov">Governance</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-docs" id="tab-docs">Documents</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-tasks" id="tab-tasks">Tasks & Reviews</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="panel-audit" id="tab-audit">Audit</button>
+          </div>
+
+          <!-- PROFILE -->
+          <section id="panel-profile" class="panel active" role="tabpanel" aria-labelledby="tab-profile">
+            <details class="acc" open><summary><span>Profile</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="grid-3">
+                <div>
+                  <label>Legal name</label>
+                  <input id="legalName" value="Lux SPV Holdings Sàrl" required />
+                </div>
+                <div>
+                  <label>Jurisdiction / Domicile</label>
+                  <input id="domicile" value="Luxembourg" />
+                </div>
+                <div>
+                  <label>Legal form</label>
+                  <select id="legalForm">
+                    <option>Sàrl</option><option>SA</option><option>SCSp</option><option>LLC</option><option>Ltd</option><option>Trust</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:12px">
+                <div>
+                  <label>Registration number</label>
+                  <input id="regNo" placeholder="e.g., B123456"/>
+                </div>
+                <div>
+                  <label>Status</label>
+                  <select id="status">
+                    <option selected>Active</option><option>Pending</option><option>Suspended</option><option>Struck off</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Formation date</label>
+                  <input type="date" id="formationDate" value="2021-06-30"/>
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:12px">
+                <div>
+                  <label>Regulatory classification</label>
+                  <input id="regClass" placeholder="e.g., Unregulated SPV"/>
+                </div>
+                <div></div><div></div>
+              </div>
+            </div>
+</div></details>
+          </section>
+
+          <!-- OWNERSHIP & CONTROL -->
+          <section id="panel-owners" class="panel" role="tabpanel" aria-labelledby="tab-owners">
+            <details class="acc" open><summary><span>Ownership & Control</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="toolbar"><button class="btn" id="addOwnerRow">Add owner</button></div>
+              <table id="ownersTable">
+                <thead><tr><th>Holder</th><th>Type</th><th>Economic rights</th><th>Voting rights</th><th>Country</th><th>CP?</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td>Master Fund LP</td><td>Entity</td><td>80</td><td>80</td><td>Luxembourg</td><td>No</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                  <tr><td>Jane Doe</td><td>Individual</td><td>20</td><td>20</td><td>UK</td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+</div></details>
+          </section>
+
+          <!-- REGULATORY & TAX -->
+          <section id="panel-tax" class="panel" role="tabpanel" aria-labelledby="tab-tax">
+            <details class="acc" open><summary><span>Regulatory & Tax</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="grid-3">
+                <div>
+                  <label>LEI</label>
+                  <input id="lei" placeholder="20-char LEI (ISO 17442)" value="5493001KJTIIGC8Y1R12" />
+                </div>
+                <div>
+                  <label>LEI last renewed</label>
+                  <input type="date" id="leiRenewed" value="2024-11-15" />
+                </div>
+                <div>
+                  <label>LEI issuer</label>
+                  <input id="leiIssuer" placeholder="e.g., WM Datenservice / GS1 / Bloomberg" />
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:12px">
+                <div>
+                  <label>FATCA classification</label>
+                  <select id="fatcaClass">
+                    <option>Passive NFE</option><option>Active NFE</option><option>FFI</option><option>Exempt Beneficial Owner</option>
+                  </select>
+                </div>
+                <div>
+                  <label>GIIN (if FFI)</label>
+                  <input id="giin" placeholder="XXXXXX.XXXXX.XX.XXX" />
+                </div>
+                <div>
+                  <label>W‑8/W‑9 form on file</label>
+                  <select id="w8">
+                    <option>W‑8BEN‑E</option><option>W‑8IMY</option><option>W‑9</option><option>None</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:12px">
+                <div>
+                  <label>CRS classification</label>
+                  <select id="crsClass">
+                    <option>Passive NFE</option><option>Active NFE</option><option>Financial Institution</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Tax residency (primary)</label>
+                  <input id="taxRes" placeholder="e.g., LU" value="LU" />
+                </div>
+                <div>
+                  <label>TIN</label>
+                  <input id="tin" placeholder="Tax Identification Number" />
+                </div>
+              </div>
+            </div>
+</div></details>
+          </section>
+
+          <!-- BANKING & MANDATES -->
+          <section id="panel-banking" class="panel" role="tabpanel" aria-labelledby="tab-banking">
+            <details class="acc" open><summary><span>Banking & Mandates</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="toolbar"><button class="btn" id="addBankRow">Add account</button></div>
+              <table id="bankTable">
+                <thead><tr><th>Bank</th><th>IBAN / Acct #</th><th>Currency</th><th>Purpose</th><th>Signatory rule</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td>Bank of Luxembourg</td><td>LU28 0019 4006 4475 0000</td><td>EUR</td><td>Operating</td><td>A+B</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+</div></details>
+          </section>
+
+          <!-- GOVERNANCE -->
+          <section id="panel-gov" class="panel" role="tabpanel" aria-labelledby="tab-gov">
+            <details class="acc" open><summary><span>Governance</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="toolbar"><button class="btn" id="addDirectorRow">Add person</button></div>
+              <table id="directorsTable">
+                <thead><tr><th>Name</th><th>Role</th><th>Start</th><th>End</th><th>Independent?</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td>Alex Smith</td><td>Director</td><td>2022-01-15</td><td></td><td>Yes</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                  <tr><td>Maria Rossi</td><td>Company Secretary</td><td>2023-06-01</td><td></td><td>—</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <div class="toolbar"><button class="btn" id="addResolution">Log resolution</button></div>
+              <table id="resolutionsTable">
+                <thead><tr><th>Date</th><th>Type</th><th>Reference</th><th>Notes</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td>2025-03-20</td><td>Board meeting</td><td>MIN‑2025‑03</td><td>Approved new bank account & mandate</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+</div></details>
+          </section>
+
+          <!-- DOCUMENTS -->
+          <section id="panel-docs" class="panel" role="tabpanel" aria-labelledby="tab-docs">
+            <details class="acc" open><summary><span>Documents</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div class="toolbar"><button class="btn" id="uploadDoc">Upload</button></div>
+              <table id="docsTable">
+                <thead><tr><th>Category</th><th>Name</th><th>Version</th><th>Date</th><th>Retention</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td>Formation</td><td>Certificate of Incorporation</td><td>1</td><td>2021-06-30</td><td>Permanent</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                  <tr><td>Tax</td><td>W‑8BEN‑E</td><td>3</td><td>2024-12-01</td><td>6y</td><td class="success">On file</td><td><button class="btn" data-action="remove">Remove</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+</div></details>
+          </section>
+
+          <!-- TASKS -->
+          <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
+            <details class="acc" open><summary><span>Tasks & Reviews</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-weight:700">Upcoming deadlines</div>
+                  <div class="note">Auto‑generated from data (LEI/W‑8/board attestations)</div>
+                </div>
+                <button class="btn" id="addTask">Add task</button>
+              </div>
+              <table id="tasksTable">
+                <thead><tr><th>Due</th><th>Task</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td id="leiDueCell">2025-11-15</td><td>Renew LEI</td><td>Entity Ops</td><td class="warning">Due soon</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
+                  <tr><td>2026-01-31</td><td>KYC refresh (Low risk)</td><td>Compliance</td><td>Planned</td><td><button class="btn" data-action="complete">Complete</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+</div></details>
+          </section>
+
+          <!-- AUDIT -->
+          <section id="panel-audit" class="panel" role="tabpanel" aria-labelledby="tab-audit">
+            <details class="acc" open><summary><span>Audit</span><span class="caret"></span></summary>
+<div class="acc-body">
+<div class="card">
+              <table id="auditTable">
+                <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Field</th><th>Old → New</th></tr></thead>
+                <tbody>
+                  <tr><td>2025-09-15 10:02</td><td>k.ng</td><td>Update</td><td>FATCA class</td><td>Active NFE → FFI</td></tr>
+                  <tr><td>2025-09-15 10:03</td><td>m.rossi</td><td>Approve</td><td>FATCA class</td><td>—</td></tr>
+                </tbody>
+              </table>
+              <div class="note">Prototype illustrates immutable log display; in production store cryptographic hash and user/session IDs.</div>
+            </div>
+</div></details>
+          </section>
+        </div>
+      </div>
+
+      <!-- Left (registry) -->
+      <div class="section" id="entityListSection" aria-label="Entity Registry" style="min-width:420px; order:1;">
+        <div class="row" style="display:flex; align-items:center; gap:10px;">
+          <h3 style="margin:0">Entity Registry</h3>
+          <div class="right row" style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+            <div id="registryTools"><input class="input" id="entSearch" placeholder="Search (ID, name, domicile)…" /><div class="pills" id="entFilters">
+              <span class="pill active" data-f="all">All</span>
+              <span class="pill" data-f="active">Active</span>
+              <span class="pill" data-f="pending">Pending</span>
+              <span class="pill" data-f="high">High Risk</span>
+            </div>
+            </div>
+            <button class="btn small" id="newEntityBtn" title="Start a new entity draft">New</button>
+            <input class="input" id="openEntById" placeholder="Open by ID e.g., E-0001" style="width:200px;" />
+            <button class="btn small" id="openEntBtn">Open</button>
+          </div>
+        </div>
+        <table class="table space-top" id="entTable">
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Domicile</th><th>Status</th><th class="sortable" data-sort="risk">Risk <span class="arrow">↕</span></th><th>Docs</th><th>Rels</th><th class="sortable" data-sort="updated">Updated <span class="arrow">↕</span></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="small muted">Click a row to view details; use <b>Save Draft</b> to add/update the current entity.</div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- Detail Modal (replaces old popup) -->
+<div id="entModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Entity details">
+  <div class="box">
+    <h4 id="entModalTitle">Entity</h4>
+    <div id="entModalBody" class="small"></div>
+    <div class="actions"><button class="btn" id="entModalClose">Close</button></div>
   </div>
-  <div id="entPopupBody" class="small" style="margin-top:18px;"></div>
-  <div class="actions" style="margin-top:18px; text-align:right;"><button class="btn" id="entPopupCloseBtn">Close</button></div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const entTable = document.getElementById('entTable');
-  const entPopup = document.getElementById('entPopup');
-  const entPopupBody = document.getElementById('entPopupBody');
-  const entPopupClose = document.getElementById('entPopupClose');
-  const entPopupCloseBtn = document.getElementById('entPopupCloseBtn');
-  if (entTable && entPopup) {
-    entTable.addEventListener('click', function(e) {
-      let tr = e.target.closest('tr');
-      if (!tr || !tr.parentElement || tr.parentElement.nodeName !== 'TBODY') return;
-      // Remove highlight from all rows
-      Array.from(entTable.querySelectorAll('tbody tr')).forEach(row => row.classList.remove('selected'));
-      // Highlight clicked row
-      tr.classList.add('selected');
-      // Show popup
-      let cells = tr.querySelectorAll('td');
-      if (cells.length === 0) return;
-      let html = `<table style='width:100%; border-collapse:separate; border-spacing:0 10px;'>`;
-      ['ID','Name','Domicile','Status','Risk','Docs','Rels','Updated'].forEach((label, i) => {
-        html += `<tr><td style='font-weight:600; padding:6px 12px; text-align:right; width:40%; vertical-align:top;'>${label}:</td><td style='padding:6px 12px; text-align:left; vertical-align:top;'>${cells[i]?.textContent || ''}</td></tr>`;
-      });
-      html += `</table>`;
-      entPopupBody.innerHTML = html;
-      entPopup.style.display = 'block';
-    });
-    [entPopupClose, entPopupCloseBtn].forEach(btn => {
-      btn.addEventListener('click', function() {
-        entPopup.style.display = 'none';
-      });
-    });
-  }
-});
+// Activate nav highlight (if needed)
+document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === 'entities') a.classList.add('active'); });
 
-document.addEventListener('keydown', function(e){
-  if(e.key === '/'){
-    var i = document.querySelector('.search input');
-    if(i){ e.preventDefault(); i.focus(); }
-  }
-});
+// Quick '/' to focus search
+window.addEventListener('keydown', (e)=>{ if(e.key==='/' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); document.querySelector('.search input').focus(); } });
 
-/** Theme toggle (Light default, saved in localStorage) **/
-
-/** Simple state store (in-memory + localStorage) **/
-const state = {
-  score: 68, evidence: [],
-  fields: {
-    legalName: "Lux SPV Holdings Sàrl", domicile: "Luxembourg", legalForm: "Sàrl",
-    regNo: "B123456", status: "Active", formationDate: "2021-06-30",
-    regClass: "Unregulated SPV", administrator: "", custodian: "",
-    lei: "5493001KJTIIGC8Y1R12", leiRenewed: "2024-11-15", leiIssuer: "",
-    fatcaClass: "Passive NFE", giin: "", w8: "W‑8BEN‑E",
-    crsClass: "Passive NFE", taxRes: "LU", tin: "",
-    owners: [
-      {holder:"Master Fund LP", type:"Entity", econ:80, vote:80, country:"Luxembourg", cp:false},
-      {holder:"Jane Doe", type:"Individual", econ:20, vote:20, country:"UK", cp:true}
-    ],
-    bank: [{bank:"Bank of Luxembourg", iban:"LU28 0019 4006 4475 0000", ccy:"EUR", purpose:"Operating", rule:"A+B"}],
-    directors: [
-      {name:"Alex Smith", role:"Director", start:"2022-01-15", end:"", indep:"Yes"},
-      {name:"Maria Rossi", role:"Company Secretary", start:"2023-06-01", end:"", indep:"—"}
-    ],
-    docs: [
-      {cat:"Formation", name:"Certificate of Incorporation", ver:1, date:"2021-06-30", ret:"Permanent", status:"On file"},
-      {cat:"Tax", name:"W‑8BEN‑E", ver:3, date:"2024-12-01", ret:"6y", status:"On file"}
-    ],
-    tasks: [
-      {due:"2025-11-15", task:"Renew LEI", owner:"Entity Ops", status:"Due soon"},
-      {due:"2026-01-31", task:"KYC refresh (Low risk)", owner:"Compliance", status:"Planned"},
-    ],
-    audit: [
-      {ts:"2025-09-15 10:02", user:"k.ng", action:"Update", field:"FATCA class", change:"Active NFE → FFI"},
-      {ts:"2025-09-15 10:03", user:"m.rossi", action:"Approve", field:"FATCA class", change:"—"}
-    ]
-  }
-};
-
+/* ---------------- Evidence engine & editor wiring ---------------- */
+const state = { score: 68 };
 const $ = (sel, ctx=document)=>ctx.querySelector(sel);
 const $$ = (sel, ctx=document)=>Array.from(ctx.querySelectorAll(sel));
 
-/** Tabs **/
+// Tabs
 $$('.tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
     $$('.tab').forEach(t=>t.setAttribute('aria-selected','false'));
     tab.setAttribute('aria-selected','true');
     $$('.panel').forEach(p=>p.classList.remove('active'));
-    const panel = $('#'+tab.getAttribute('aria-controls'));
-    panel.classList.add('active');
+    $('#'+tab.getAttribute('aria-controls')).classList.add('active');
   });
 });
 
-/** Evidence engine **/
 function computeEvidence(){
   const ev = [];
-  const f = state.fields;
-  // Core
-  if(!f.legalName) ev.push({k:"Legal name", ok:false});
-  if(!f.regNo) ev.push({k:"Registration number", ok:false});
-  if(!f.formationDate) ev.push({k:"Formation date", ok:false});
-  // LEI annual renewal: due if > 335 days ago (warn within 30 days)
+  const f = {
+    legalName: $('#legalName')?.value || '',
+    regNo: $('#regNo')?.value || '',
+    formationDate: $('#formationDate')?.value || '',
+    lei: $('#lei')?.value || '',
+    leiRenewed: $('#leiRenewed')?.value || '',
+    fatcaClass: $('#fatcaClass')?.value || '',
+    giin: $('#giin')?.value || '',
+    crsClass: $('#crsClass')?.value || '',
+    taxRes: $('#taxRes')?.value || '',
+  };
+
   const today = new Date();
-  const last = f.leiRenewed ? new Date(f.leiRenewed) : null;
-  if(f.lei && last){
+  if(f.lei && f.leiRenewed){
+    const last = new Date(f.leiRenewed);
     const next = new Date(last); next.setDate(next.getDate()+365);
-    const leiDue = next.toISOString().slice(0,10);
-    $('#nextDue').textContent = `LEI renewal: ${leiDue}`;
-    $('#leiDueCell').textContent = leiDue;
     const daysLeft = Math.ceil((next - today)/86400000);
-    $('#chipLEI').className = 'chip '+(daysLeft<=0? 'bad':'warn');
-    $('#chipLEI').textContent = 'LEI: ' + (daysLeft<=0? 'expired' : 'due soon');
-    const taskRow = $('#tasksTable tbody tr:nth-child(1) td:nth-child(4)');
-    taskRow.className = daysLeft<=0? 'danger':'warning';
-    taskRow.textContent = daysLeft<=0? 'Overdue' : 'Due soon';
-  }else{
-    ev.push({k:"LEI (identifier & renewal)", ok:false});
+    $('#nextDue').textContent = 'LEI renewal: ' + next.toISOString().slice(0,10);
+    $('#leiDueCell').textContent = next.toISOString().slice(0,10);
+    $('#chipLEI').className = 'chip ' + (daysLeft<=0? 'bad':'warn');
+    $('#chipLEI').textContent = 'LEI: ' + (daysLeft<=0? 'expired':'due soon');
   }
-  // FATCA logic
-  if(f.fatcaClass === 'FFI' && !f.giin){
-    ev.push({k:"GIIN (required for FFI)", ok:false, hint:"Provide GIIN and verify against IRS monthly FFI list"});
+  if(f.fatcaClass==='FFI' && !f.giin){
     $('#chipGIIN').className='chip bad'; $('#chipGIIN').textContent='GIIN: missing';
   }else{
     $('#chipGIIN').className='chip ok'; $('#chipGIIN').textContent='GIIN: on file';
   }
-  // CRS: Passive NFE requires controlling persons
-  if(f.crsClass === 'Passive NFE'){
-    const hasCP = f.owners.some(o=>o.type==='Individual' && (Number(o.econ)>=25 || o.cp));
-    if(!hasCP) ev.push({k:"CRS controlling persons", ok:false, hint:"Capture ≥25% BO or senior managing official"});
-  }
-  // Tax residencies
-  if(!f.taxRes) ev.push({k:"Primary tax residency", ok:false});
-  // Docs baseline
-  const hasCOI = f.docs.some(d=>d.cat==='Formation' && /Certificate/i.test(d.name));
-  const hasW8 = f.docs.some(d=>d.cat==='Tax' && /W‑8|W-8|W‑9/.test(d.name));
-  if(!hasCOI) ev.push({k:"Certificate of Incorporation", ok:false});
-  if(!hasW8) ev.push({k:"W‑8/W‑9 form", ok:false});
-  // Score
+
+  // Simple completeness
   let score = 40;
   score += f.legalName?10:0;
   score += f.regNo?10:0;
-  score += (f.lei && last)?10:0;
+  score += (f.lei && f.leiRenewed)?10:0;
   score += (f.fatcaClass!=='FFI' || f.giin)?10:0;
-  score += hasCOI?10:0;
-  score += hasW8?10:0;
-  score = Math.max(0, Math.min(100, score));
-  state.score = score;
-  $('#scoreLabel').textContent = score + '%';
-  $('#scoreBar').style.width = score + '%';
-
-  const container = $('#evidenceList'); container.innerHTML='';
-  if(ev.length===0){
-    const n = document.createElement('div'); n.className='item'; n.innerHTML='<span>All baseline evidence present</span><span class="req ok">OK</span>';
-    container.appendChild(n);
-  }else{
-    ev.forEach(e=>{
-      const n = document.createElement('div'); n.className='item';
-      n.innerHTML = `<span>${e.k}${e.hint?` <span class="note">(${e.hint})</span>`:''}</span><span class="req missing">Missing</span>`;
-      container.appendChild(n);
-    });
-  }
+  score += f.taxRes?10:0;
+  state.score = Math.max(0, Math.min(100, score));
 }
 computeEvidence();
 
-/** Wire inputs to state and evidence **/
-function bindInput(id, key){
-  const el = $('#'+id);
-  el && el.addEventListener('input', (e)=>{
-    state.fields[key] = e.target.value;
-    computeEvidence();
-  });
-}
-bindInput('legalName','legalName'); bindInput('domicile','domicile'); bindInput('regNo','regNo');
-bindInput('lei','lei'); bindInput('leiRenewed','leiRenewed'); bindInput('leiIssuer','leiIssuer');
-bindInput('fatcaClass','fatcaClass'); bindInput('giin','giin'); bindInput('w8','w8');
-bindInput('crsClass','crsClass'); bindInput('taxRes','taxRes'); bindInput('tin','tin');
+['legalName','regNo','formationDate','lei','leiRenewed','fatcaClass','giin','crsClass','taxRes']
+  .forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', computeEvidence); });
 
-/** Row add/remove helpers **/
+// Row add/remove helpers
 function addOwnerRow(){
   const tr = document.createElement('tr');
   tr.innerHTML = `<td><input placeholder="Holder name" /></td>
@@ -909,7 +583,6 @@ function addDirectorRow(){
   $('#directorsTable tbody').appendChild(tr);
 }
 $('#addDirectorRow').addEventListener('click', addDirectorRow);
-$('#addDirector').addEventListener('click', ()=>$('#tab-gov').click());
 
 function addResolutionRow(){
   const tr = document.createElement('tr');
@@ -922,7 +595,7 @@ function addResolutionRow(){
 }
 $('#addResolution').addEventListener('click', addResolutionRow);
 
-/** Documents **/
+// Documents
 $('#uploadDoc').addEventListener('click', ()=>{
   const tr = document.createElement('tr');
   tr.innerHTML = `<td><select><option>Formation</option><option>Governance</option><option>Tax</option><option>AML/KYC</option><option>Operational</option></select></td>
@@ -935,9 +608,8 @@ $('#uploadDoc').addEventListener('click', ()=>{
   $('#docsTable tbody').appendChild(tr);
   computeEvidence();
 });
-$('#addDoc').addEventListener('click', ()=>$('#tab-docs').click());
 
-/** Tasks **/
+// Tasks
 $('#addTask').addEventListener('click', ()=>{
   const tr = document.createElement('tr');
   tr.innerHTML = `<td><input type="date" /></td><td><input placeholder="Task" /></td><td><input placeholder="Owner" /></td>
@@ -945,7 +617,7 @@ $('#addTask').addEventListener('click', ()=>{
   $('#tasksTable tbody').appendChild(tr);
 });
 
-/** Delegated actions (remove/complete) **/
+// Delegated actions
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('button');
   if(!btn) return;
@@ -959,15 +631,17 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-/** Save / Download **/
+// Save / Download
 $('#saveDraft').addEventListener('click', ()=>{
   const payload = {
     legalName: $('#legalName').value,
     domicile: $('#domicile').value,
-    regNo: $('#regNo').value,
+    regNo: $('#regNo')?.value || '',
+    status: $('#status')?.value || 'Active',
+    formationDate: $('#formationDate')?.value || '',
     lei: $('#lei').value, leiRenewed: $('#leiRenewed').value,
     fatcaClass: $('#fatcaClass').value, giin: $('#giin').value,
-    crsClass: $('#crsClass').value, taxRes: $('#taxRes').value, tin: $('#tin').value,
+    crsClass: $('#crsClass').value, taxRes: $('#taxRes').value, tin: $('#tin')?.value || '',
     score: state.score, generatedAt: new Date().toISOString()
   };
   localStorage.setItem('entityDraft', JSON.stringify(payload));
@@ -979,15 +653,15 @@ $('#downloadJson').addEventListener('click', ()=>{
     profile: {
       legalName: $('#legalName').value,
       domicile: $('#domicile').value,
-      regNo: $('#regNo').value,
-      status: $('#status').value,
-      formationDate: $('#formationDate').value,
-      regClass: $('#regClass').value
+      regNo: $('#regNo')?.value || '',
+      status: $('#status')?.value || '',
+      formationDate: $('#formationDate')?.value || '',
+      regClass: $('#regClass')?.value || ''
     },
     regulatory: {
       lei: $('#lei').value, leiRenewed: $('#leiRenewed').value, leiIssuer: $('#leiIssuer').value,
       fatcaClass: $('#fatcaClass').value, giin: $('#giin').value, w8: $('#w8').value,
-      crsClass: $('#crsClass').value, taxRes: $('#taxRes').value, tin: $('#tin').value
+      crsClass: $('#crsClass').value, taxRes: $('#taxRes').value, tin: $('#tin')?.value || ''
     },
     completeness: state.score
   };
@@ -1003,17 +677,10 @@ $('#markReady').addEventListener('click', ()=>{
   alert('Entity marked as Ready (demo). In production, enforce maker–checker approval.');
 });
 
-setTimeout(computeEvidence, 100);
-
-</script>
-<script>
-
+/* ---------------- Registry (localStorage) + Detail modal ---------------- */
 (() => {
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
   const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
   const clamp = (n,min=0,max=100) => Math.max(min, Math.min(max, n));
-
   const KEY = 'kyc_entities';
   const page = document.getElementById('main');
   if (page && !page.dataset.entId) page.dataset.entId = '';
@@ -1025,24 +692,21 @@ setTimeout(computeEvidence, 100);
     return `E-${String(max+1).padStart(4,'0')}`;
   };
 
-  // Extract values from the existing form on the page
   const getFormValues = () => {
-    const val = id => $(id) ? $(id).value.trim() : '';
     const name = $('#legalName')?.value?.trim() || '';
     const domicile = $('#domicile')?.value?.trim() || '';
     const legalForm = $('#legalForm')?.value || '';
     const status = $('#status')?.value || 'Active';
     const lei = $('#lei')?.value?.trim() || '';
-    // Docs and owners
     const docsCount = $$('#docsTable tbody tr').length || 0;
     const ownersRows = $$('#ownersTable tbody tr');
     const ownersCount = ownersRows.length || 0;
     const relationships = ownersRows
       .map(tr => {
-        const cells = $$('td', tr);
-        const holder = cells[0]?.textContent?.trim();
-        const typ = cells[1]?.textContent?.trim();
-        return typ && /entity/i.test(typ) ? holder : null;
+        const cells = $$('.em-main td', tr).length ? $$('.em-main td', tr) : $$('.em-main td', tr); // safe
+        const holder = tr.children[0]?.textContent?.trim();
+        const typ = tr.children[1]?.textContent?.trim();
+        return typ && /entity/i.test(typ) ? (holder || null) : null;
       }).filter(Boolean);
     return { name, domicile, legalForm, status, lei, docsCount, ownersCount, relationships };
   };
@@ -1069,30 +733,46 @@ setTimeout(computeEvidence, 100);
     return n;
   };
 
-  // Seed if empty using current form's values (so the page entity appears in the list)
+  // Seed if empty using current form's values
   const seedIfEmpty = () => {
     let list = read();
     if (list.length) return list;
-    const v = getFormValues();
-    const id = nextId(list);
-    const rec = {
-      id, ...v,
-      riskScore: computeRisk(v),
-      pendingReviews: computePending(v),
-      startDate: Date.now() - 86400000*5,
-      updatedAt: Date.now() - 3600000,
-      timeline: {}
-    };
-    if (v.lei) rec.timeline.kyb = rec.startDate + 3600000;
-    if (v.docsCount > 0) rec.timeline.documents = rec.startDate + 7200000;
-    rec.timeline.screening = rec.startDate + 10800000; // demo
-    if (/active/i.test(v.status||'')) rec.timeline.approved = rec.startDate + 14400000;
-    list.push(rec);
+    // Create multiple demo entities
+    const now = Date.now();
+    function make(base){
+      const riskScore = computeRisk(base);
+      return {
+        id: nextId(list),
+        ...base,
+        riskScore,
+        pendingReviews: computePending(base),
+        startDate: now - (Math.floor(Math.random()*7)+1)*86400000,
+        updatedAt: now - (Math.floor(Math.random()*12)+1)*3600000,
+        timeline: {}
+      };
+    }
+    const samples = [
+      { name:'Lux SPV Holdings Sàrl', domicile:'Luxembourg', legalForm:'Sàrl', status:'Active', lei:'5493001KJTIIGC8Y1R12', docsCount:2, ownersCount:2, relationships:['E-0002'], },
+      { name:'Master Fund LP', domicile:'Cayman Islands', legalForm:'LP', status:'Active', lei:'', docsCount:1, ownersCount:3, relationships:['E-0001','E-0003'], },
+      { name:'Feeder Fund Ltd', domicile:'Bermuda', legalForm:'Ltd', status:'Pending', lei:'', docsCount:0, ownersCount:1, relationships:['E-0002'], },
+      { name:'Management Company SA', domicile:'Luxembourg', legalForm:'SA', status:'Active', lei:'213800D5JQ1A9XYZ1234', docsCount:4, ownersCount:4, relationships:['E-0001','E-0002','E-0003'], },
+      { name:'Distribution SPV', domicile:'Ireland', legalForm:'Ltd', status:'Active', lei:'', docsCount:1, ownersCount:2, relationships:[], },
+      { name:'Holding Trust', domicile:'Jersey', legalForm:'Trust', status:'Active', lei:'', docsCount:0, ownersCount:0, relationships:[], },
+      { name:'Side Pocket Vehicle', domicile:'BVI', legalForm:'SPV', status:'Suspended', lei:'', docsCount:0, ownersCount:0, relationships:['E-0002'], }
+    ];
+    samples.forEach(s => {
+      const rec = make(s);
+      // Basic timeline demos
+      if (rec.lei) rec.timeline.kyb = rec.startDate + 3600000;
+      if (rec.docsCount > 0) rec.timeline.documents = rec.startDate + 7200000;
+      rec.timeline.screening = rec.startDate + 10800000;
+      if (/active/i.test(rec.status||'')) rec.timeline.approved = rec.startDate + 14400000;
+      list.push(rec);
+    });
     write(list);
     return list;
   };
 
-  // --- Registry rendering ---
   const tBody = $('#entTable tbody');
   const updateKPIs = (list) => {
     $('#entTotal').textContent = list.length;
@@ -1125,66 +805,69 @@ setTimeout(computeEvidence, 100);
         <td>${fmtTS(r.updatedAt)}</td>
       </tr>
     `).join('');
+
     // Row click => details modal
+    const modal = document.getElementById('entModal');
+    const mTitle = document.getElementById('entModalTitle');
+    const mBody = document.getElementById('entModalBody');
+    const openModal = (title, html) => { mTitle.textContent = title; mBody.innerHTML = html; modal.classList.remove('hidden'); };
+    document.getElementById('entModalClose').addEventListener('click', ()=> modal.classList.add('hidden'));
+    modal.addEventListener('click', (e)=> { if (e.target === modal) modal.classList.add('hidden'); });
+
     $$('#entTable tbody tr').forEach(tr => tr.addEventListener('click', () => {
       const id = tr.getAttribute('data-id'); const rec = read().find(x=>x.id===id); if (!rec) return;
       const tl = rec.timeline || {};
       const steps = [
-        {key:'kyb', label:'KYB', ts: tl.kyb || null},
-        {key:'documents', label:'Documents', ts: tl.documents || null},
-        {key:'screening', label:'Screening', ts: tl.screening || null},
-        {key:'approved', label:'Approved', ts: tl.approved || (/active/i.test(rec.status||'') ? rec.updatedAt : null)},
+        {label:'KYB', ts: tl.kyb || null},
+        {label:'Documents', ts: tl.documents || null},
+        {label:'Screening', ts: tl.screening || null},
+        {label:'Approved', ts: tl.approved || (/active/i.test(rec.status||'') ? rec.updatedAt : null)},
       ];
-      const tlHtml = steps.map((s, i) => {
-        const done = !!s.ts;
-        const timeTxt = done ? new Date(s.ts).toLocaleString() : '—';
-        return `
-          <div class="tl-step ${done ? 'done':'pending'}">
-            <div class="tl-dot"></div>
-            <div class="tl-label">${s.label}</div>
-            <div class="tl-time">${timeTxt}</div>
-          </div>
-          ${i < steps.length - 1 ? '<div class="tl-line"></div>' : ''}
-        `;
-      }).join('');
-      $('#entModalTitle').textContent = `Entity ${rec.id}`;
-      $('#entModalBody').innerHTML = `
-        <div class="row small"><div style="width:140px">Name</div><div>${rec.name||'—'}</div></div>
-        <div class="row small"><div style="width:140px">Domicile</div><div>${rec.domicile||'—'}</div></div>
-        <div class="row small"><div style="width:140px">Legal form</div><div>${rec.legalForm||'—'}</div></div>
-        <div class="row small"><div style="width:140px">Status</div><div>${rec.status||'—'}</div></div>
-        <div class="row small"><div style="width:140px">LEI</div><div>${rec.lei||'—'}</div></div>
-        <div class="row small"><div style="width:140px">Risk</div><div>${rec.riskScore||0}</div></div>
-        <div class="row small"><div style="width:140px">Docs</div><div>${rec.docsCount||0}</div></div>
-        <div class="row small"><div style="width:140px">Relationships</div><div>${(rec.relationships||[]).join(', ')||'—'}</div></div>
-        <div class="row small"><div style="width:140px">Updated</div><div>${fmtTS(rec.updatedAt)}</div></div>
-        <hr class="sep"/>
-        <div class="small"><b>Timeline</b></div>
+      const tlHtml = steps.map((s, i) => `
+        <div class="tl-step ${s.ts?'done':''}">
+          <div class="tl-dot"></div><div class="tl-label">${s.label}</div>
+          <div class="tl-time">${s.ts? new Date(s.ts).toLocaleString() : '—'}</div>
+        </div>${i<steps.length-1?'<div class="tl-line"></div>':''}
+      `).join('');
+
+      openModal('Entity ' + rec.id, `
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Name</div><div style="display:inline-block">${rec.name||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Domicile</div><div style="display:inline-block">${rec.domicile||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Legal form</div><div style="display:inline-block">${rec.legalForm||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Status</div><div style="display:inline-block">${rec.status||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">LEI</div><div style="display:inline-block">${rec.lei||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Risk</div><div style="display:inline-block">${rec.riskScore||0}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Docs</div><div style="display:inline-block">${rec.docsCount||0}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Relationships</div><div style="display:inline-block">${(rec.relationships||[]).join(', ')||'—'}</div></div>
+        <div class="row small"><div style="width:140px; display:inline-block; color:#64748b">Updated</div><div style="display:inline-block">${fmtTS(rec.updatedAt)}</div></div>
+        <hr class="sep" style="border:0; border-top:1px solid var(--line); margin:14px 0"/>
+        <div class="small" style="font-weight:600">Timeline</div>
         <div class="timeline">${tlHtml}</div>
-        <div class="actions"><button class="btn" id="loadIntoEditor">Load into Editor</button></div>
-      `;
-      entModal.style.display = 'block';
+        <div class="actions" style="margin-top:10px"><button class="btn" id="loadIntoEditor">Load into Editor</button></div>
+      `);
+
+      document.getElementById('loadIntoEditor').addEventListener('click', () => {
+        modal.classList.add('hidden'); loadIntoForm(rec.id);
+      });
     }));
   };
+  // expose for fuzzy override later
+  window.__entRenderList = renderList;
 
   // Filters & Open-by-ID
-  const filters = $('#entFilters');
+  const filters = document.getElementById('entFilters');
   filters.addEventListener('click', (e) => {
     const p = e.target.closest('.pill'); if (!p) return;
     $$('.pill', filters).forEach(x => x.classList.remove('active')); p.classList.add('active');
     renderList(p.dataset.f);
   });
-  $('#openEntBtn').addEventListener('click', () => {
-    const id = ($('#openEntById').value || '').trim();
+  document.getElementById('openEntBtn').addEventListener('click', () => {
+    const id = (document.getElementById('openEntById').value || '').trim();
     if (id) loadIntoForm(id);
   });
-  $('#openEntById').addEventListener('keydown', (e) => { if (e.key==='Enter') $('#openEntBtn').click(); });
+  document.getElementById('openEntById').addEventListener('keydown', (e) => { if (e.key==='Enter') document.getElementById('openEntBtn').click(); });
 
-  // Modal close
-  $('#entModalClose').addEventListener('click', () => $('#entModal').classList.add('hidden'));
-  $('#entModal').addEventListener('click', (e) => { if (e.target === $('#entModal')) $('#entModal').classList.add('hidden'); });
-
-  // Load record into existing form
+  // Load record into form
   const loadIntoForm = (id) => {
     const rec = read().find(x => x.id === id);
     if (!rec) { alert('Not found: ' + id); return; }
@@ -1197,8 +880,8 @@ setTimeout(computeEvidence, 100);
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
 
-  // Save Draft integration
-  const saveBtn = $('#saveDraft');
+  // Save integration
+  const saveBtn = document.getElementById('saveDraft');
   const saveHandler = () => {
     const v = getFormValues();
     if (!v.name) { alert('Enter Legal name before saving.'); return; }
@@ -1206,13 +889,11 @@ setTimeout(computeEvidence, 100);
     const id = page.dataset.entId || nextId(list);
     let rec = list.find(x => x.id === id);
     if (!rec) { rec = { id, startDate: Date.now(), timeline:{} }; list.push(rec); }
-    // Update record
     rec.name = v.name; rec.domicile = v.domicile; rec.legalForm = v.legalForm; rec.status = v.status; rec.lei = v.lei;
     rec.docsCount = v.docsCount; rec.ownersCount = v.ownersCount; rec.relationships = v.relationships;
     rec.riskScore = computeRisk(v);
     rec.pendingReviews = computePending(v);
     rec.updatedAt = Date.now();
-    // Timeline heuristics
     rec.timeline = rec.timeline || {};
     if (v.lei && !rec.timeline.kyb) rec.timeline.kyb = Date.now();
     if (v.docsCount > 0 && !rec.timeline.documents) rec.timeline.documents = Date.now();
@@ -1220,18 +901,278 @@ setTimeout(computeEvidence, 100);
     if (/active/i.test(v.status||'')) rec.timeline.approved = rec.timeline.approved || Date.now();
     write(list);
     page.dataset.entId = rec.id;
-    renderList($('#entFilters .pill.active')?.dataset.f || 'all');
+    renderList(document.querySelector('#entFilters .pill.active')?.dataset.f || 'all');
   };
   if (saveBtn) saveBtn.addEventListener('click', saveHandler);
 
-  // Seed and render
+  // New entity button: clear form and reset dataset to create fresh draft
+  const newBtn = document.getElementById('newEntityBtn');
+  if(newBtn){
+    newBtn.addEventListener('click', () => {
+      page.dataset.entId = '';
+      ['legalName','domicile','lei','regClass','regNo','tin'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value=''; });
+      const statusSel = document.getElementById('status'); if(statusSel) statusSel.value='Active';
+      window.scrollTo({top:0, behavior:'smooth'});
+      document.getElementById('legalName')?.focus();
+    });
+  }
+
+  // Init
   seedIfEmpty();
   renderList('all');
 
-  // Deep-link: #E-0001
   if (location.hash && /^#E-\d+/.test(location.hash)) loadIntoForm(location.hash.slice(1));
-  // React to external changes
-  window.addEventListener('storage', (e) => { if (e.key === KEY) renderList($('#entFilters .pill.active')?.dataset.f || 'all'); });
+  window.addEventListener('storage', (e) => { if (e.key === KEY) renderList(document.querySelector('#entFilters .pill.active')?.dataset.f || 'all'); });
+})();
+
+// ---- Registry: fuzzy search + sort + relationships editor + tab shortcuts ----
+(function(){
+  const $ = (s,r=document)=>r.querySelector(s);
+  const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+  const KEY = 'kyc_entities';
+  let sortBy = 'updated'; let sortDir = 'desc'; let q = '';
+
+  // Simple fuzzy utils
+  const norm = s => (s||'').toString().toLowerCase().replace(/\s+/g,' ').trim();
+  function lev(a,b){ // lightweight Levenshtein for short strings
+    a=norm(a); b=norm(b); const m=a.length, n=b.length;
+    if(!m||!n) return Math.max(m,n);
+    const dp = Array.from({length:m+1}, (_,i)=>Array(n+1).fill(0));
+    for(let i=0;i<=m;i++) dp[i][0]=i;
+    for(let j=0;j<=n;j++) dp[0][j]=j;
+    for(let i=1;i<=m;i++){
+      for(let j=1;j<=n;j++){
+        dp[i][j]=Math.min(
+          dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1)
+        );
+      }
+    }
+    return dp[m][n];
+  }
+  function scoreRecord(r, query){
+    const s = norm(query);
+    if(!s) return 1;
+    const hay = norm([r.id, r.name, r.domicile].join(' '));
+    if(hay.includes(s)) return 3; // strong
+    // token overlap
+    const toks = s.split(' ');
+    let hits = 0;
+    toks.forEach(t=>{ if(hay.includes(t)) hits++; });
+    let score = 1 + hits;
+    // fallback to edit distance on name/id (short queries only)
+    if(s.length<=8){
+      const best = Math.min(lev(r.name||'', s), lev(r.id||'', s), lev(r.domicile||'', s));
+      score += Math.max(0, 2 - best/3);
+    }
+    return score; // >0 keeps
+  }
+
+  // Hook search box
+  const search = $('#entSearch');
+  if(search){
+    let t=null;
+    search.addEventListener('input', ()=>{ q = search.value; clearTimeout(t); t=setTimeout(()=> renderList(currentFilter()), 120); });
+  }
+
+  // Sort toggles
+  $$('#entTable th.sortable').forEach(th => {
+    th.addEventListener('click', ()=>{
+      const key = th.dataset.sort;
+      if(sortBy===key){ sortDir = (sortDir==='asc'?'desc':'asc'); }
+      else { sortBy = key; sortDir='desc'; }
+      // update arrows
+      $$('#entTable th.sortable .arrow').forEach(a=> a.textContent='↕');
+      th.querySelector('.arrow').textContent = sortDir==='asc' ? '↑' : '↓';
+      renderList(currentFilter());
+    });
+  });
+
+  // Modify renderList used in registry script
+  const origRender = window.__entRenderList || null;
+  window.currentFilter = () => {
+    const active = $('#entFilters .pill.active');
+    return active ? active.dataset.f : 'all';
+  };
+
+  // Override global renderList with search + sort
+  window.renderList = function(flt='all'){
+    const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+    const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; } };
+    const list = read();
+
+    // Build id->name map for relationships name lookup later
+    window.__idName = new Map(list.map(x=>[x.id, x.name]));
+
+    // Filter category
+    let view = list.filter(r => {
+      if (flt==='all') return true;
+      if (flt==='active') return /active/i.test(r.status||'');
+      if (flt==='pending') return (r.pendingReviews||0) > 0;
+      if (flt==='high') return (r.riskScore||0) >= 70;
+      return true;
+    });
+
+    // Search/fuzzy
+    if(q && q.trim().length){
+      view = view
+        .map(r => ({...r, __score: scoreRecord(r, q)}))
+        .filter(r => r.__score > 0.5)
+        .sort((a,b)=> b.__score - a.__score);
+    }
+
+    // Sort
+    const dir = (sortDir==='asc'?1:-1);
+    if(sortBy==='risk'){
+      view.sort((a,b)=> (a.riskScore||0 - (b.riskScore||0))*dir);
+    } else if (sortBy==='updated'){
+      view.sort((a,b)=> ((a.updatedAt||0) - (b.updatedAt||0))*dir);
+    }
+
+    // Render
+    const tBody = document.querySelector('#entTable tbody');
+    tBody.innerHTML = view.map(r => `
+      <tr data-id="${r.id}" style="cursor:pointer">
+        <td>${r.id}</td>
+        <td>${r.name||'—'}</td>
+        <td>${r.domicile||'—'}</td>
+        <td><span class="badge ${/active/i.test(r.status||'')?'ok':/suspend|wind|strike/i.test(r.status||'')?'warn':'task'}">${r.status||'—'}</span></td>
+        <td>${r.riskScore||0}</td>
+        <td>${r.docsCount||0}</td>
+        <td>${Array.isArray(r.relationships) ? r.relationships.length : (r.relationships?1:0)}</td>
+        <td>${fmtTS(r.updatedAt)}</td>
+      </tr>
+    `).join('');
+
+    // Row click => modal (reuse existing callback by dispatching a click to original)
+    // Re-bind the original click logic if present; otherwise emulate minimal modal
+    const rows = $$('#entTable tbody tr');
+    rows.forEach(tr => tr.addEventListener('click', () => {
+      const id = tr.getAttribute('data-id');
+      const rec = list.find(x=>x.id===id);
+      if(!rec) return;
+      const tl = rec.timeline || {};
+      const steps = [
+        {label:'KYB', ts: tl.kyb || null},
+        {label:'Documents', ts: tl.documents || null},
+        {label:'Screening', ts: tl.screening || null},
+        {label:'Approved', ts: tl.approved || (/active/i.test(rec.status||'') ? rec.updatedAt : null)},
+      ];
+      const tlHtml = steps.map((s, i) => `
+        <div class="tl-step ${s.ts?'done':''}">
+          <div class="tl-dot"></div><div class="tl-label">${s.label}</div>
+          <div class="tl-time">${s.ts? new Date(s.ts).toLocaleString() : '—'}</div>
+        </div>${i<steps.length-1?'<div class="tl-line"></div>':''}
+      `).join('');
+      const relHtml = (Array.isArray(rec.relationships)? rec.relationships : []).map(o => {
+        const rid = (typeof o==='string')? o : (o.id||o);
+        const typ = (typeof o==='object' && o.type) ? o.type : 'Linked';
+        const name = window.__idName?.get(rid) || '—';
+        return `<div class="small">${typ}: <b>${rid}</b> <span class="muted">(${name})</span></div>`;
+      }).join('') || '—';
+
+      document.getElementById('entModalTitle').textContent = `Entity ${rec.id}`;
+      document.getElementById('entModalBody').innerHTML = `
+        <div class="row small"><div style="width:140px; color:#64748b">Name</div><div>${rec.name||'—'}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">Domicile</div><div>${rec.domicile||'—'}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">Legal form</div><div>${rec.legalForm||'—'}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">Status</div><div>${rec.status||'—'}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">LEI</div><div>${rec.lei||'—'}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">Risk</div><div>${rec.riskScore||0}</div></div>
+        <div class="row small"><div style="width:140px; color:#64748b">Relationships</div><div>${relHtml}</div></div>
+        <hr class="sep" style="border:0; border-top:1px solid var(--line); margin:14px 0"/>
+        <div class="small" style="font-weight:600">Timeline</div>
+        <div class="timeline">${tlHtml}</div>
+        <div class="actions" style="margin-top:10px"><button class="btn" id="loadIntoEditor">Load into Editor</button></div>
+      `;
+      document.getElementById('entModal').classList.remove('hidden');
+      document.getElementById('loadIntoEditor').addEventListener('click', () => { document.getElementById('entModal').classList.add('hidden'); loadIntoForm(rec.id); });
+    }));
+  };
+
+  // Keep filters working
+  const filters = document.getElementById('entFilters');
+  if(filters){
+    filters.addEventListener('click', (e) => {
+      const p = e.target.closest('.pill'); if (!p) return;
+      $$('#entFilters .pill').forEach(x => x.classList.remove('active')); p.classList.add('active');
+      renderList(p.dataset.f);
+    });
+  }
+
+  // Tab shortcuts: clicking a tab opens its accordion and scrolls
+  $$('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const panelId = tab.getAttribute('aria-controls');
+      const sec = document.getElementById(panelId);
+      const acc = sec ? sec.querySelector('.acc') : null;
+      if(acc && !acc.open) acc.open = true;
+      if(acc) acc.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  // Relationships editor
+  function loadRelsSuggestions(){
+    const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+    const dl = document.getElementById('relsSuggestions');
+    if(!dl) return;
+    dl.innerHTML = list.map(r => `<option value="${r.id}">${r.name||''}</option>`).join('');
+  }
+  function addRelRow(type, id, name, note){
+    const tb = document.querySelector('#relsTable tbody');
+    const tr = document.createElement('tr');
+    tr.dataset.id = id||'';
+    tr.innerHTML = `<td>${type||'Linked'}</td><td>${id||''}</td><td>${name||''}</td>
+      <td><input class="input" placeholder="Notes" value="${note||''}"/></td>
+      <td><button class="btn small" data-action="remove">Remove</button></td>`;
+    tb.appendChild(tr);
+  }
+  const addRelBtn = document.getElementById('addRel');
+  if(addRelBtn){
+    addRelBtn.addEventListener('click', () => {
+      const type = document.getElementById('relTypeNew').value;
+      const id = document.getElementById('relIdNew').value.trim();
+      if(!id){ alert('Enter related Entity ID (e.g., E-0002)'); return; }
+      const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+      const rec = list.find(r => r.id === id);
+      addRelRow(type, id, rec?.name || '');
+      document.getElementById('relIdNew').value = '';
+    });
+  }
+
+  // Hook into Save & Load to include relationships
+  const origGetFormValues = window.getFormValues;
+  window.getFormValues = function(){
+    const v = origGetFormValues ? origGetFormValues() : {};
+    const rows = $$('#relsTable tbody tr');
+    const rels = rows.map(tr => ({ id: tr.dataset.id || tr.children[1].textContent.trim(), type: tr.children[0].textContent.trim(), note: tr.querySelector('input')?.value || '' }));
+    // If no explicit relationships captured, fall back to inferred
+    v.relationships = (rels && rels.length) ? rels : (v.relationships || []);
+    return v;
+  };
+
+  window.loadIntoForm = (function(orig){
+    return function(id){
+      const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+      const rec = list.find(x => x.id === id);
+      if(!rec){ alert('Not found: '+id); return; }
+      // Basic fields via original loader
+      if (typeof orig === 'function') orig(id);
+      // Populate relationships table
+      const tb = document.querySelector('#relsTable tbody'); if (tb) tb.innerHTML = '';
+      const rels = Array.isArray(rec.relationships) ? rec.relationships : [];
+      rels.forEach(o => {
+        const rid = (typeof o==='string') ? o : (o.id||o);
+        const typ = (typeof o==='object' && o.type) ? o.type : 'Linked';
+        const name = window.__idName?.get(rid) || '';
+        addRelRow(typ, rid, name, (typeof o==='object' && o.note) ? o.note : '');
+      });
+    };
+  })(window.loadIntoForm);
+
+  // Initialize suggestions and initial render
+  loadRelsSuggestions();
+  // Refresh suggestions when storage changes
+  window.addEventListener('storage', (e)=>{ if(e.key===KEY) loadRelsSuggestions(); });
 })();
 
 </script>
