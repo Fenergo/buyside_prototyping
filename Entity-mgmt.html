@@ -222,7 +222,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- PROFILE -->
           <section id="panel-profile" class="panel active" role="tabpanel" aria-labelledby="tab-profile">
-            <details class="acc" open><summary><span>Profile</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Profile</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="grid-3">
@@ -270,7 +270,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- OWNERSHIP & CONTROL -->
           <section id="panel-owners" class="panel" role="tabpanel" aria-labelledby="tab-owners">
-            <details class="acc" open><summary><span>Ownership & Control</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Ownership & Control</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="toolbar"><button class="btn" id="addOwnerRow">Add owner</button></div>
@@ -287,7 +287,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- REGULATORY & TAX -->
           <section id="panel-tax" class="panel" role="tabpanel" aria-labelledby="tab-tax">
-            <details class="acc" open><summary><span>Regulatory & Tax</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Regulatory & Tax</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="grid-3">
@@ -344,7 +344,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- BANKING & MANDATES -->
           <section id="panel-banking" class="panel" role="tabpanel" aria-labelledby="tab-banking">
-            <details class="acc" open><summary><span>Banking & Mandates</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Banking & Mandates</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="toolbar"><button class="btn" id="addBankRow">Add account</button></div>
@@ -360,7 +360,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- GOVERNANCE -->
           <section id="panel-gov" class="panel" role="tabpanel" aria-labelledby="tab-gov">
-            <details class="acc" open><summary><span>Governance</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Governance</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="toolbar"><button class="btn" id="addDirectorRow">Add person</button></div>
@@ -386,7 +386,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- DOCUMENTS -->
           <section id="panel-docs" class="panel" role="tabpanel" aria-labelledby="tab-docs">
-            <details class="acc" open><summary><span>Documents</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Documents</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div class="toolbar"><button class="btn" id="uploadDoc">Upload</button></div>
@@ -403,7 +403,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- TASKS -->
           <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
-            <details class="acc" open><summary><span>Tasks & Reviews</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Tasks & Reviews</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center">
@@ -426,7 +426,7 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
 
           <!-- AUDIT -->
           <section id="panel-audit" class="panel" role="tabpanel" aria-labelledby="tab-audit">
-            <details class="acc" open><summary><span>Audit</span><span class="caret"></span></summary>
+            <details class="acc"><summary><span>Audit</span><span class="caret"></span></summary>
 <div class="acc-body">
 <div class="card">
               <table id="auditTable">
@@ -456,6 +456,9 @@ th.sortable .arrow{margin-left:6px; font-size:11px; opacity:.7}
             </div>
             </div>
             <button class="btn small" id="newEntityBtn" title="Start a new entity draft">New</button>
+            <button class="btn small" id="deleteEntityBtn" title="Delete selected / current entity">Delete</button>
+            <input type="file" id="bulkImportFile" accept="application/json" style="display:none" />
+            <button class="btn small" id="bulkImportBtn" title="Bulk import entities from JSON">Import</button>
             <input class="input" id="openEntById" placeholder="Open by ID e.g., E-0001" style="width:200px;" />
             <button class="btn small" id="openEntBtn">Open</button>
           </div>
@@ -915,6 +918,78 @@ $('#markReady').addEventListener('click', ()=>{
       window.scrollTo({top:0, behavior:'smooth'});
       document.getElementById('legalName')?.focus();
     });
+  }
+
+  // Delete current entity
+  const delBtn = document.getElementById('deleteEntityBtn');
+  if(delBtn){
+    delBtn.addEventListener('click', () => {
+      const id = page.dataset.entId;
+      if(!id){ alert('No entity loaded to delete. Load one first.'); return; }
+      if(!confirm('Delete entity ' + id + '? This cannot be undone (local prototype only).')) return;
+      let list = read().filter(r => r.id !== id);
+      write(list);
+      page.dataset.entId='';
+      renderList(document.querySelector('#entFilters .pill.active')?.dataset.f || 'all');
+    });
+  }
+
+  // Bulk import
+  const importBtn = document.getElementById('bulkImportBtn');
+  const importInput = document.getElementById('bulkImportFile');
+  if(importBtn && importInput){
+    importBtn.addEventListener('click', ()=> importInput.click());
+    importInput.addEventListener('change', (e)=> {
+      const file = importInput.files && importInput.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result||'[]');
+          if(!Array.isArray(data) && typeof data === 'object'){
+            // allow single object
+            const arr = [data];
+            mergeImport(arr);
+          } else if(Array.isArray(data)) {
+            mergeImport(data);
+          } else {
+            alert('Unsupported JSON format. Expect array or object.');
+          }
+        } catch(err){
+          alert('Failed to parse JSON: ' + err.message);
+        }
+        importInput.value='';
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  function mergeImport(arr){
+    if(!Array.isArray(arr) || !arr.length){ alert('No records in import.'); return; }
+    let list = read();
+    // Build id set
+    const existingIds = new Set(list.map(r=>r.id));
+    let added = 0, updated = 0;
+    arr.forEach(raw => {
+      if(!raw || typeof raw !== 'object') return;
+      let rec = {...raw};
+      if(!rec.id || existingIds.has(rec.id)){
+        // assign new id
+        rec.id = nextId(list);
+      }
+      rec.updatedAt = rec.updatedAt || Date.now();
+      rec.startDate = rec.startDate || (Date.now()-86400000);
+      rec.riskScore = typeof rec.riskScore === 'number' ? rec.riskScore : computeRisk(rec);
+      rec.pendingReviews = typeof rec.pendingReviews === 'number' ? rec.pendingReviews : computePending(rec);
+      rec.docsCount = typeof rec.docsCount === 'number' ? rec.docsCount : (rec.docsCount||0);
+      rec.ownersCount = typeof rec.ownersCount === 'number' ? rec.ownersCount : (rec.ownersCount||0);
+      rec.relationships = rec.relationships || [];
+      rec.timeline = rec.timeline || {};
+      list.push(rec); added++;
+    });
+    write(list);
+    renderList(document.querySelector('#entFilters .pill.active')?.dataset.f || 'all');
+    alert('Import complete. Added ' + added + ' entities.');
   }
 
   // Init
