@@ -181,7 +181,173 @@ margin-bottom: 18px;
 /* Mini timeline */
 .timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
 .tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
-@@ -344,6 +351,21 @@
+.tl-dot{width:10px; height:10px; border-radius:50%; background:#e2e8f0; border:2px solid #cbd5e1}
+.tl-step.done .tl-dot{background:#059669; border-color:#059669}
+.tl-step.pending .tl-dot{background:#e2e8f0}
+.tl-label{font-size:12px; color:#0f172a}
+.tl-time{font-size:11px; color:#475569}
+.tl-line{width:28px; height:2px; background:#cbd5e1}
+.timeline .tl-step.pending .tl-label{opacity:0.7}
+@media (max-width:1100px){ .app{grid-template-columns: 80px 1fr} .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none} .nav a{justify-content:center} .search{width:70%} }
+@media (max-width:800px){ .cards{grid-template-columns: repeat(2, 1fr)} .grid-2{grid-template-columns: 1fr} .grid-3{grid-template-columns: 1fr} .form-grid{grid-template-columns: 1fr} }
+</style>
+</head>
+<body data-page="dashboard">
+<a href="#main" class="kbd" style="position:absolute; left:-9999px; top:-9999px">Skip to content</a>
+<div class="app">
+
+<aside class="sidebar" aria-label="Sidebar Navigation">
+<div class="brand">
+<img src="Designer.png" alt="Logo" style="height:45px; width:auto; object-fit:contain; border-radius:12px; margin-bottom:8px;" />
+<h1>KYC Orchestrator</h1>
+</div>
+<nav class="nav">
+<a href="index.html" data-nav="dashboard" aria-label="Dashboard">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12l9-9 9 9" stroke="#0b1220" stroke-width="1.5"/><path d="M5 10v10h5v-6h4v6h5V10" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Dashboard</span>
+</a>
+<a href="fund-launch.html" data-nav="fund-launch" aria-label="Fund Launch">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M7 19V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v12" stroke="#0b1220" stroke-width="1.5"/><path d="M9 9h6m-6 4h6" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Fund Launch</span>
+<span class="tag">Product</span>
+</a>
+<a href="distributor-onboarding.html" data-nav="distributor" aria-label="Distributor Onboarding">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v6H3v-6a4 4 0 0 1 4-4z" stroke="#0b1220" stroke-width="1.5"/><path d="M7 8V6a5 5 0 0 1 10 0v2" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Distributor Onboarding</span>
+<span class="tag">KYD</span>
+</a>
+<a href="investor-onboarding.html" data-nav="investor" aria-label="Investor Onboarding">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" stroke="#0b1220" stroke-width="1.5"/><path d="M3 21a9 9 0 0 1 18 0" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Investor Onboarding</span>
+<span class="tag">KYC/KYB</span>
+</a>
+<a href="Entity-mgmt.html" data-nav="entity" aria-label="Entity Management">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#0b1220" stroke-width="1.5"/><path d="M8 12h8M8 16h8" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Entity Management</span>
+</a>
+<a href="asset-dd.html" data-nav="asset" aria-label="Asset & Vehicle Due Diligence">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="#0b1220" stroke-width="1.5"/><path d="M8 7v12m8-12v12" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Asset & Vehicle DD</span>
+<span class="tag">KYI</span>
+</a>
+<a href="monitoring.html" data-nav="monitoring" aria-label="Monitoring & Screening">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13l4 4 12-12" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Monitoring & Screening</span>
+<span class="tag">KYT</span>
+</a>
+<a href="digital-trading.html" data-nav="digital" aria-label="Digital Trading">
+<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="#0b1220" stroke-width="1.5"/><path d="M8 10h8M8 14h5" stroke="#0b1220" stroke-width="1.5"/></svg>
+<span class="text">Digital Trading</span>
+<span class="tag">Trades</span>
+</a>
+</nav>
+<div class="footer-note">Prototype • Static HTML • Local storage</div>
+</aside>
+
+<main class="main">
+<header class="header" role="banner">
+<div style="display:flex; align-items:center; justify-content:space-between;">
+<div class="search" role="search" aria-label="Search" style="width:52%; min-width:260px; max-width:480px;">
+<input placeholder="Search parties, products, accounts, cases… (press / to focus)" aria-label="Global search"/>
+<span class="kbd">/</span>
+</div>
+<div class="actions" style="display:flex; gap:10px; margin-left:auto;">
+<button class="btn ghost" aria-label="New case">New Case</button>
+<button class="btn primary" aria-label="Add party">+ Add Party</button>
+</div>
+</div>
+</header>
+<section class="content" id="main">
+<div class="page-title">
+<h2>Home Dashboard</h2>
+<div class="sub">Unified CLM • KYC/KYB/KYD/KYI/KYT • Digital Trading</div>
+</div>
+
+<div class="cards" aria-label="KPI cards">
+<div class="card"><div class="label">Median Time-to-KYC</div><div class="value">2.4 days</div><div class="trend">-12% WoW</div></div>
+<div class="card"><div class="label">Open Cases</div><div class="value">128</div><div class="trend">+5 today</div></div>
+<div class="card"><div class="label">High-Risk Parties</div><div class="value danger">17</div><div class="trend">3 require EDD</div></div>
+<div class="card"><div class="="label">Pending Approvals</div><div class="value">34</div><div class="trend">11 overdue</div></div>
+<div class="card"><div class="label">Screening Hits (24h)</div><div class="value">58</div><div class="trend">FPR 7.1%</div></div>
+<div class="card"><div class="label">Open Digital Trades</div><div class="value" id="openTrades">0</div><div class="trend"><span id="investedCount">0</span> invested</div></div>
+</div>
+
+<div class="grid-2">
+<div class="section" aria-label="Work Queue">
+<h3>My Work Queue</h3>
+<table class="table" role="table">
+<thead><tr><th>Case ID</th><th>Type</th><th>Party / Product</th><th>Risk</th><th>Age</th><th>Owner</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>#CA-10482</td><td>Investor KYC</td><td>Riverton Capital SICAV</td><td><span class="badge danger">High</span></td><td>2d</td><td>J. Han</td><td><span class="badge task">Docs requested</span></td></tr>
+<tr><td>#CA-10479</td><td>Distributor KYD</td><td>Alpha Distrib GmbH</td><td><span class="badge warn">Medium</span></td><td>5h</td><td>M. Rossi</td><td><span class="badge ok">Screened</span></td></tr>
+<tr><td>#CA-10463</td><td>Fund Launch</td><td>Northshore Growth AIF</td><td><span class="badge warn">Medium</span></td><td>1d</td><td>S. Patel</td><td><span class="badge task">Awaiting ESG pack</span></td></tr>
+<tr><td>#CA-10451</td><td>Asset DD</td><td>ISIN LU1234567890</td><td><span class="badge">Low</span></td><td>7h</td><td>L. Chen</td><td><span class="badge task">Checks passing</span></td></tr>
+<tr><td>#CA-10437</td><td>Monitoring</td><td>Txn T-998210</td><td><span class="badge danger">High</span></td><td>3h</td><td>Team KYT</td><td><span class="badge task">Escalated</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h3>Upcoming Reviews</h3>
+<div class="row"><span class="badge warn">Due in 3d</span> Blue Cove Partners LLP • Institutional • <span class="muted">Periodic review (36m)</span></div>
+<div class="row space-top"><span class="badge">Due in 7d</span> Arcturus Family Office • HNW • <span class="muted">UBO refresh</span></div>
+<div class="row space-top"><span class="badge">Due in 9d</span> Solaris Bank AG • Distributor • <span class="muted">KYD re-attestation</span></div>
+<hr class="sep"/>
+<h3>Compliance Health</h3>
+<div class="row small"><div style="width:140px">Sanctions coverage</div><div class="progress" style="flex:1"><span data-value="100"></span></div></div>
+<div class="row small space-top"><div style="width:140px">PEP coverage</div><div class="progress" style="flex:1"><span data-value="100"></span></div></div>
+<div class="row small space-top"><div style="width:140px">Adverse media</div><div class="progress" style="flex:1"><span data-value="84"></span></div></div>
+<div class="row small space-top"><div style="width:140px">ESG data</div><div class="progress" style="flex:1"><span data-value="74"></span></div></div>
+</div>
+</div>
+
+<div class="grid-2">
+<!-- Fund Launches Tracker -->
+<div class="section tracker" id="fundTracker">
+<div class="head" id="fundHead">
+<div class="chev" aria-hidden="true"></div>
+<h3>Fund Launches Tracker</h3>
+<div class="meta">
+<span class="stat"><span class="muted">Active</span> <b id="flActiveYTD">0</b> YTD • <b id="flActiveMTD">0</b> MTD</span>
+<span class="stat"><span class="muted">Completed</span> <b id="flDoneYTD">0</b> YTD • <b id="flDoneMTD">0</b> MTD</span>
+<span class="stat"><span class="muted">Avg time to launch</span> <b id="flAvgYTD">—</b> YTD • <b id="flAvgMTD">—</b> MTD</span>
+<span class="stat"><span class="muted">Pending reviews</span> <b id="flPendYTD">0</b> YTD • <b id="flPendMTD">0</b> MTD</span>
+</div>
+</div>
+<div class="tracker-body" id="fundBody">
+<table class="table" id="fundTable">
+<thead><tr><th>ID</th><th>Name</th><th>Stage</th><th>Jurisdiction</th><th>Vehicle</th><th>Pending</th><th>Days since start</th><th>Updated</th></tr></thead>
+<tbody></tbody>
+</table>
+<div class="small muted">Click a row to view details, or open <a href="fund-launch.html">Fund Launch</a> to edit/create.</div>
+</div>
+</div>
+
+<!-- Digital Trades Tracker -->
+<div class="section tracker" id="tradeTracker">
+<div class="head" id="tradeHead">
+<div class="chev" aria-hidden="true"></div>
+<h3>Digital Trades Tracker</h3>
+<div class="meta">
+<span class="stat"><span class="muted">Open</span> <b id="dtOpenYTD">0</b> YTD • <b id="dtOpenMTD">0</b> MTD</span>
+<span class="stat"><span class="muted">Invested</span> <b id="dtInvYTD">0</b> YTD • <b id="dtInvMTD">0</b> MTD</span>
+</div>
+</div>
+<div class="tracker-body" id="tradeBody">
+<table class="table" id="tradesTracker">
+<thead><tr><th>ID</th><th>Name</th><th>Stage</th><th>Accepted</th><th>Onboarding</th><th>Invested</th><th>Updated</th></tr></thead>
+<tbody></tbody>
+</table>
+<div class="small muted">Source: local storage. Open <a href="digital-trading.html">Digital Trading</a> to add/edit trades.</div>
+</div>
+</div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Detail dialog">
+<div class="box">
+<h4 id="modalTitle">Details</h4>
+<div id="modalBody" class="small"></div>
+<div class="actions"><button class="btn" id="modalClose">Close</button></div>
 </div>
 </div>
 
@@ -203,7 +369,165 @@ margin-bottom: 18px;
 </section>
 </main>
 </div>
-@@ -509,28 +531,50 @@
+<script>
+(() => {
+document.querySelectorAll('.nav a').forEach(a => { if (a.dataset.nav === 'dashboard') a.classList.add('active'); });
+})();
+</script>
+<script>
+(() => {
+const now = new Date();
+const y = now.getFullYear(), m = now.getMonth();
+
+const fmtTS = (ts) => ts ? new Date(ts).toLocaleString() : '—';
+const daysBetween = (a,b) => Math.max(0, Math.round((b - a) / 86400000));
+const inYear = (ts) => new Date(ts).getFullYear() === y;
+const inMonth = (ts) => { const d = new Date(ts); return d.getFullYear()===y && d.getMonth()===m; };
+const mean = (arr) => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0) / arr.length) : null;
+const showAvg = (v) => v===null ? '—' : (v + 'd');
+const $ = (sel) => document.querySelector(sel);
+
+// Collapsible
+const makeCollapsible = (headSel, bodySel, trackerSel) => {
+const head = $(headSel), body = $(bodySel), wrap = $(trackerSel);
+head.addEventListener('click', (e) => {
+if (e.target.closest('a')) return;
+body.classList.toggle('hidden'); wrap.classList.toggle('collapsed');
+});
+};
+makeCollapsible('#fundHead','#fundBody','#fundTracker');
+makeCollapsible('#tradeHead','#tradeBody','#tradeTracker');
+
+// Modal
+const modal = $('#modal'), modalTitle = $('#modalTitle'), modalBody = $('#modalBody');
+const openModal = (title, html) => { modalTitle.textContent = title; modalBody.innerHTML = html; modal.classList.remove('hidden'); };
+$('#modalClose').addEventListener('click', () => modal.classList.add('hidden'));
+modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+
+// Digital Trades
+const DT_KEY = 'kyc_trades';
+const loadTrades = () => {
+let list = [];
+try { list = JSON.parse(localStorage.getItem(DT_KEY) || '[]'); } catch (e) { list = []; }
+if (!list.length) {
+list = [{
+id:'DT-0001', name:'Seed Trade — Sustainable Credit A', closingDate:'2025-10-31',
+stage:'invite', closed:false, terms:'Sample T&Cs ...',
+tags:[{name:'amount',type:'number',required:true},{name:'currency',type:'dropdown',required:true,options:'USD,EUR'}],
+investors:[{email:'investor1@example.com', status:'accepted'}, {email:'investor2@example.com', status:'onboarding'}, {email:'investor3@example.com', status:'invited'}],
+createdAt: Date.now()-86400000*30, updatedAt: Date.now()-3600000
+}];
+localStorage.setItem(DT_KEY, JSON.stringify(list));
+}
+return list;
+};
+const trades = loadTrades();
+const openTrades = trades.filter(t=>!t.closed);
+const investedYTD = openTrades.reduce((acc,t)=> acc + t.investors.filter(i=> i.status==='invested' && inYear(t.updatedAt)).length, 0);
+const investedMTD = openTrades.reduce((acc,t)=> acc + t.investors.filter(i=> i.status==='invested' && inMonth(t.updatedAt)).length, 0);
+const openYTD = openTrades.filter(t=> inYear(t.createdAt)).length;
+const openMTD = openTrades.filter(t=> inMonth(t.createdAt)).length;
+$('#openTrades').textContent = openTrades.length;
+$('#investedCount').textContent = openTrades.reduce((acc,t)=> acc + t.investors.filter(i=>i.status==='invested').length, 0);
+$('#dtOpenYTD').textContent = openYTD; $('#dtOpenMTD').textContent = openMTD;
+$('#dtInvYTD').textContent = investedYTD; $('#dtInvMTD').textContent = investedMTD;
+
+const tBody = $('#tradesTracker tbody');
+const badge = (stage) => {
+const m = {created:'info', legal:'warn', im:'warn', blueprint:'', invite:'ok', live:'ok'};
+const cls = m[stage] || ''; const label = stage ? stage[0].toUpperCase()+stage.slice(1) : '—';
+return `<span class="badge ${cls}">${label}</span>`;
+};
+tBody.innerHTML = openTrades.map(t => {
+const a = t.investors.filter(i=>i.status==='accepted').length;
+const o = t.investors.filter(i=>i.status==='onboarding').length;
+const v = t.investors.filter(i=>i.status==='invested').length;
+return `<tr data-id="${t.id}" style="cursor:pointer"><td>${t.id}</td><td>${t.name||'—'}</td><td>${badge(t.stage)}</td><td>${a}</td><td>${o}</td><td>${v}</td><td>${fmtTS(t.updatedAt)}</td></tr>`;
+}).join('');
+tBody.querySelectorAll('tr').forEach(tr => tr.addEventListener('click', () => {
+const t = openTrades.find(x => x.id === tr.getAttribute('data-id'));
+if (!t) return;
+const list = t.investors.map(i => `<li>${i.email} — <b>${i.status}</b></li>`).join('');
+openModal(`Digital Trade ${t.id}`, `
+     <div class="row small"><div style="width:140px">Name</div><div>${t.name||'—'}</div></div>
+     <div class="row small"><div style="width:140px">Stage</div><div>${t.stage}</div></div>
+     <div class="row small"><div style="width:140px">Closing Date</div><div>${t.closingDate||'—'}</div></div>
+     <hr class="sep"/>
+     <div class="small"><b>Investors</b></div>
+     <ul class="small">${list||'<li>None</li>'}</ul>
+     <div class="actions"><a class="btn" href="digital-trading.html#${t.id}">Open in Digital Trading</a></div>
+   `);
+}));
+
+// Fund Launches
+const FL_KEY = 'kyc_fund_launches';
+const seedLaunches = () => {
+const now = new Date();
+const jan = new Date(now.getFullYear(),0,15).getTime();
+const mar = new Date(now.getFullYear(),2,5).getTime();
+const jul = new Date(now.getFullYear(),6,10).getTime();
+const aug = new Date(now.getFullYear(),7,22).getTime();
+const thisMon = new Date(now.getFullYear(), now.getMonth(), 2).getTime();
+return [
+{id:'FL-0001', name:'Silver Birch UCITS', jurisdiction:'Ireland', vehicle:'UCITS', sfdr:'Article 8', stage:'launched', startDate:jan, launchedDate:mar, pendingReviews:0, updatedAt:mar, timeline:{policy:jan, kyd:jan+1000*60*60*24*14, esg:new Date(new Date(jan).getFullYear(),1,10).getTime(), screening:new Date(new Date(mar).getFullYear(),2,1).getTime(), launch:mar}},
+{id:'FL-0002', name:'Northshore Growth AIF', jurisdiction:'Luxembourg', vehicle:'AIF', sfdr:'Article 8', stage:'esg', startDate:aug, launchedDate:null, pendingReviews:3, updatedAt:Date.now()-86400000*5, timeline:{policy:aug, kyd:aug+1000*60*60*24*7, esg:Date.now()-86400000*5}},
+{id:'FL-0003', name:'Sustainable Credit A', jurisdiction:'Luxembourg', vehicle:'UCITS', sfdr:'Article 9', stage:'policy', startDate:thisMon, launchedDate:null, pendingReviews:5, updatedAt:Date.now()-86400000*2, timeline:{policy:thisMon}},
+{id:'FL-0004', name:'Global Macro Fund', jurisdiction:'UK', vehicle:'AIF', sfdr:'Article 6', stage:'screening', startDate:jul, launchedDate:null, pendingReviews:2, updatedAt:Date.now()-86400000*9, timeline:{policy:jul, kyd:jul+1000*60*60*24*10, esg:jul+1000*60*60*24*20, screening:Date.now()-86400000*9}},
+];
+};
+const loadLaunches = () => {
+let list = [];
+try { list = JSON.parse(localStorage.getItem(FL_KEY) || '[]'); } catch (e) { list = []; }
+if (!list.length) { list = seedLaunches(); localStorage.setItem(FL_KEY, JSON.stringify(list)); }
+return list;
+};
+let launches = loadLaunches();
+
+const active = launches.filter(l => l.stage !== 'launched');
+const completed = launches.filter(l => l.stage === 'launched');
+const activeYTD = active.filter(l => inYear(l.startDate)).length;
+const activeMTD = active.filter(l => inMonth(l.startDate)).length;
+const doneYTD = completed.filter(l => inYear(l.launchedDate)).length;
+const doneMTD = completed.filter(l => inMonth(l.launchedDate)).length;
+const avgYTD = mean(completed.filter(l=> inYear(l.launchedDate)).map(l => daysBetween(l.startDate, l.launchedDate)));
+const avgMTD = mean(completed.filter(l=> inMonth(l.launchedDate)).map(l => daysBetween(l.startDate, l.launchedDate)));
+const pendYTD = active.filter(l=> inYear(l.startDate)).reduce((a,l)=>a+(l.pendingReviews||0),0);
+const pendMTD = active.filter(l=> inMonth(l.startDate)).reduce((a,l)=>a+(l.pendingReviews||0),0);
+$('#flActiveYTD').textContent = activeYTD; $('#flActiveMTD').textContent = activeMTD;
+$('#flDoneYTD').textContent = doneYTD; $('#flDoneMTD').textContent = doneMTD;
+$('#flAvgYTD').textContent = showAvg(avgYTD); $('#flAvgMTD').textContent = showAvg(avgMTD);
+$('#flPendYTD').textContent = pendYTD; $('#flPendMTD').textContent = pendMTD;
+
+const fBody = $('#fundTable tbody');
+const stageBadge = (s) => {
+const m = {policy:'task', distributor:'warn', esg:'warn', screening:'info', launched:'ok', intake:'task'};
+const cls = m[s] || 'task'; const label = s ? s[0].toUpperCase()+s.slice(1) : '—';
+return `<span class="badge ${cls}">${label}</span>`;
+};
+fBody.innerHTML = launches.map(l => `
+   <tr data-id="${l.id}" style="cursor:pointer">
+     <td>${l.id}</td><td>${l.name}</td><td>${stageBadge(l.stage)}</td><td>${l.jurisdiction}</td>
+     <td>${l.vehicle}</td><td>${l.pendingReviews||0}</td><td>${daysBetween(l.startDate, l.launchedDate || Date.now())}</td><td>${fmtTS(l.updatedAt)}</td>
+   </tr>`).join('');
+fBody.querySelectorAll('tr').forEach(tr => tr.addEventListener('click', () => {
+const l = launches.find(x => x.id === tr.getAttribute('data-id'));
+if (!l) return;
+const tl = l.timeline || {};
+const steps = [
+{key:'policy', label:'Policy', ts: tl.policy ?? l.startDate},
+{key:'kyd', label:'KYD', ts: tl.kyd ?? null},
+{key:'esg', label:'ESG', ts: tl.esg ?? null},
+{key:'screening', label:'Screening', ts: tl.screening ?? null},
+{key:'launch', label:'Launch', ts: tl.launch ?? l.launchedDate ?? null},
+];
+const tlHtml = steps.map((s, i) => {
+const done = !!s.ts;
+const timeTxt = done ? new Date(s.ts).toLocaleString() : '—';
+return `
+       <div class="tl-step ${done ? 'done':'pending'}">
+         <div class="tl-dot"></div>
+         <div class="tl-label">${s.label}</div>
+         <div class="tl-time">${timeTxt}</div>
        </div>
        ${i < steps.length - 1 ? '<div class="tl-line"></div>' : ''}
      `;
