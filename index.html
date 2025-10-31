@@ -171,6 +171,13 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
 .modal .box{background:#fff; border-radius:12px; border:1px solid var(--line); width:min(700px, 92vw); padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .modal .box h4{margin:0 0 8px 0}
 .modal .box .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px}
+/* Floating Chat Button */
+.floating-chat-btn{position:fixed; bottom:24px; right:24px; background:linear-gradient(135deg, var(--btn), rgba(33,207,178,0.85)); color:var(--btn-text); border:1px solid var(--btn-border); padding:14px 20px; border-radius:50px; font-size:15px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px rgba(33,207,178,0.35); transition:all 0.3s ease; z-index:100; display:flex; align-items:center; gap:8px;}
+.floating-chat-btn:hover{transform:translateY(-2px); box-shadow:0 12px 32px rgba(33,207,178,0.45); filter:brightness(1.08)}
+.floating-chat-btn:active{transform:translateY(0)}
+.floating-chat-btn svg{width:20px; height:20px}
+/* Chat Modal */
+.chat-modal .box{width:min(1000px, 95vw); max-height:90vh; padding:0; background:#0b1020; overflow:hidden}
 /* Mini timeline */
 .timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
 .tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
@@ -341,6 +348,21 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     <h4 id="modalTitle">Details</h4>
     <div id="modalBody" class="small"></div>
     <div class="actions"><button class="btn" id="modalClose">Close</button></div>
+  </div>
+</div>
+
+<!-- Floating Chat Button -->
+<button id="chatToOnboardBtn" class="floating-chat-btn" aria-label="Chat to Onboard">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  Chat to Onboard
+</button>
+
+<!-- Chat Modal -->
+<div id="chatModal" class="modal chat-modal hidden" role="dialog" aria-modal="true" aria-label="Chat to Onboard">
+  <div class="box">
+    <iframe id="chatIframe" src="fundbot_chat_prototype.html" style="width:100%; height:85vh; border:none; border-radius:12px;"></iframe>
   </div>
 </div>
 
@@ -529,6 +551,28 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   // React to changes
   window.addEventListener('storage', (e) => {
     if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
+  });
+
+  // Chat to Onboard functionality
+  const chatBtn = document.getElementById('chatToOnboardBtn');
+  const chatModal = document.getElementById('chatModal');
+  
+  chatBtn.addEventListener('click', () => {
+    chatModal.classList.remove('hidden');
+  });
+  
+  // Close chat modal when clicking outside
+  chatModal.addEventListener('click', (e) => {
+    if (e.target === chatModal) {
+      chatModal.classList.add('hidden');
+    }
+  });
+  
+  // Close chat modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !chatModal.classList.contains('hidden')) {
+      chatModal.classList.add('hidden');
+    }
   });
 })();
 </script>
