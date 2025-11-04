@@ -176,8 +176,8 @@ margin-bottom: 18px;
 .floating-chat-btn:hover{transform:translateY(-2px); box-shadow:0 12px 32px rgba(33,207,178,0.45); filter:brightness(1.08)}
 .floating-chat-btn:active{transform:translateY(0)}
 .floating-chat-btn svg{width:20px; height:20px}
-/* Chat Modal */
-.chat-modal .box{width:min(1000px, 95vw); max-height:90vh; padding:0; background:#0b1020; overflow:hidden}
+/* Chat Modal (resized to match FundBot chat card dimensions) */
+.chat-modal .box{width:min(460px, 95vw); max-height:calc(100vh - 120px); padding:0; background:#0b1020; overflow:hidden; border-radius:18px}
 /* Mini timeline */
 .timeline{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px}
 .tl-step{display:flex; flex-direction:column; align-items:center; gap:4px; min-width:90px}
@@ -362,7 +362,7 @@ margin-bottom: 18px;
 <!-- Chat Modal -->
 <div id="chatModal" class="modal chat-modal hidden" role="dialog" aria-modal="true" aria-label="Chat to Onboard">
   <div class="box">
-    <iframe id="chatIframe" src="fundbot_chat_prototype.html" sandbox="allow-scripts allow-same-origin" style="width:100%; height:85vh; border:none; border-radius:12px;"></iframe>
+  <iframe id="chatIframe" src="fundbot_chat_prototype.html" sandbox="allow-scripts allow-same-origin" style="width:100%; height:calc(100vh - 160px); max-height:780px; border:none; border-radius:18px;"></iframe>
   </div>
 </div>
 
