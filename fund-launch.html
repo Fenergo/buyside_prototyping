@@ -158,6 +158,17 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
 .input, select, textarea{width:100%; background:#ffffff; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 12px}
 .row{display:flex; gap:10px; align-items:center} hr.sep{border:0; border-top:1px solid var(--line); margin:14px 0}
 .right{margin-left:auto} .muted{color:var(--muted)} .small{font-size:12px} .space-top{margin-top:10px} .center{display:flex; align-items:center; justify-content:center} .hidden{display:none!important}
+/* Progress flow (replaces old stepper visual) */
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.flow-stage{flex:1;min-width:120px;background:#f1f5f9;border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;font-size:12px;font-weight:500;color:#475569;position:relative}
+.flow-stage.done{background:linear-gradient(90deg,#21cfb2,#0BAF82);color:#fff;border-color:#0BAF82}
+.flow-stage.current{background:#e3eefa;border-color:#4976a4;color:#0f172a;box-shadow:0 0 0 2px rgba(73,118,164,.15)}
+.flow-stage.upcoming{opacity:.55}
+/* Lower 3-column layout (Distributor narrower) */
+.grid-launch-lower{display:grid;grid-template-columns:.6fr 1fr 1fr;gap:16px;margin-top:16px}
+@media (max-width:1100px){.grid-launch-lower{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:800px){.grid-launch-lower{grid-template-columns:1fr}}
+#prospectTbl td,#prospectTbl th{font-size:13px}
 /* Collapsible tracker */
 .tracker .head{display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none}
 .chev{width:12px; height:12px; border-right:2px solid #334155; border-bottom:2px solid #334155; transform:rotate(45deg); transition: transform .15s ease;}
@@ -255,15 +266,15 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
           <div class="sub">Product governance • SFDR/EET • KYD • Approvals</div>
         </div>
         
-<div class="section">
-  <h3>Fund Launch — Journey</h3>
-  <div class="stepper" role="list">
-    <div class="step done" role="listitem"><div class="dot" aria-hidden="true"></div> Product Intake</div>
-    <div class="step current" role="listitem"><div class="dot" aria-hidden="true"></div> Policy Assessment</div>
-    <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> Distributor Readiness</div>
-    <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> ESG Pack (SFDR/EET)</div>
-    <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> Screening & Approvals</div>
-    <div class="step" role="listitem"><div class="dot" aria-hidden="true"></div> Launch & Publish</div>
+<div class="section" id="launchFlow">
+  <h3>Fund Launch — Progress</h3>
+  <div class="flow" role="list" aria-label="Fund launch progress flow">
+    <div class="flow-stage" data-stage="intake">Product Intake</div>
+    <div class="flow-stage" data-stage="policy">Policy Assessment</div>
+    <div class="flow-stage" data-stage="kyd">Distributor / KYD</div>
+    <div class="flow-stage" data-stage="esg">ESG Pack</div>
+    <div class="flow-stage" data-stage="screening">Screening & Approvals</div>
+    <div class="flow-stage" data-stage="launch">Launch & Publish</div>
   </div>
 </div>
 
@@ -307,7 +318,7 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   </div>
 </div>
 
-<div class="grid-2">
+<div class="grid-launch-lower">
   <div class="section">
     <h3>Distributor Readiness</h3>
     <div class="row small"><input type="checkbox" id="lic" /> <label for="lic">Licensing verified</label></div>
@@ -315,7 +326,24 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     <div class="row small"><input type="checkbox" id="train" /> <label for="train">Training & remuneration disclosures</label></div>
     <div class="row small"><input type="checkbox" id="agr" /> <label for="agr">Distribution agreements signed</label></div>
   </div>
-
+  <div class="section">
+    <h3>Prospect Search</h3>
+    <div class="small muted">Potential distributors / PE networks</div>
+    <div class="table-responsive">
+      <table class="table compact" id="prospectTbl">
+        <thead>
+          <tr><th>Prospect</th><th>Portfolio Size</th><th>Jurisdiction</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cobalt Capital Partners</td><td>€2.3bn</td><td>Luxembourg</td></tr>
+          <tr><td>Mariner Equity Group</td><td>€1.1bn</td><td>UK</td></tr>
+          <tr><td>Atlas Growth Holdings</td><td>€3.8bn</td><td>Ireland</td></tr>
+          <tr><td>Eastbridge Ventures</td><td>€950m</td><td>Germany</td></tr>
+          <tr><td>Pinnacle Strategic Capital</td><td>€4.2bn</td><td>Netherlands</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="section">
     <h3>ESG Data Pack</h3>
     <div class="row small"><span class="badge info">SFDR</span> <span id="sfdrLabel">Article 6</span></div>
@@ -386,6 +414,19 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
   };
   const currentId = () => form.getAttribute('data-id') || null;
 
+  const updateFlow = (stage) => {
+    const order = ['intake','policy','kyd','esg','screening','launch'];
+    const normalize = { launched:'launch' };
+    const current = normalize[stage] || stage || 'policy';
+    const idx = order.indexOf(current);
+    document.querySelectorAll('#launchFlow .flow-stage').forEach(el => {
+      const pos = order.indexOf(el.dataset.stage);
+      el.classList.remove('done','current','upcoming');
+      if (pos < idx) el.classList.add('done');
+      else if (pos === idx) el.classList.add('current');
+      else el.classList.add('upcoming');
+    });
+  };
   const populateFromRecord = (r) => {
     document.getElementById('fName').value = r.name || '';
     document.getElementById('fJur').value = r.jurisdiction || 'Luxembourg';
@@ -394,6 +435,7 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     updateSFDR();
     idSpan.textContent = r.id; savedSpan.textContent = fmtTS(r.updatedAt);
     form.setAttribute('data-id', r.id);
+    updateFlow(r.stage);
   };
 
   // Seed if empty and open by hash
@@ -429,7 +471,8 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     if (!rec.timeline.policy) rec.timeline.policy = rec.startDate || Date.now();
     if (!launches.find(x => x.id === id)) launches.push(rec);
     writeLaunches(launches);
-    populateFromRecord(rec);
+  populateFromRecord(rec);
+  updateFlow(rec.stage);
   });
 
   // Mark Launched
@@ -442,8 +485,10 @@ a{color:var(--link); text-decoration:none} a:hover{text-decoration:underline}
     rec.stage = 'launched'; rec.launchedDate = Date.now(); rec.pendingReviews = 0; rec.updatedAt = Date.now();
     rec.timeline = rec.timeline || {}; rec.timeline.launch = rec.launchedDate;
     writeLaunches(launches);
-    populateFromRecord(rec);
+  populateFromRecord(rec);
+  updateFlow(rec.stage);
   });
+  updateFlow(null);
 })();
 </script>
 </body>
