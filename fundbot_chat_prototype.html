@@ -3,479 +3,304 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FundBot Onboarding — Clickable Prototype</title>
+  <title>FundBot Onboarding — Teal UI (Arrows + 5s Animation)</title>
   <style>
     :root{
-      --bg:#0b1020;
-      --card:#0f172a;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --accent:#60a5fa;
-      --accent-2:#34d399;
-      --bot:#111827;
-      --user:#065f46;
-      --bot-bubble:#111827;
-      --user-bubble:#065f46;
-      --bot-bubble-bg:#0b1222;
-      --user-bubble-bg:#052b27;
-      --chip-bg:#1f2937;
-      --chip-text:#cbd5e1;
-      --ring: rgba(96,165,250,.35);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --teal-600:#009CA6; --teal-500:#00B4BE; --teal-100:#E6F7F8;
+      --blue-50:#EAF2FF; --blue-200:#D6E6FF; --blue-600:#2563EB;
+      --green-500:#16A34A; --green-600:#15803D;
+      --slate-900:#0F172A; --slate-600:#475569; --slate-200:#E2E8F0; --slate-100:#F1F5F9;
+      --white:#fff; --shadow:0 6px 24px rgba(15,23,42,.12);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0;
-      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 10% -10%, rgba(45,71,173,.25), transparent 60%),
-        radial-gradient(800px 500px at 110% 10%, rgba(42,171,112,.18), transparent 50%),
-        linear-gradient(180deg,#0b1020,#0b1020);
-      overflow:hidden;
-    }
-    .wrap{
-      max-width:980px;
-      margin:24px auto;
-      padding:0 16px;
-      height:calc(100% - 48px);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .hero{
-      display:flex;align-items:center;gap:14px;
-      padding:14px 16px;
-      border-radius:16px;
-      background:linear-gradient(180deg,#0c1428,#0a0f1f);
-      border:1px solid #1f2937;
-      box-shadow: var(--shadow);
-    }
-    .logo{
-      width:42px;height:42px;border-radius:12px;
-      background:linear-gradient(135deg,#243b55,#141e30);
-      display:grid;place-items:center;
-      border:1px solid #334155;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-    }
-    .logo svg{width:26px;height:26px;opacity:.9}
-    .hero h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.2px}
-    .hero .sub{font-size:12px;color:var(--muted)}
-    .hero .spacer{flex:1}
-    .badge{
-      font-size:12px;padding:6px 10px;border-radius:999px;
-      background:rgba(96,165,250,.12);
-      border:1px solid rgba(96,165,250,.35);
-      color:#cfe6ff;
-    }
-    .card{
-      display:flex;flex-direction:column;
-      background:linear-gradient(180deg,#0b1222,#0a0f1f 60%);
-      border:1px solid #1f2937;
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      min-height:0;
-      overflow:hidden;
-    }
-    .toolbar{
-      display:flex;align-items:center;gap:8px;
-      padding:10px;
-      border-bottom:1px solid #172036;
-      background:linear-gradient(180deg,#0b1222,#0a0f1f);
-    }
-    .toolbar .left{display:flex;align-items:center;gap:8px}
-    .toolbar button, .toolbar .seg input + label{
-      font:13px/1.2 system-ui,Segoe UI,Roboto;
-      padding:8px 12px;border-radius:10px;
-      border:1px solid #24324d;
-      background:#0f1830;color:#e3ecff;
-      cursor:pointer;user-select:none;
-      transition:all .15s ease;
-    }
-    .toolbar button:hover,
-    .toolbar .seg input:checked + label{border-color:#35569f;background:#14204a}
-    .toolbar button:disabled{opacity:.5;cursor:not-allowed}
-    .toolbar .seg{display:flex;gap:0}
-    .toolbar .seg input{display:none}
-    .toolbar .seg label{border-radius:10px}
-    .toolbar .seg label:first-of-type{border-top-right-radius:0;border-bottom-right-radius:0}
-    .toolbar .seg label:last-of-type{border-top-left-radius:0;border-bottom-left-radius:0;margin-left:-1px}
-    .toolbar .spacer{flex:1}
-    .progress{
-      height:6px;background:#0b1222;border-top:1px solid #172036;
-    }
-    .bar{
-      height:100%;width:0%;
-      background:linear-gradient(90deg,#60a5fa,#34d399);
-      transition:width .3s ease;
-    }
-    .chat{
-      position:relative;
-      padding:14px 14px 18px;
-      overflow:auto;
-      min-height:260px;max-height:58vh;
-      scroll-behavior:smooth;
-    }
+    body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--slate-100); color:var(--slate-900);}
+    .wrap{max-width:460px;margin:18px auto;padding:0 12px}
+    .card{display:flex;flex-direction:column;background:var(--white);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--slate-200);height:calc(100vh - 36px);max-height:820px}
+    .app-header{display:flex;align-items:center;gap:10px;padding:12px;background:linear-gradient(90deg,var(--teal-600),var(--teal-500));color:#fff}
+    .brand-icon{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.18);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25)}
+    .brand-icon svg{width:22px;height:22px;opacity:.95}
+    .headings{display:flex;flex-direction:column;min-width:0}
+    .title{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .subtitle{font-size:12px;opacity:.9}
+    .spacer{flex:1}
+    .pill{font-weight:700;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:6px 10px;border-radius:999px;margin-right:6px}
+    .icon-btn{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);cursor:pointer;user-select:none;transition:transform .08s ease,background .15s ease,opacity .15s ease}
+    .icon-btn:hover{background:rgba(255,255,255,.28)} .icon-btn:active{transform:scale(.96)} .icon-btn[disabled]{opacity:.45;cursor:not-allowed}
+    .icon-btn svg{width:18px;height:18px;color:#fff}
+    .chat{position:relative;padding:16px;overflow:auto;flex:1;background:var(--white)}
     .row{display:flex;gap:10px;margin:10px 0;align-items:flex-start}
-    .row.user{flex-direction:row-reverse}
-    .avatar{
-      width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
-      color:#e5e7eb;font-size:12px;font-weight:700;letter-spacing:.5px;
-      border:1px solid #2a3b63;
-      background:linear-gradient(180deg,#10203b,#0b1428);
-      flex:0 0 34px;
-    }
-    .avatar.user{border-color:#1f6f63;background:linear-gradient(180deg,#0a2c2a,#08221f)}
-    .bubble{
-      max-width:78%;
-      padding:12px 14px;border-radius:16px;
-      border:1px solid #1c2a4b;
-      background:var(--bot-bubble-bg);
-      color:#dbeafe;
-      position:relative;
-      box-shadow: 0 8px 20px rgba(0,0,0,.25);
-    }
-    .row.user .bubble{
-      background:var(--user-bubble-bg);
-      border-color:#11443f;
-      color:#e6fffb;
-    }
-    .name{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .meta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
-    .chip{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:11px;padding:4px 8px;border-radius:999px;
-      background:var(--chip-bg);color:var(--chip-text);
-      border:1px solid #293548;white-space:nowrap;
-    }
-    abbr.chip{ text-decoration: none; cursor: help; }
-    .typing{
-      display:inline-flex;gap:6px;align-items:center;
-      background:#0a1428;border:1px dashed #2b3a62;color:#bfdbfe;
-      padding:8px 12px;border-radius:14px;font-size:13px;
-    }
-    .dot{width:6px;height:6px;border-radius:999px;background:#93c5fd;opacity:.5;animation:blink 1.2s infinite}
+    .row.right{flex-direction:row-reverse}
+    .avatar{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-weight:700;color:#fff;background:linear-gradient(135deg,#6aa0ff,#3e6af2);border:2px solid #fff;box-shadow:0 0 0 2px rgba(37,99,235,.2);overflow:hidden;flex:0 0 36px}
+    .avatar.user{background:linear-gradient(135deg,#4ade80,#22c55e);box-shadow:0 0 0 2px rgba(34,197,94,.25)}
+    .avatar.bot{background:linear-gradient(135deg,#8b5cf6,#6d28d9);box-shadow:0 0 0 2px rgba(139,92,246,.25)}
+    .content{max-width:75%}
+    .meta{font-size:12px;margin-bottom:6px;color:var(--blue-600)}
+    .meta.user{color:var(--green-600);text-align:right}
+    .meta.bot{color:#6d28d9}
+    .bubble{padding:12px 14px;border-radius:16px;border:1px solid var(--slate-200);background:var(--blue-50);color:#0f172a}
+    .row.right .bubble{background:var(--green-500);border-color:transparent;color:#fff;border-radius:16px}
+    .bubble.bot{background:#F2ECFF;border-color:#E6DAFF}
+    .footer{border-top:1px solid var(--slate-200);background:var(--white);padding:12px;text-align:center;color:#0b2339;font-weight:700;letter-spacing:.3px}
+    .hidden{display:none}
+    a{color:#0f62fe;text-decoration:underline;text-underline-offset:2px}
+    .action{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .fake-upload{border:1px dashed var(--slate-200);background: var(--slate-100);color:#475569;padding:8px 10px;border-radius:12px;font-size:13px}
+    .fake-upload label{margin-left:8px;padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--slate-200);cursor:pointer}
+    .action button{padding:6px 10px;border-radius:999px;border:1px solid var(--slate-200);background: var(--slate-100);cursor:pointer}
+    .action button:disabled{opacity:.6}
+    .empty-hint{position:absolute;inset:0;display:grid;place-items:center;pointer-events:auto}
+    .hint-pill{display:inline-flex;align-items:center;gap:10px;background:var(--teal-100);border:1px solid var(--slate-200);padding:10px 14px;border-radius:999px;color:#065f63;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.08);cursor:pointer}
+    .kbd{font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:4px 8px;border-radius:8px;background:#fff;border:1px solid var(--slate-200);color:#0f172a}
+    .status{position:absolute;right:12px;bottom:12px;font-size:12px;color:#475569;background:#fff;border:1px solid var(--slate-200);padding:4px 8px;border-radius:8px}
+
+    /* 5s message animation (typing + progress + fade-in) */
+    .typing{display:inline-flex;align-items:center;gap:6px;background:var(--teal-100);border:1px dashed var(--slate-200);color:#065f63;padding:8px 10px;border-radius:14px;font-size:13px}
+    .dot{width:6px;height:6px;border-radius:999px;background:#00a2ac;opacity:.4;animation:blink 1.2s infinite}
     .dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
     @keyframes blink{0%,60%,100%{opacity:.2}30%{opacity:1}}
-    .action{
-      margin-top:10px;display:flex;gap:8px;flex-wrap:wrap
-    }
-    .fake-upload{
-      border:1px dashed #2b3a62;border-radius:12px;padding:10px 12px;
-      display:flex;gap:10px;align-items:center;background:#0a1428;color:#cfe6ff
-    }
-    .fake-upload input{display:none}
-    .fake-upload label{
-      padding:6px 10px;border-radius:8px;border:1px solid #2a3b63;background:#0f1830;cursor:pointer
-    }
-    .files{font-size:12px;color:#9db5d5}
-    .notice{font-size:11px;color:#93a7c3; margin-top:4px}
-    .footer-note{font-size:11px;color:#93a7c3;text-align:center;margin-top:10px}
-    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Liberation Mono",monospace;
-         font-size:11px;padding:2px 6px;border-radius:6px;border:1px solid #2b3a62;background:#0f1830}
-    .hidden{display:none}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .soft{opacity:.85}
-    
-:root{
-  --fen-teal: #00A7B3;      /* brand teal */
-  --fen-teal-dark: #05656b; /* 20–30% darker than brand teal */
-}
-.chat{
-  background: linear-gradient(180deg, var(--fen-teal-dark), #053c40) !important;
-}
-:root{
-  --user-bubble-bg:#073a3e;
-  --bot-bubble-bg:#092f33;
-}
-body{
-  background: #fff !important;
-}
+    .revealbar{height:2px;background:var(--slate-200);border-radius:999px;overflow:hidden;margin-top:8px}
+    .reveal{height:100%;width:0%;background:linear-gradient(90deg,var(--teal-600),var(--teal-500));animation:fill 5s linear forwards}
+    @keyframes fill{to{width:100%}}
+    .fadein{animation:fadeIn .24s ease-out both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="hero" role="banner" aria-label="Prototype Header">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7.5 4.33v9.34L12 21l-7.5-4.33V7.33L12 3z" stroke="#8ab4ff" stroke-width="1.2"/>
-          <circle cx="12" cy="12" r="3.8" stroke="#34d399" stroke-width="1.2"/>
-        </svg>
-      </div>
-      <div>
-        <h1>FundBot Onboarding • Private Markets</h1>
-        <div class="sub soft">Demo chat: AML/KYC + FATCA/CRS collection • “Global Growth Partners III”</div>
-      </div>
-      <div class="spacer"></div>
-      <span class="badge" id="statusBadge" aria-live="polite">Ready</span>
-    </header>
-
-    <section class="card" aria-label="Chat Prototype Card">
-      <div class="toolbar" role="toolbar" aria-label="Playback controls">
-        <div class="left">
-          <button id="nextBtn" title="Reveal next message (→)">Next</button>
-          <button id="playBtn" title="Play / Pause (Space)">Play</button>
-          <button id="resetBtn" title="Reset (R)">Reset</button>
-          <div class="seg" role="group" aria-label="Mode">
-            <input type="radio" name="mode" id="modeAnimated" checked>
-            <label for="modeAnimated" title="Show typing animations">Animated</label>
-            <input type="radio" name="mode" id="modeInstant">
-            <label for="modeInstant" title="Instantly show messages">Instant</label>
-          </div>
+    <section class="card" aria-label="Chat card" tabindex="-1">
+      <header class="app-header">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 21h18M6 21V6h12v15M9 21V3h6v18M9 7h6M9 11h6M9 15h6" />
+          </svg>
+        </div>
+        <div class="headings">
+          <div class="title">Global Growth Partners III</div>
+          <div class="subtitle">Investment Onboarding</div>
         </div>
         <div class="spacer"></div>
-        <button id="copyBtn" title="Copy transcript">Copy transcript</button>
-      </div>
-      <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="pill">FundBot</div>
+        <button class="icon-btn" id="prevBtn" title="Previous (←)" aria-label="Previous">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 5l-7 7 7 7"/></svg>
+        </button>
+        <button class="icon-btn" id="nextBtn" title="Next (→)" aria-label="Next">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 5l7 7-7 7"/></svg>
+        </button>
+        <button class="icon-btn" id="resetBtn" title="Restart (R)" aria-label="Restart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 12a9 9 0 1 1-3-6.7"></path>
+            <path d="M21 3v6h-6"></path>
+          </svg>
+        </button>
+      </header>
+
       <div class="chat" id="messages" aria-live="polite" aria-label="Conversation">
-        <!-- messages appear here -->
+        <div class="empty-hint" id="emptyHint">
+          <div class="hint-pill" id="hintStart"><span>Start demo</span><span class="kbd">→</span></div>
+        </div>
+        <div class="status" id="status">0 / 19</div>
       </div>
+
+  <footer class="footer"><img src="fen_logo.jpg" alt="Fenergo" style="height:28px;width:auto;vertical-align:middle;display:inline-block" /></footer>
     </section>
-    <div class="footer-note">
-      This prototype is client-side only — no data leaves your browser. Shortcuts: <span class="kbd">→</span> next, <span class="kbd">Space</span> play/pause, <span class="kbd">R</span> reset.
-    </div>
   </div>
 
-  <template id="msgTpl">
-    <div class="row">
-      <div class="avatar" aria-hidden="true">FB</div>
+  <template id="rowTpl">
+    <div class="row fadein">
+      <div class="avatar">AM</div>
       <div class="content">
-        <div class="name">FundBot</div>
-        <div class="bubble"></div>
-        <div class="meta"></div>
+        <div class="meta">Asset Manager • 9:14 AM</div>
+        <div class="bubble">Message text</div>
       </div>
     </div>
   </template>
 
   <script>
     const messages = [
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`Hi FundBot, I received the invitation link to join the 'Global Growth Partners III' private equity fund and I'm ready to complete the application process.`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Welcome, Mr. Evans. I'm FundBot, your guide for the onboarding process. I will ask you a series of compliance questions and request necessary documentation to comply with international AML (Anti-Money Laundering) and KYC (Know Your Customer) regulations. Let's begin with your identity verification. Please upload a clear scan or photograph of your government-issued photo identification (passport or driver's license) and a recent proof of address (utility bill or bank statement, dated within the last three months).`, action:'upload', actionLabel:'Upload ID & Proof of Address'},
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`I've just uploaded my passport and a utility bill. Is there anything else you need to verify my personal identity?`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Thank you. I have received the documents and the system is verifying them now. The next crucial step is determining your Source of Wealth (SOW) and Source of Funds (SOF). Please provide a brief description of the origin of the funds you intend to invest and upload supporting documentation, such as bank statements, tax returns, or employment records.`, action:'upload', actionLabel:'Upload SOW/SOF docs'},
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`The funds are from the sale of my previous business last year. I will upload the closing statement from the sale now, along with my most recent tax return.`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Excellent. Now we move to the Related Parties section, which is critical for identifying potential conflicts of interest or Politically Exposed Persons (PEPs). Do you, or any immediate family member (spouse, parents, or children), hold a prominent public function, or are you closely associated with any such person? This includes roles in government, the judiciary, or international organizations.`, action:'choice', options:['No','Yes']},
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`No, I don't hold any public office, and neither does my immediate family.`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Thank you for confirming. Finally, in compliance with FATCA and CRS regulations, we require information on any associated entities or trusts that will be holding a direct or indirect interest in this investment. Are you investing as an individual, or through a corporate vehicle, foundation, or trust?`, action:'choice', options:['Individual','Corporate / Trust']},
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`I am investing through my personal holding company, "Evans Capital Inc."`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Understood. Please upload the Certificate of Incorporation and the Shareholders Register for Evans Capital Inc. Once those documents are processed, and your initial KYC documents pass verification, your account will be ready for the final commitment signature.`, action:'upload', actionLabel:'Upload corporate documents'},
-      {sender:'user', name:'Mr. Evans', avatar:'ME', text:`Okay, uploading those two corporate documents now. How long will the final verification take?`},
-      {sender:'bot', name:'FundBot', avatar:'FB', text:`Initial document screening is typically complete within four business hours. I will notify you immediately via email once your account is ready for the final signing of the Limited Partnership Agreement (LPA). Thank you for completing your onboarding compliance, Mr. Evans.`}
+      {id:1, actor:"Asset Manager", sender:"asset", time:"9:14 AM",
+       text:`Hi Mr. Evans—thanks for your interest in Global Growth Partners III. We’ve just launched and would be delighted to have you participate. Here’s our marketing page with the investment thesis, target securities/assets, and a 5‑year forecast chart: <a href="https://example.com/funds/global-growth-partners-iii" target="_blank" rel="noopener">https://example.com/funds/global-growth-partners-iii</a>. (Illustrative only—see PPM/LPA for definitive terms.)`},
+      {id:2, actor:"Mr. Evans", sender:"user", time:"9:16 AM",
+       text:`Thanks. What’s the minimum investment amount?`},
+      {id:3, actor:"Asset Manager", sender:"asset", time:"9:17 AM",
+       text:`Minimum commitment is USD 250,000 (higher in USD 50,000 increments).`},
+      {id:4, actor:"Mr. Evans", sender:"user", time:"9:18 AM",
+       text:`Is there any lock‑in period?`},
+      {id:5, actor:"Asset Manager", sender:"asset", time:"9:19 AM",
+       text:`It’s a closed‑end private equity structure—commitments are locked for the life of the fund (target 10 years, with up to two 1‑year extensions). No early redemptions. Capital is called during a ~5‑year investment period and distributions occur from realizations.`},
+      {id:6, actor:"Mr. Evans", sender:"user", time:"9:21 AM",
+       text:`Understood. What’s the management fee?`},
+      {id:7, actor:"Asset Manager", sender:"asset", time:"9:22 AM",
+       text:`2.0% p.a. on committed capital during the investment period, stepping down to 1.5% p.a. on invested capital thereafter (accrues quarterly; full details in the PPM).`},
+      {id:8, actor:"Asset Manager", sender:"asset", time:"9:23 AM",
+       text:`Great—if you’re ready, our AI assistant FundBot will guide you through onboarding and compliance.`},
+      {id:9, actor:"FundBot", sender:"bot", time:"9:23 AM",
+       text:`Welcome, Mr. Evans. I’m FundBot, your guide for the onboarding process. I will ask you a series of compliance questions and request necessary documentation to comply with international AML and KYC regulations. Let’s begin with your identity verification. Please upload a clear scan or photograph of your government‑issued photo identification (passport or driver’s license) and a recent proof of address (utility bill or bank statement, dated within the last three months).`, action:'upload'},
+      {id:10, actor:"Mr. Evans", sender:"user", time:"9:28 AM",
+       text:`I’ve just uploaded my passport and a utility bill. Is there anything else you need to verify my personal identity?`},
+      {id:11, actor:"FundBot", sender:"bot", time:"9:29 AM",
+       text:`Thank you. I have received the documents and the system is verifying them now. The next crucial step is determining your SOW and SOF. Please provide a brief description of the origin of the funds you intend to invest and upload supporting documentation, such as bank statements, tax returns, or employment records.`, action:'upload'},
+      {id:12, actor:"Mr. Evans", sender:"user", time:"9:32 AM",
+       text:`The funds are from the sale of my previous business last year. I will upload the closing statement from the sale now, along with my most recent tax return.`},
+      {id:13, actor:"FundBot", sender:"bot", time:"9:33 AM",
+       text:`Excellent. Now we move to the Related Parties section, which is critical for identifying potential conflicts of interest or PEPs. Do you, or any immediate family member (spouse, parents, or children), hold a prominent public function, or are you closely associated with any such person?`, action:'choice', options:['No','Yes']},
+      {id:14, actor:"Mr. Evans", sender:"user", time:"9:34 AM",
+       text:`No, I don’t hold any public office, and neither does my immediate family.`},
+      {id:15, actor:"FundBot", sender:"bot", time:"9:35 AM",
+       text:`Thank you for confirming. Finally, in compliance with FATCA and CRS regulations, we require information on any associated entities or trusts that will be holding a direct or indirect interest in this investment. Are you investing as an individual, or through a corporate vehicle, foundation, or trust?`, action:'choice', options:['Individual','Corporate / Trust']},
+      {id:16, actor:"Mr. Evans", sender:"user", time:"9:36 AM",
+       text:`I am investing through my personal holding company, “Evans Capital Inc.”`},
+      {id:17, actor:"FundBot", sender:"bot", time:"9:37 AM",
+       text:`Understood. Please upload the Certificate of Incorporation and the Shareholders Register for Evans Capital Inc. Once those documents are processed, and your initial KYC documents pass verification, your account will be ready for the final commitment signature.`, action:'upload'},
+      {id:18, actor:"Mr. Evans", sender:"user", time:"9:39 AM",
+       text:`Okay, uploading those two corporate documents now. How long will the final verification take?`},
+      {id:19, actor:"FundBot", sender:"bot", time:"9:40 AM",
+       text:`Initial document screening is typically complete within four business hours. I will notify you immediately via email once your account is ready for the final signing of the Limited Partnership Agreement (LPA). Thank you for completing your onboarding compliance, Mr. Evans.`}
     ];
 
-    const GLOSSARY = [
-      ['\\bAML\\b','Anti-Money Laundering'],
-      ['\\bKYC\\b','Know Your Customer'],
-      ['\\bSOW\\b','Source of Wealth'],
-      ['\\bSOF\\b','Source of Funds'],
-      ['\\bPEPs?\\b','Politically Exposed Persons'],
-      ['\\bFATCA\\b','Foreign Account Tax Compliance Act'],
-      ['\\bCRS\\b','Common Reporting Standard'],
-      ['\\bLPA\\b','Limited Partnership Agreement']
-    ];
-
-    const $ = sel => document.querySelector(sel);
+    const $ = s => document.querySelector(s);
     const list = $('#messages');
-    const tpl = $('#msgTpl');
-    const bar = $('#bar');
-    const playBtn = $('#playBtn');
+    const tpl = $('#rowTpl');
+    const prevBtn = $('#prevBtn');
     const nextBtn = $('#nextBtn');
     const resetBtn = $('#resetBtn');
-    const copyBtn = $('#copyBtn');
-    const status = $('#statusBadge');
-    const modeAnimated = $('#modeAnimated');
-    const modeInstant = $('#modeInstant');
+    const emptyHint = $('#emptyHint');
+    const hintStart = $('#hintStart');
+    const status = $('#status');
 
-    let i = 0;
-    let playing = false;
-    let typingEl = null;
+    let idx = 0; // number of visible messages (start blank)
+    let animating = false;
+    let animTimer = null;
 
-    function annotate(text){
-      let html = text;
-      for(const [pattern, title] of GLOSSARY){
-        const re = new RegExp(pattern,'g');
-        html = html.replace(re, `<abbr class="chip" title="${title}">$&</abbr>`);
-      }
-      return html;
-    }
-
-    function createRow(msg){
-      const node = tpl.content.firstElementChild.cloneNode(true);
-      node.classList.add(msg.sender);
-      node.querySelector('.avatar').textContent = msg.avatar || (msg.sender==='bot'?'FB':'ME');
-      node.querySelector('.avatar').classList.toggle('user', msg.sender==='user');
-      node.querySelector('.name').textContent = msg.name;
-      node.querySelector('.bubble').innerHTML = annotate(msg.text);
-      return node;
-    }
+    function avatarClass(sender){ return sender==='user' ? 'avatar user' : sender==='bot' ? 'avatar bot' : 'avatar'; }
+    function bubbleClass(sender){ return sender==='user' ? 'bubble user' : sender==='bot' ? 'bubble bot' : 'bubble'; }
+    function rowSide(sender){ return sender==='user' ? 'row right' : 'row'; }
+    function metaColor(sender){ return sender==='user' ? 'user' : sender==='bot' ? 'bot' : ''; }
 
     function addActionUI(container, msg){
       if(msg.action === 'upload'){
         const el = document.createElement('div');
         el.className = 'action';
-        el.innerHTML = `
-          <div class="fake-upload">
-            <input type="file" id="upl-${i}" multiple>
-            <label for="upl-${i}" aria-label="Choose files">Select files</label>
-            <div class="files">No files chosen</div>
-          </div>
-          <div class="notice">Demo only — files are not uploaded.</div>
-        `;
-        const input = el.querySelector('input');
-        const files = el.querySelector('.files');
-        input.addEventListener('change', ()=>{
-          const names = [...input.files].map(f=>f.name).slice(0,3).join(', ');
-          files.textContent = input.files.length ? `${input.files.length} file(s) selected${names?`: ${names}`:''}` : 'No files chosen';
-          flashStatus('Files selected');
-        });
+        el.innerHTML = `<div class="fake-upload"><strong>Upload</strong><label tabindex="0">Choose files<input type="file" class="hidden" multiple></label></div>`;
         container.appendChild(el);
       }
       if(msg.action === 'choice' && Array.isArray(msg.options)){
         const el = document.createElement('div');
         el.className = 'action';
         for(const opt of msg.options){
-          const btn = document.createElement('button');
-          btn.textContent = opt;
-          btn.type = 'button';
-          btn.addEventListener('click',()=>{
-            flashStatus(`Selected: ${opt}`);
-            [...el.querySelectorAll('button')].forEach(b=>b.disabled=true);
-          });
-          el.appendChild(btn);
+          const b = document.createElement('button');
+          b.textContent = opt;
+          b.addEventListener('click', ()=>{ el.querySelectorAll('button').forEach(x=>x.disabled=true); });
+          el.appendChild(b);
         }
         container.appendChild(el);
       }
     }
 
-    function showTyping(){
-      if(typingEl) return;
-      typingEl = document.createElement('div');
-      typingEl.className = 'row';
-      typingEl.innerHTML = `
-        <div class="avatar">FB</div>
-        <div class="content">
-          <div class="name">FundBot</div>
-          <div class="typing" aria-live="polite">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          </div>
-        </div>`;
-      list.appendChild(typingEl);
-      scrollToBottom();
-    }
-
-    function hideTyping(){
-      if(typingEl){
-        typingEl.remove();
-        typingEl = null;
-      }
-    }
-
-    function computeDelay(msg){
-      // scale delay to message length, capped for snappy demo
-      const base = 350;
-      const perChar = 14; // ms
-      const max = 2400;
-      const len = (msg.text||'').length;
-      return Math.min(max, base + len*perChar);
-    }
-
-    function scrollToBottom(){
-      list.lastElementChild?.scrollIntoView({block:'end'});
-    }
-
-    function updateProgress(){
-      const pct = Math.round((i / messages.length) * 100);
-      bar.style.width = pct + '%';
-      status.textContent = (i>=messages.length) ? 'Complete' : `Step ${i}/${messages.length}`;
-    }
-
-    function flashStatus(text){
-      status.textContent = text;
-      status.style.outline = `2px solid var(--ring)`;
-      setTimeout(()=>{status.style.outline='none'; updateProgress();}, 900);
-    }
-
-    function renderMessage(msg){
-      const row = createRow(msg);
-      list.appendChild(row);
+    function renderMessage(m){
+      const row = tpl.content.firstElementChild.cloneNode(true);
+      row.className = rowSide(m.sender) + ' fadein';
+      row.querySelector('.avatar').className = avatarClass(m.sender);
+      row.querySelector('.avatar').textContent = m.sender==='user' ? 'ME' : (m.sender==='bot' ? 'FB' : 'AM');
+      const meta = row.querySelector('.meta');
+      const cls = metaColor(m.sender);
+      if(cls) meta.classList.add(cls);
+      meta.textContent = `${m.actor} • ${m.time}`;
       const bubble = row.querySelector('.bubble');
-      addActionUI(row.querySelector('.content'), msg);
-      scrollToBottom();
-      return row;
+      bubble.className = bubbleClass(m.sender);
+      bubble.innerHTML = m.text;
+      addActionUI(row.querySelector('.content'), m);
+      list.appendChild(row);
     }
 
-    function reset(){
-      i = 0;
-      playing = false;
-      hideTyping();
+    function renderMessageAnimated(m){
+      const row = tpl.content.firstElementChild.cloneNode(true);
+      row.className = rowSide(m.sender) + ' fadein';
+      row.querySelector('.avatar').className = avatarClass(m.sender);
+      row.querySelector('.avatar').textContent = m.sender==='user' ? 'ME' : (m.sender==='bot' ? 'FB' : 'AM');
+      const meta = row.querySelector('.meta');
+      const cls = metaColor(m.sender);
+      if(cls) meta.classList.add(cls);
+      meta.textContent = `${m.actor} • ${m.time}`;
+      const bubble = row.querySelector('.bubble');
+      bubble.className = bubbleClass(m.sender);
+      // Loading placeholder (typing + 5s progress)
+      bubble.innerHTML = `<div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>&nbsp;typing…</span></div><div class="revealbar"><div class="reveal"></div></div>`;
+      list.appendChild(row);
+      // Disable "next" while animating; prev/reset still work
+      animating = true; updateButtons();
+      // After 5s, reveal content and actions
+      animTimer = setTimeout(()=>{
+        bubble.innerHTML = m.text;
+        addActionUI(row.querySelector('.content'), m);
+        animating = false; animTimer = null; updateButtons();
+        list.lastElementChild?.scrollIntoView({block:'end'});
+      }, 5000);
+    }
+
+    function cancelAnimation(){
+      if(animTimer){ clearTimeout(animTimer); animTimer = null; }
+      animating = false;
+    }
+
+    function renderSlice(n, {animateLast=false} = {}){
+      // Cancel any pending animation to avoid updating removed nodes
+      cancelAnimation();
       list.innerHTML = '';
-      bar.style.width = '0%';
-      status.textContent = 'Ready';
-      playBtn.textContent = 'Play';
-      nextBtn.disabled = false;
-      playBtn.disabled = false;
-      modeAnimated.disabled = false;
-      modeInstant.disabled = false;
+      emptyHint.classList.toggle('hidden', n > 0);
+      const count = Math.max(0, Math.min(n, messages.length));
+      for(let k=0; k<count; k++){
+        if(animateLast && k === count-1){
+          renderMessageAnimated(messages[k]);
+        }else{
+          renderMessage(messages[k]);
+        }
+      }
+      list.lastElementChild?.scrollIntoView({block:'end'});
+      if(!animateLast) updateButtons();
     }
 
-    async function next({instant=false}={}){
-      if(i >= messages.length){ return; }
-      const msg = messages[i++];
-      updateProgress();
-
-      if(msg.sender === 'bot' && !instant && modeAnimated.checked){
-        showTyping();
-        await new Promise(res=>setTimeout(res, computeDelay(msg)));
-        hideTyping();
-      }
-      renderMessage(msg);
+    function updateButtons(){
+      prevBtn.disabled = (idx <= 0);
+      nextBtn.disabled = animating || (idx >= messages.length);
+      status.textContent = `${idx} / ${messages.length}` + (animating ? ' • animating' : '');
     }
 
-    async function play(){
-      playing = !playing;
-      playBtn.textContent = playing ? 'Pause' : 'Play';
-      nextBtn.disabled = playing;
-      modeAnimated.disabled = playing;
-      modeInstant.disabled = playing;
-      while(playing && i < messages.length){
-        await next({instant:modeInstant.checked});
-        // small pause between turns for readability
-        await new Promise(res=>setTimeout(res, 450));
-      }
-      if(i>=messages.length){
-        playing = false;
-        playBtn.textContent = 'Play';
-        nextBtn.disabled = false;
+    function goNext(){
+      if(animating) return;
+      if(idx < messages.length){
+        idx++;
+        renderSlice(idx, {animateLast:true});
       }
     }
+    function goPrev(){
+      cancelAnimation();
+      if(idx > 0){ idx--; renderSlice(idx); }
+    }
+    function reset(){ cancelAnimation(); idx = 0; renderSlice(idx); }
 
-    async function copyTranscript(){
-      const lines = [];
-      for(const msg of messages){
-        lines.push(`${msg.name}: ${msg.text}`);
-      }
-      try{
-        await navigator.clipboard.writeText(lines.join('\\n'));
-        flashStatus('Transcript copied');
-      }catch(e){
-        flashStatus('Copy failed');
-      }
+    function handleKey(e){
+      const key = e.key || e.code;
+      const code = e.keyCode || e.which;
+      if(key === 'ArrowRight' || code === 39){ e.preventDefault(); goNext(); }
+      else if(key === 'ArrowLeft' || code === 37){ e.preventDefault(); goPrev(); }
+      else if(key === 'Home'){ e.preventDefault(); idx = 0; renderSlice(idx); }
+      else if(key === 'End'){ e.preventDefault(); idx = messages.length; renderSlice(idx); }
+      else if(key && (key.toLowerCase?.() === 'r')){ e.preventDefault(); reset(); }
     }
 
-    // Wire up controls
-    nextBtn.addEventListener('click', ()=>next({instant:modeInstant.checked}));
-    playBtn.addEventListener('click', play);
+    nextBtn.addEventListener('click', goNext);
+    prevBtn.addEventListener('click', goPrev);
     resetBtn.addEventListener('click', reset);
-    copyBtn.addEventListener('click', copyTranscript);
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight'){ e.preventDefault(); next({instant:modeInstant.checked}); }
-      if(e.key === ' '){ e.preventDefault(); play(); }
-      if(e.key.toLowerCase() === 'r'){ e.preventDefault(); reset(); }
-    });
+    hintStart.addEventListener('click', goNext);
+    window.addEventListener('keydown', handleKey, true);
+    document.addEventListener('keydown', handleKey, true);
 
-    // Auto-start with first message visible
-    next({instant:true});
+    window.addEventListener('load', () => {
+      const card = document.querySelector('.card');
+      card?.focus({ preventScroll:true });
+      renderSlice(idx); // initial (blank)
+    });
   </script>
 </body>
 </html>
