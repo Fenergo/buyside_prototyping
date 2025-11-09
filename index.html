@@ -122,6 +122,8 @@ padding: 0 3px;
 margin-bottom: 18px;
 }
 .header{display:flex; align-items:center; justify-content:space-between; padding:16px 22px; position:sticky; top:0; z-index:5; background:rgba(255,255,255,0.9); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);}
+.powered-by{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); white-space:nowrap;}
+.powered-by img{height:18px; width:auto; object-fit:contain; opacity:0.9;}
 .search{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background: var(--card); padding:10px 12px; border-radius:12px; width:52%;}
 .search input{flex:1; background:transparent; border:none; outline:none; color:var(--text);}
 .actions{display:flex; align-items:center; gap:10px; margin-left:auto;}
@@ -420,6 +422,14 @@ margin-bottom: 18px;
     font-size: 18px;
     font-weight: 600;
   }
+  
+  .powered-by {
+    font-size: 10px;
+  }
+  
+  .powered-by img {
+    height: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -432,6 +442,18 @@ margin-bottom: 18px;
   
   .section { padding: 12px; }
   .section h3 { font-size: 14px; margin-bottom: 8px; }
+  
+  .powered-by span {
+    display: none;
+  }
+  
+  .powered-by {
+    gap: 0;
+  }
+  
+  .powered-by img {
+    height: 14px;
+  }
 }
 
 /* Responsive Grid Adjustments */
@@ -513,6 +535,14 @@ body.dark-theme .table td {
 body.dark-theme .header {
   background: rgba(30,41,59,0.95);
   border-bottom-color: rgba(33,207,178,0.2);
+}
+
+body.dark-theme .powered-by {
+  color: #94a3b8;
+}
+
+body.dark-theme .powered-by img {
+  opacity: 0.85;
 }
 
 body.dark-theme .search,
@@ -797,12 +827,16 @@ body.dark-theme .card.drag-over {
 
 <main class="main">
 <header class="header" role="banner">
-<div style="display:flex; align-items:center; justify-content:space-between;">
+<div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
 <div class="search" role="search" aria-label="Search" style="width:52%; min-width:260px; max-width:480px;">
 <input placeholder="Search parties, products, accounts, cases… (press / to focus)" aria-label="Global search"/>
 <span class="kbd">/</span>
 </div>
-<div class="actions" style="display:flex; gap:10px; margin-left:auto;">
+<div class="actions" style="display:flex; gap:10px; margin-left:auto; align-items:center;">
+<div class="powered-by">
+<span>powered by</span>
+<img src="fen_logo.jpg" alt="Fenergo" />
+</div>
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
 <button class="btn ghost" aria-label="New case"><span>New Case</span></button>
 <button class="btn primary" aria-label="Add party"><span>+ Add Party</span></button>
