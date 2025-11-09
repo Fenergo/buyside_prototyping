@@ -138,9 +138,23 @@ margin-bottom: 18px;
 .grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px} .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
 .section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px} .section h3{margin:0 0 10px 0; font-size:16px}
 .table{width:100%; border-collapse:separate; border-spacing:0 8px; font-size:14px}
-.table th{color:var(--muted); text-align:left; font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line)}
+.table th{color:var(--muted); text-align:left; font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line); position:relative;}
+.table th.sortable{cursor:pointer; user-select:none; padding-right:24px;}
+.table th.sortable:hover{color:var(--text); background:rgba(33,207,178,0.05)}
+.table th.sortable::after{content:'⇅'; position:absolute; right:8px; opacity:0.3; font-size:12px;}
+.table th.sortable.asc::after{content:'↑'; opacity:1; color:var(--progress)}
+.table th.sortable.desc::after{content:'↓'; opacity:1; color:var(--progress)}
 .table td{padding:10px; background:#ffffff; border:1px solid var(--line)}
 .table tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px} .table tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
+.table-controls{display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap;}
+.table-search{flex:1; min-width:200px; max-width:320px; display:flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--card); padding:8px 10px; border-radius:8px;}
+.table-search input{flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:13px;}
+.table-search svg{width:16px; height:16px; color:var(--muted);}
+.table-pagination{display:flex; gap:6px; align-items:center; margin-top:12px; font-size:13px;}
+.table-pagination button{background:var(--card); border:1px solid var(--line); color:var(--text); padding:6px 10px; border-radius:6px; cursor:pointer; transition:all 0.15s;}
+.table-pagination button:hover:not(:disabled){background:rgba(33,207,178,0.1); border-color:var(--progress)}
+.table-pagination button:disabled{opacity:0.4; cursor:not-allowed;}
+.table-pagination .page-info{color:var(--muted); margin:0 8px;}
 .badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; color:#0b1220}
 .badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46} .badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
 .badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d} .badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a} .badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
@@ -527,6 +541,21 @@ body.dark-theme .chat-modal .box {
   border-color: rgba(33,207,178,0.3);
 }
 
+body.dark-theme .table-search,
+body.dark-theme .table-pagination button {
+  background: #334155;
+  border-color: rgba(33,207,178,0.2);
+}
+
+body.dark-theme .table-pagination button:hover:not(:disabled) {
+  background: rgba(33,207,178,0.15);
+  border-color: #21cfb2;
+}
+
+body.dark-theme .table th.sortable:hover {
+  background: rgba(33,207,178,0.1);
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -638,17 +667,39 @@ body.dark-theme .chat-modal .box {
 <div class="grid-2">
 <div class="section" aria-label="Work Queue">
 <h3>My Work Queue</h3>
+<div class="table-controls">
+<div class="table-search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" id="queueSearch" placeholder="Search cases..." aria-label="Search work queue"/>
+</div>
+<div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+<span class="small muted">Showing <b id="queueCount">5</b> of <b id="queueTotal">5</b></span>
+</div>
+</div>
 <div class="table-wrapper">
-<table class="table" role="table">
-<thead><tr><th>Case ID</th><th>Type</th><th>Party / Product</th><th>Risk</th><th>Age</th><th>Owner</th><th>Status</th></tr></thead>
+<table class="table" role="table" id="queueTable">
+<thead><tr>
+<th class="sortable" data-sort="id">Case ID</th>
+<th class="sortable" data-sort="type">Type</th>
+<th class="sortable" data-sort="party">Party / Product</th>
+<th class="sortable" data-sort="risk">Risk</th>
+<th class="sortable" data-sort="age">Age</th>
+<th class="sortable" data-sort="owner">Owner</th>
+<th class="sortable" data-sort="status">Status</th>
+</tr></thead>
 <tbody>
-<tr><td>#CA-10482</td><td>Investor KYC</td><td>Riverton Capital SICAV</td><td><span class="badge danger">High</span></td><td>2d</td><td>J. Han</td><td><span class="badge task">Docs requested</span></td></tr>
-<tr><td>#CA-10479</td><td>Distributor KYD</td><td>Alpha Distrib GmbH</td><td><span class="badge warn">Medium</span></td><td>5h</td><td>M. Rossi</td><td><span class="badge ok">Screened</span></td></tr>
-<tr><td>#CA-10463</td><td>Fund Launch</td><td>Northshore Growth AIF</td><td><span class="badge warn">Medium</span></td><td>1d</td><td>S. Patel</td><td><span class="badge task">Awaiting ESG pack</span></td></tr>
-<tr><td>#CA-10451</td><td>Asset DD</td><td>ISIN LU1234567890</td><td><span class="badge">Low</span></td><td>7h</td><td>L. Chen</td><td><span class="badge task">Checks passing</span></td></tr>
-<tr><td>#CA-10437</td><td>Monitoring</td><td>Txn T-998210</td><td><span class="badge danger">High</span></td><td>3h</td><td>Team KYT</td><td><span class="badge task">Escalated</span></td></tr>
+<tr data-risk="high" data-age="2"><td>#CA-10482</td><td>Investor KYC</td><td>Riverton Capital SICAV</td><td><span class="badge danger">High</span></td><td>2d</td><td>J. Han</td><td><span class="badge task">Docs requested</span></td></tr>
+<tr data-risk="medium" data-age="0"><td>#CA-10479</td><td>Distributor KYD</td><td>Alpha Distrib GmbH</td><td><span class="badge warn">Medium</span></td><td>5h</td><td>M. Rossi</td><td><span class="badge ok">Screened</span></td></tr>
+<tr data-risk="medium" data-age="1"><td>#CA-10463</td><td>Fund Launch</td><td>Northshore Growth AIF</td><td><span class="badge warn">Medium</span></td><td>1d</td><td>S. Patel</td><td><span class="badge task">Awaiting ESG pack</span></td></tr>
+<tr data-risk="low" data-age="0"><td>#CA-10451</td><td>Asset DD</td><td>ISIN LU1234567890</td><td><span class="badge">Low</span></td><td>7h</td><td>L. Chen</td><td><span class="badge task">Checks passing</span></td></tr>
+<tr data-risk="high" data-age="0"><td>#CA-10437</td><td>Monitoring</td><td>Txn T-998210</td><td><span class="badge danger">High</span></td><td>3h</td><td>Team KYT</td><td><span class="badge task">Escalated</span></td></tr>
 </tbody>
 </table>
+</div>
+<div class="table-pagination" id="queuePagination" style="display:none;">
+<button id="queuePrevPage" aria-label="Previous page">← Prev</button>
+<span class="page-info">Page <b id="queueCurrentPage">1</b> of <b id="queueTotalPages">1</b></span>
+<button id="queueNextPage" aria-label="Next page">Next →</button>
 </div>
 </div>
 <div class="section">
@@ -679,9 +730,24 @@ body.dark-theme .chat-modal .box {
 </div>
 </div>
 <div class="tracker-body" id="fundBody">
+<div class="table-controls">
+<div class="table-search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" id="fundSearch" placeholder="Search launches..." aria-label="Search fund launches"/>
+</div>
+</div>
 <div class="table-wrapper">
 <table class="table" id="fundTable">
-<thead><tr><th>ID</th><th>Name</th><th>Stage</th><th>Jurisdiction</th><th>Vehicle</th><th>Pending</th><th>Days since start</th><th>Updated</th></tr></thead>
+<thead><tr>
+<th class="sortable" data-sort="id">ID</th>
+<th class="sortable" data-sort="name">Name</th>
+<th class="sortable" data-sort="stage">Stage</th>
+<th class="sortable" data-sort="jurisdiction">Jurisdiction</th>
+<th class="sortable" data-sort="vehicle">Vehicle</th>
+<th class="sortable" data-sort="pending">Pending</th>
+<th class="sortable" data-sort="days">Days since start</th>
+<th class="sortable" data-sort="updated">Updated</th>
+</tr></thead>
 <tbody></tbody>
 </table>
 </div>
@@ -700,9 +766,23 @@ body.dark-theme .chat-modal .box {
 </div>
 </div>
 <div class="tracker-body" id="tradeBody">
+<div class="table-controls">
+<div class="table-search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" id="tradeSearch" placeholder="Search trades..." aria-label="Search digital trades"/>
+</div>
+</div>
 <div class="table-wrapper">
 <table class="table" id="tradesTracker">
-<thead><tr><th>ID</th><th>Name</th><th>Stage</th><th>Accepted</th><th>Onboarding</th><th>Invested</th><th>Updated</th></tr></thead>
+<thead><tr>
+<th class="sortable" data-sort="id">ID</th>
+<th class="sortable" data-sort="name">Name</th>
+<th class="sortable" data-sort="stage">Stage</th>
+<th class="sortable" data-sort="accepted">Accepted</th>
+<th class="sortable" data-sort="onboarding">Onboarding</th>
+<th class="sortable" data-sort="invested">Invested</th>
+<th class="sortable" data-sort="updated">Updated</th>
+</tr></thead>
 <tbody></tbody>
 </table>
 </div>
@@ -811,7 +891,7 @@ tBody.innerHTML = openTrades.map(t => {
 const a = t.investors.filter(i=>i.status==='accepted').length;
 const o = t.investors.filter(i=>i.status==='onboarding').length;
 const v = t.investors.filter(i=>i.status==='invested').length;
-return `<tr data-id="${t.id}" style="cursor:pointer"><td>${t.id}</td><td>${t.name||'—'}</td><td>${badge(t.stage)}</td><td>${a}</td><td>${o}</td><td>${v}</td><td>${fmtTS(t.updatedAt)}</td></tr>`;
+return `<tr data-id="${t.id}" style="cursor:pointer" data-accepted="${a}" data-onboarding="${o}" data-invested="${v}"><td>${t.id}</td><td>${t.name||'—'}</td><td>${badge(t.stage)}</td><td>${a}</td><td>${o}</td><td>${v}</td><td>${fmtTS(t.updatedAt)}</td></tr>`;
 }).join('');
 tBody.querySelectorAll('tr').forEach(tr => tr.addEventListener('click', () => {
 const t = openTrades.find(x => x.id === tr.getAttribute('data-id'));
@@ -827,6 +907,11 @@ openModal(`Digital Trade ${t.id}`, `
      <div class="actions"><a class="btn" href="digital-trading.html#${t.id}">Open in Digital Trading</a></div>
    `);
 }));
+
+// Enhance Trade tracker table with search & sort
+setTimeout(() => {
+  enhanceTable('tradesTracker', 'tradeSearch', { itemsPerPage: 999 }); // No pagination for now
+}, 100);
 
 // Fund Launches
 const FL_KEY = 'kyc_fund_launches';
@@ -874,7 +959,7 @@ const cls = m[s] || 'task'; const label = s ? s[0].toUpperCase()+s.slice(1) : '�
 return `<span class="badge ${cls}">${label}</span>`;
 };
 fBody.innerHTML = launches.map(l => `
-   <tr data-id="${l.id}" style="cursor:pointer">
+   <tr data-id="${l.id}" style="cursor:pointer" data-pending="${l.pendingReviews||0}" data-days="${daysBetween(l.startDate, l.launchedDate || Date.now())}">
      <td>${l.id}</td><td>${l.name}</td><td>${stageBadge(l.stage)}</td><td>${l.jurisdiction}</td>
      <td>${l.vehicle}</td><td>${l.pendingReviews||0}</td><td>${daysBetween(l.startDate, l.launchedDate || Date.now())}</td><td>${fmtTS(l.updatedAt)}</td>
    </tr>`).join('');
@@ -916,6 +1001,11 @@ openModal(`Fund Launch ${l.id}`, `
      <div class="actions"><a class="btn" href="fund-launch.html#${l.id}">Open in Fund Launch</a></div>
    `);
 }));
+
+// Enhance Fund tracker table with search & sort
+setTimeout(() => {
+  enhanceTable('fundTable', 'fundSearch', { itemsPerPage: 999 }); // No pagination for now
+}, 100);
 
 // React to changes
 window.addEventListener('storage', (e) => {
@@ -1036,6 +1126,188 @@ if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
       }
     });
   }
+
+  // ===== ENHANCED TABLE FUNCTIONALITY =====
+  
+  // Generic table enhancement function
+  const enhanceTable = (tableId, searchInputId, options = {}) => {
+    const table = document.getElementById(tableId);
+    const searchInput = document.getElementById(searchInputId);
+    if (!table || !searchInput) return;
+
+    const tbody = table.querySelector('tbody');
+    const headers = table.querySelectorAll('th.sortable');
+    let allRows = Array.from(tbody.querySelectorAll('tr'));
+    let filteredRows = [...allRows];
+    let currentSort = { column: null, direction: 'asc' };
+
+    // Pagination state
+    const itemsPerPage = options.itemsPerPage || 10;
+    let currentPage = 1;
+    const countEl = document.getElementById(options.countId);
+    const totalEl = document.getElementById(options.totalId);
+    const paginationEl = document.getElementById(options.paginationId);
+    const prevBtn = document.getElementById(options.prevBtnId);
+    const nextBtn = document.getElementById(options.nextBtnId);
+    const currentPageEl = document.getElementById(options.currentPageId);
+    const totalPagesEl = document.getElementById(options.totalPagesId);
+
+    // Update display
+    const updateDisplay = () => {
+      const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageRows = filteredRows.slice(start, end);
+
+      // Hide all rows
+      allRows.forEach(row => row.style.display = 'none');
+      
+      // Show only filtered & paginated rows
+      pageRows.forEach(row => row.style.display = '');
+
+      // Update counters
+      if (countEl) countEl.textContent = filteredRows.length;
+      if (totalEl) totalEl.textContent = allRows.length;
+
+      // Update pagination
+      if (paginationEl && filteredRows.length > itemsPerPage) {
+        paginationEl.style.display = 'flex';
+        if (currentPageEl) currentPageEl.textContent = currentPage;
+        if (totalPagesEl) totalPagesEl.textContent = totalPages;
+        if (prevBtn) prevBtn.disabled = currentPage === 1;
+        if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+      } else if (paginationEl) {
+        paginationEl.style.display = 'none';
+      }
+    };
+
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      if (!query) {
+        filteredRows = [...allRows];
+      } else {
+        filteredRows = allRows.filter(row => {
+          const text = row.textContent.toLowerCase();
+          return text.includes(query);
+        });
+      }
+      
+      currentPage = 1; // Reset to first page on search
+      updateDisplay();
+    });
+
+    // Sort functionality
+      const sortTable = (column, direction) => {
+      const columnIndex = Array.from(headers).findIndex(h => h.dataset.sort === column);
+      if (columnIndex === -1) return;
+
+      filteredRows.sort((a, b) => {
+        let aVal = a.cells[columnIndex]?.textContent.trim() || '';
+        let bVal = b.cells[columnIndex]?.textContent.trim() || '';
+
+        // Try numeric comparison for specific columns
+        if (column === 'age') {
+          const aNum = parseInt(a.dataset.age) || 0;
+          const bNum = parseInt(b.dataset.age) || 0;
+          return direction === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+        
+        if (column === 'risk') {
+          const riskMap = { 'High': 3, 'Medium': 2, 'Low': 1, '': 0 };
+          const aRisk = riskMap[a.dataset.risk?.toLowerCase() === 'high' ? 'High' : 
+                               a.dataset.risk?.toLowerCase() === 'medium' ? 'Medium' : 
+                               a.dataset.risk?.toLowerCase() === 'low' ? 'Low' : ''] || 0;
+          const bRisk = riskMap[b.dataset.risk?.toLowerCase() === 'high' ? 'High' : 
+                               b.dataset.risk?.toLowerCase() === 'medium' ? 'Medium' : 
+                               b.dataset.risk?.toLowerCase() === 'low' ? 'Low' : ''] || 0;
+          return direction === 'asc' ? aRisk - bRisk : bRisk - aRisk;
+        }
+
+        // Numeric columns (pending, days, accepted, onboarding, invested)
+        if (['pending', 'days', 'accepted', 'onboarding', 'invested'].includes(column)) {
+          const aNum = parseInt(a.dataset[column]) || parseInt(aVal) || 0;
+          const bNum = parseInt(b.dataset[column]) || parseInt(bVal) || 0;
+          return direction === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+
+        // String comparison
+        return direction === 'asc' 
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      });      // Update header indicators
+      headers.forEach(h => {
+        h.classList.remove('asc', 'desc');
+        if (h.dataset.sort === column) {
+          h.classList.add(direction);
+        }
+      });
+
+      updateDisplay();
+    };
+
+    // Header click handlers
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const column = header.dataset.sort;
+        
+        if (currentSort.column === column) {
+          // Toggle direction
+          currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.column = column;
+          currentSort.direction = 'asc';
+        }
+        
+        sortTable(currentSort.column, currentSort.direction);
+      });
+    });
+
+    // Pagination handlers
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updateDisplay();
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateDisplay();
+        }
+      });
+    }
+
+    // Initial display
+    updateDisplay();
+  };
+
+  // Enhance Work Queue table
+  enhanceTable('queueTable', 'queueSearch', {
+    itemsPerPage: 10,
+    countId: 'queueCount',
+    totalId: 'queueTotal',
+    paginationId: 'queuePagination',
+    prevBtnId: 'queuePrevPage',
+    nextBtnId: 'queueNextPage',
+    currentPageId: 'queueCurrentPage',
+    totalPagesId: 'queueTotalPages'
+  });
+
+  // Progress bars animation
+  document.querySelectorAll('.progress > span').forEach(span => {
+    const val = span.dataset.value || 0;
+    setTimeout(() => {
+      span.style.width = val + '%';
+      span.style.transition = 'width 0.8s ease';
+    }, 100);
+  });
 })();
 </script>
 </body>
