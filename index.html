@@ -133,7 +133,11 @@ margin-bottom: 18px;
 .page-title h2{margin:0; font-size:22px}
 .page-title .sub{color:var(--muted)}
 .cards{display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap:14px; margin:14px 0 6px}
-.card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-height:72px; box-shadow: 0 8px 28px rgba(2,6,23,.06);}
+.card{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-height:72px; box-shadow: 0 8px 28px rgba(2,6,23,.06); position:relative; transition: transform 0.2s ease, box-shadow 0.2s ease;}
+.card[draggable="true"]{cursor:move; user-select:none;}
+.card[draggable="true"]:hover{transform:translateY(-2px); box-shadow: 0 12px 32px rgba(2,6,23,.12)}
+.card.dragging{opacity:0.5; transform:scale(0.95)}
+.card.drag-over{border:2px dashed var(--progress); background:rgba(33,207,178,0.05)}
 .card .label{color:var(--muted); font-size:12px} .card .value{font-size:22px; margin-top:2px} .card .trend{font-size:12px; color:#047857} .card .danger{color:var(--danger)}
 .grid-2{display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-top:16px} .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
 .section{background: var(--card); border:1px solid var(--line); border-radius:14px; padding:16px} .section h3{margin:0 0 10px 0; font-size:16px}
@@ -155,6 +159,27 @@ margin-bottom: 18px;
 .table-pagination button:hover:not(:disabled){background:rgba(33,207,178,0.1); border-color:var(--progress)}
 .table-pagination button:disabled{opacity:0.4; cursor:not-allowed;}
 .table-pagination .page-info{color:var(--muted); margin:0 8px;}
+.export-buttons{display:flex; gap:6px; margin-left:auto;}
+.export-buttons button{background:var(--card); border:1px solid var(--line); color:var(--text); padding:6px 10px; border-radius:6px; cursor:pointer; font-size:12px; transition:all 0.15s; display:flex; align-items:center; gap:6px;}
+.export-buttons button:hover{background:rgba(33,207,178,0.1); border-color:var(--progress)}
+.export-buttons svg{width:14px; height:14px;}
+.toast-container{position:fixed; top:80px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:10px; pointer-events:none;}
+.toast{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 16px; box-shadow:0 8px 24px rgba(0,0,0,0.15); min-width:280px; max-width:400px; pointer-events:auto; animation:slideInRight 0.3s ease; display:flex; align-items:center; gap:10px;}
+.toast.success{border-left:4px solid var(--success); background:rgba(5,150,105,0.05)}
+.toast.info{border-left:4px solid var(--info); background:rgba(37,99,235,0.05)}
+.toast.warn{border-left:4px solid var(--warn); background:rgba(217,119,6,0.05)}
+.toast.error{border-left:4px solid var(--danger); background:rgba(220,38,38,0.05)}
+.toast-icon{font-size:20px; flex-shrink:0;}
+.toast-content{flex:1;}
+.toast-title{font-weight:600; font-size:13px; margin-bottom:2px;}
+.toast-message{font-size:12px; color:var(--muted)}
+.toast-close{cursor:pointer; opacity:0.6; font-size:18px; padding:0 4px; transition:opacity 0.15s;}
+.toast-close:hover{opacity:1}
+@keyframes slideInRight{from{transform:translateX(100%); opacity:0}to{transform:translateX(0); opacity:1}}
+.update-indicator{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(33,207,178,0.1); border:1px solid rgba(33,207,178,0.3); border-radius:6px; font-size:12px; color:var(--progress); animation:pulse 2s ease infinite;}
+.update-indicator::before{content:''; width:8px; height:8px; background:var(--progress); border-radius:50%; animation:blink 1.5s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 .badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:#f8fafc; color:#0b1220}
 .badge.ok{border-color:#065f46; background:#ecfdf5; color:#065f46} .badge.warn{border-color:#92400e; background:#fffbeb; color:#92400e}
 .badge.danger{border-color:#7f1d1d; background:#fef2f2; color:#7f1d1d} .badge.info{border-color:#1e3a8a; background:#eff6ff; color:#1e3a8a} .badge.task{border-color:#6f63ff; background:#a399ff; color:#ffffff}
@@ -556,6 +581,27 @@ body.dark-theme .table th.sortable:hover {
   background: rgba(33,207,178,0.1);
 }
 
+body.dark-theme .export-buttons button {
+  background: #334155;
+  border-color: rgba(33,207,178,0.2);
+}
+
+body.dark-theme .export-buttons button:hover {
+  background: rgba(33,207,178,0.15);
+  border-color: #21cfb2;
+}
+
+body.dark-theme .toast {
+  background: #1e293b;
+  border-color: rgba(33,207,178,0.2);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+body.dark-theme .card.drag-over {
+  border-color: #21cfb2;
+  background: rgba(33,207,178,0.1);
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -567,6 +613,72 @@ body.dark-theme .table th.sortable:hover {
   }
 }
 
+/* ===== TABLET-SPECIFIC OPTIMIZATIONS ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Touch-friendly tap targets (minimum 44x44px) */
+  .btn,
+  .pill,
+  .badge,
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btn span {
+    display: inline;
+  }
+  
+  /* Optimized 2-column layouts for tablet */
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  
+  /* Larger text for readability */
+  body {
+    font-size: 15px;
+  }
+  
+  .table {
+    font-size: 13px;
+  }
+  
+  /* Increased padding for touch */
+  .section {
+    padding: 20px;
+  }
+  
+  .content {
+    padding: 16px 20px 40px;
+  }
+  
+  /* Collapsible sections auto-collapsed on tablet */
+  .tracker .head {
+    padding: 12px;
+    background: rgba(33,207,178,0.05);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  
+  /* Optimize search bar sizing */
+  .search {
+    min-width: 240px;
+  }
+  
+  .table-search {
+    min-width: 180px;
+  }
+}
+
 /* Legacy breakpoints (keep for compatibility) */
 @media (max-width:1100px){ .app{grid-template-columns: 80px 1fr} .brand h1, .footer-note, .nav a .text, .nav a .tag{display:none} .nav a{justify-content:center} }
 @media (min-width:769px) and (max-width:1100px) { .search{width:70%} }
@@ -575,6 +687,9 @@ body.dark-theme .table th.sortable:hover {
 </head>
 <body data-page="dashboard">
 <a href="#main" class="kbd" style="position:absolute; left:-9999px; top:-9999px">Skip to content</a>
+
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- Mobile Hamburger Menu -->
 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -655,13 +770,13 @@ body.dark-theme .table th.sortable:hover {
 <div class="sub">Unified CLM • KYC/KYB/KYD/KYI/KYT • Digital Trading</div>
 </div>
 
-<div class="cards" aria-label="KPI cards">
-<div class="card"><div class="label">Median Time-to-KYC</div><div class="value">2.4 days</div><div class="trend">-12% WoW</div></div>
-<div class="card"><div class="label">Open Cases</div><div class="value">128</div><div class="trend">+5 today</div></div>
-<div class="card"><div class="label">High-Risk Parties</div><div class="value danger">17</div><div class="trend">3 require EDD</div></div>
-<div class="card"><div class="="label">Pending Approvals</div><div class="value">34</div><div class="trend">11 overdue</div></div>
-<div class="card"><div class="label">Screening Hits (24h)</div><div class="value">58</div><div class="trend">FPR 7.1%</div></div>
-<div class="card"><div class="label">Open Digital Trades</div><div class="value" id="openTrades">0</div><div class="trend"><span id="investedCount">0</span> invested</div></div>
+<div class="cards" aria-label="KPI cards" id="kpiCards">
+<div class="card" draggable="true" data-card-id="1"><div class="label">Median Time-to-KYC</div><div class="value">2.4 days</div><div class="trend">-12% WoW</div></div>
+<div class="card" draggable="true" data-card-id="2"><div class="label">Open Cases</div><div class="value">128</div><div class="trend">+5 today</div></div>
+<div class="card" draggable="true" data-card-id="3"><div class="label">High-Risk Parties</div><div class="value danger">17</div><div class="trend">3 require EDD</div></div>
+<div class="card" draggable="true" data-card-id="4"><div class="="label">Pending Approvals</div><div class="value">34</div><div class="trend">11 overdue</div></div>
+<div class="card" draggable="true" data-card-id="5"><div class="label">Screening Hits (24h)</div><div class="value">58</div><div class="trend">FPR 7.1%</div></div>
+<div class="card" draggable="true" data-card-id="6"><div class="label">Open Digital Trades</div><div class="value" id="openTrades">0</div><div class="trend"><span id="investedCount">0</span> invested</div></div>
 </div>
 
 <div class="grid-2">
@@ -674,6 +789,16 @@ body.dark-theme .table th.sortable:hover {
 </div>
 <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
 <span class="small muted">Showing <b id="queueCount">5</b> of <b id="queueTotal">5</b></span>
+<div class="export-buttons">
+<button id="exportQueueCSV" title="Export to CSV" aria-label="Export to CSV">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+CSV
+</button>
+<button id="exportQueuePDF" title="Export to PDF" aria-label="Export to PDF">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+PDF
+</button>
+</div>
 </div>
 </div>
 <div class="table-wrapper">
@@ -1308,6 +1433,278 @@ if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
       span.style.transition = 'width 0.8s ease';
     }, 100);
   });
+
+  // ===== TOAST NOTIFICATION SYSTEM =====
+  const showToast = (message, type = 'info', title = '', duration = 4000) => {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const icons = {
+      success: '✓',
+      info: 'ℹ',
+      warn: '⚠',
+      error: '✕'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+      <div class="toast-icon">${icons[type] || icons.info}</div>
+      <div class="toast-content">
+        ${title ? `<div class="toast-title">${title}</div>` : ''}
+        <div class="toast-message">${message}</div>
+      </div>
+      <div class="toast-close">×</div>
+    `;
+
+    container.appendChild(toast);
+
+    const close = () => {
+      toast.style.animation = 'slideInRight 0.3s ease reverse';
+      setTimeout(() => toast.remove(), 300);
+    };
+
+    toast.querySelector('.toast-close').addEventListener('click', close);
+    
+    if (duration > 0) {
+      setTimeout(close, duration);
+    }
+
+    return { close };
+  };
+
+  // Make showToast globally accessible
+  window.showToast = showToast;
+
+  // ===== DRAG-AND-DROP CARD REORDERING =====
+  const initDragAndDrop = () => {
+    const cardsContainer = document.getElementById('kpiCards');
+    if (!cardsContainer) return;
+
+    const CARD_ORDER_KEY = 'kpi_card_order';
+    let draggedCard = null;
+
+    // Load saved order
+    const loadCardOrder = () => {
+      try {
+        const saved = localStorage.getItem(CARD_ORDER_KEY);
+        if (saved) {
+          const order = JSON.parse(saved);
+          const cards = Array.from(cardsContainer.querySelectorAll('.card'));
+          
+          // Sort cards based on saved order
+          const sortedCards = order.map(id => cards.find(c => c.dataset.cardId === id)).filter(Boolean);
+          const unsortedCards = cards.filter(c => !order.includes(c.dataset.cardId));
+          
+          [...sortedCards, ...unsortedCards].forEach(card => cardsContainer.appendChild(card));
+        }
+      } catch (e) {
+        console.warn('Failed to load card order:', e);
+      }
+    };
+
+    // Save current order
+    const saveCardOrder = () => {
+      const order = Array.from(cardsContainer.querySelectorAll('.card'))
+        .map(card => card.dataset.cardId);
+      localStorage.setItem(CARD_ORDER_KEY, JSON.stringify(order));
+    };
+
+    // Drag handlers
+    cardsContainer.addEventListener('dragstart', (e) => {
+      if (e.target.classList.contains('card')) {
+        draggedCard = e.target;
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      }
+    });
+
+    cardsContainer.addEventListener('dragend', (e) => {
+      if (e.target.classList.contains('card')) {
+        e.target.classList.remove('dragging');
+        cardsContainer.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+        saveCardOrder();
+        showToast('Card order saved', 'success', '', 2000);
+      }
+    });
+
+    cardsContainer.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const afterElement = getDragAfterElement(cardsContainer, e.clientX, e.clientY);
+      const card = document.querySelector('.dragging');
+      
+      cardsContainer.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+      
+      if (afterElement == null) {
+        cardsContainer.appendChild(card);
+      } else {
+        afterElement.classList.add('drag-over');
+        cardsContainer.insertBefore(card, afterElement);
+      }
+    });
+
+    const getDragAfterElement = (container, x, y) => {
+      const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+      
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = x - box.left - box.width / 2;
+        
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    };
+
+    loadCardOrder();
+  };
+
+  // ===== CSV/PDF EXPORT FUNCTIONALITY =====
+  const exportTableToCSV = (tableId, filename) => {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    const rows = Array.from(table.querySelectorAll('tr')).filter(row => row.style.display !== 'none');
+    const csv = rows.map(row => {
+      return Array.from(row.querySelectorAll('th, td')).map(cell => {
+        let text = cell.textContent.trim();
+        // Escape quotes and wrap in quotes if contains comma
+        text = text.replace(/"/g, '""');
+        return text.includes(',') ? `"${text}"` : text;
+      }).join(',');
+    }).join('\n');
+
+    // Download
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('CSV exported successfully', 'success', 'Export Complete');
+  };
+
+  const exportTableToPDF = (tableId, filename) => {
+    // Simple PDF export using basic HTML rendering
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    const printWindow = window.open('', '_blank');
+    const rows = Array.from(table.querySelectorAll('tr')).filter(row => row.style.display !== 'none');
+    
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${filename}</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h1 { color: #0b1220; margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
+          th { background: #f7fafd; font-weight: 600; }
+          tr:nth-child(even) { background: #f9fafb; }
+          .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; }
+        </style>
+      </head>
+      <body>
+        <h1>${filename}</h1>
+        <p>Generated: ${new Date().toLocaleString()}</p>
+        <table>
+          ${rows.map(row => `<tr>${Array.from(row.cells).map(cell => 
+            row.cells[0] === cell ? `<th>${cell.textContent}</th>` : `<td>${cell.textContent}</td>`
+          ).join('')}</tr>`).join('')}
+        </table>
+        <script>
+          window.onload = () => {
+            window.print();
+            setTimeout(() => window.close(), 500);
+          };
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+
+    showToast('Opening PDF print dialog...', 'info', 'Export to PDF');
+  };
+
+  // Export button handlers
+  const exportQueueCSV = document.getElementById('exportQueueCSV');
+  const exportQueuePDF = document.getElementById('exportQueuePDF');
+  
+  if (exportQueueCSV) {
+    exportQueueCSV.addEventListener('click', () => exportTableToCSV('queueTable', 'Work_Queue'));
+  }
+  
+  if (exportQueuePDF) {
+    exportQueuePDF.addEventListener('click', () => exportTableToPDF('queueTable', 'Work Queue'));
+  }
+
+  // ===== REAL-TIME UPDATES SIMULATION =====
+  const initRealTimeUpdates = () => {
+    const UPDATE_INTERVAL = 30000; // 30 seconds
+    let updateCount = 0;
+
+    const simulateUpdate = () => {
+      updateCount++;
+      
+      // Randomly update a metric (simulation)
+      const metrics = [
+        { id: 'openTrades', change: Math.random() > 0.5 ? 1 : -1 },
+        { id: 'investedCount', change: Math.random() > 0.5 ? 1 : 0 }
+      ];
+
+      const randomMetric = metrics[Math.floor(Math.random() * metrics.length)];
+      const element = document.getElementById(randomMetric.id);
+      
+      if (element) {
+        const currentValue = parseInt(element.textContent) || 0;
+        const newValue = Math.max(0, currentValue + randomMetric.change);
+        
+        if (newValue !== currentValue) {
+          element.textContent = newValue;
+          element.style.animation = 'pulse 0.5s ease';
+          setTimeout(() => element.style.animation = '', 500);
+          
+          showToast(`Updated: ${randomMetric.id.replace(/([A-Z])/g, ' $1').trim()}`, 'info', 'Real-time Update', 3000);
+        }
+      }
+
+      // Check for storage changes from other tabs
+      const checkForUpdates = () => {
+        window.dispatchEvent(new StorageEvent('storage', {
+          key: FL_KEY,
+          newValue: localStorage.getItem(FL_KEY)
+        }));
+      };
+
+      // Listen for updates
+      if (updateCount % 3 === 0) {
+        checkForUpdates();
+      }
+    };
+
+    // Start polling
+    setInterval(simulateUpdate, UPDATE_INTERVAL);
+
+    // Show initial notification
+    setTimeout(() => {
+      showToast('Real-time updates enabled', 'success', 'System Ready', 3000);
+    }, 2000);
+  };
+
+  // Initialize all advanced features
+  initDragAndDrop();
+  initRealTimeUpdates();
 })();
 </script>
 </body>
