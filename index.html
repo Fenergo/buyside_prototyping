@@ -1033,11 +1033,6 @@ openModal(`Digital Trade ${t.id}`, `
    `);
 }));
 
-// Enhance Trade tracker table with search & sort
-setTimeout(() => {
-  enhanceTable('tradesTracker', 'tradeSearch', { itemsPerPage: 999 }); // No pagination for now
-}, 100);
-
 // Fund Launches
 const FL_KEY = 'kyc_fund_launches';
 const seedLaunches = () => {
@@ -1126,11 +1121,6 @@ openModal(`Fund Launch ${l.id}`, `
      <div class="actions"><a class="btn" href="fund-launch.html#${l.id}">Open in Fund Launch</a></div>
    `);
 }));
-
-// Enhance Fund tracker table with search & sort
-setTimeout(() => {
-  enhanceTable('fundTable', 'fundSearch', { itemsPerPage: 999 }); // No pagination for now
-}, 100);
 
 // React to changes
 window.addEventListener('storage', (e) => {
@@ -1425,6 +1415,16 @@ if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
     totalPagesId: 'queueTotalPages'
   });
 
+  // Enhance Fund tracker table with search & sort
+  setTimeout(() => {
+    enhanceTable('fundTable', 'fundSearch', { itemsPerPage: 999 });
+  }, 200);
+
+  // Enhance Trade tracker table with search & sort
+  setTimeout(() => {
+    enhanceTable('tradesTracker', 'tradeSearch', { itemsPerPage: 999 });
+  }, 200);
+
   // Progress bars animation
   document.querySelectorAll('.progress > span').forEach(span => {
     const val = span.dataset.value || 0;
@@ -1611,8 +1611,8 @@ if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
           th { background: #f7fafd; font-weight: 600; }
           tr:nth-child(even) { background: #f9fafb; }
           .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; }
-        </style>
-      </head>
+        <\/style>
+      <\/head>
       <body>
         <h1>${filename}</h1>
         <p>Generated: ${new Date().toLocaleString()}</p>
@@ -1620,15 +1620,15 @@ if (e.key === FL_KEY || e.key === DT_KEY) location.reload();
           ${rows.map(row => `<tr>${Array.from(row.cells).map(cell => 
             row.cells[0] === cell ? `<th>${cell.textContent}</th>` : `<td>${cell.textContent}</td>`
           ).join('')}</tr>`).join('')}
-        </table>
+        <\/table>
         <script>
           window.onload = () => {
             window.print();
             setTimeout(() => window.close(), 500);
           };
-        </script>
-      </body>
-      </html>
+        <\/script>
+      <\/body>
+      <\/html>
     `;
 
     printWindow.document.write(htmlContent);
