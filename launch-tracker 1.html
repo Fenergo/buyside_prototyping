@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Tracker - Global Balanced ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: #F8FAFC;
+        }
+
+        /* Header Bar */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px #BDCBD8;
+            z-index: 1000;
+        }
+
+        .brand {
+            position: absolute;
+            left: 24px;
+            top: 16px;
+            width: 133px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 400;
+            color: #1a2332;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #00b894;
+            border-radius: 50%;
+            margin-left: 2px;
+        }
+
+        /* Left Navigation */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 64px;
+            width: 64px;
+            height: calc(100vh - 64px);
+            background: #FFFFFF;
+            border-right: 1px solid #EDF2F7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 0 32px;
+            z-index: 999;
+        }
+
+        .nav-main {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            width: 64px;
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #F8FAFC;
+        }
+
+        .nav-item.active {
+            background: #F8FAFC;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .nav-label {
+            font-family: 'Nunito Sans';
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: center;
+            color: #557391;
+            max-width: 64px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 64px;
+            margin-top: 64px;
+            padding: 48px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #557391;
+            font-size: 14px;
+            font-weight: 700;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .back-button:hover {
+            color: #2E4D6B;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .title-section h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .title-section p {
+            font-size: 16px;
+            color: #8DA2B7;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .status-badge {
+            padding: 10px 20px;
+            background: #E8F5E9;
+            color: #78D690;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background: #FFFFFF;
+            border: 1px solid #BDCBD8;
+            color: #557391;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background: #43505F;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #8DA2B7;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 12px;
+        }
+
+        .metric-badge {
+            padding: 6px 12px;
+            background: #E8F5E9;
+            color: #78D690;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #EDF2F7;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #78D690;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .profile-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 2px;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 8px 16px;
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2E4D6B;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .timeline-title h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title p {
+            font-size: 14px;
+            color: #8DA2B7;
+        }
+
+        .timeline-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timeline-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #557391;
+            font-size: 14px;
+        }
+
+        .phase-badge {
+            padding: 8px 16px;
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2E4D6B;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Timeline Visualization */
+        .timeline-track {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 32px;
+        }
+
+        .timeline-week {
+            text-align: center;
+            flex: 1;
+        }
+
+        .week-marker {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .week-marker.completed {
+            background: #78D690;
+        }
+
+        .week-marker.current {
+            background: #66B1FF;
+            border: 4px solid #E6F3FF;
+        }
+
+        .week-marker.upcoming {
+            background: #EDF2F7;
+            color: #8DA2B7;
+        }
+
+        .week-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .week-number.current {
+            color: #66B1FF;
+        }
+
+        .week-date {
+            font-size: 11px;
+            color: #8DA2B7;
+            margin-bottom: 8px;
+        }
+
+        .week-phase {
+            font-size: 12px;
+            font-weight: 600;
+            color: #557391;
+        }
+
+        .week-phase.current {
+            color: #66B1FF;
+        }
+
+        .week-task {
+            font-size: 11px;
+            color: #8DA2B7;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 32px;
+            border-bottom: 2px solid #EDF2F7;
+            margin-bottom: 32px;
+        }
+
+        .tab {
+            padding: 16px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #8DA2B7;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: #2E4D6B;
+            border-bottom-color: #2E4D6B;
+        }
+
+        /* Tasks Grid */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .task-section {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .task-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2E4D6B;
+        }
+
+        .task-status {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .task-status.completed {
+            background: #E8F5E9;
+            color: #78D690;
+        }
+
+        .task-status.in-progress {
+            background: #FFF4E6;
+            color: #FD9C34;
+        }
+
+        .task-status.not-started {
+            background: #EDF2F7;
+            color: #8DA2B7;
+        }
+
+        .task-progress {
+            margin-bottom: 24px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: #8DA2B7;
+            margin-bottom: 10px;
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: #EDF2F7;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #78D690;
+            border-radius: 5px;
+        }
+
+        .progress-percent {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2E4D6B;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* Task Items */
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: #F8FAFC;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .task-item.completed {
+            background: #F8FAFC;
+        }
+
+        .task-item.in-progress {
+            background: #FFF4E6;
+        }
+
+        .task-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .task-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .task-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2E4D6B;
+            margin-bottom: 2px;
+        }
+
+        .task-details p {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        .task-details p.warning {
+            color: #FD9C34;
+        }
+
+        .task-item-badge {
+            padding: 5px 12px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .task-item-badge.completed {
+            background: #E8F5E9;
+            color: #78D690;
+        }
+
+        .task-item-badge.in-progress {
+            background: #FFF4E6;
+            color: #FD9C34;
+        }
+
+        .task-item-badge.not-started {
+            background: #EDF2F7;
+            color: #8DA2B7;
+        }
+
+        /* Configure Button */
+        .configure-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: #66B1FF;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .configure-btn:hover {
+            background: #5599E6;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #8DA2B7;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #2E4D6B;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 24px;
+        }
+
+        .modal-field {
+            margin-bottom: 24px;
+        }
+
+        .modal-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .modal-select {
+            width: 100%;
+            height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            background: #FFFFFF;
+            cursor: pointer;
+        }
+
+        .modal-select:focus {
+            outline: none;
+            border-color: #557391;
+        }
+
+        /* Status Display */
+        .status-display {
+            display: none;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .status-display.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #EDF2F7;
+            border-top-color: #66B1FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: #78D690;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2E4D6B;
+        }
+
+        .modal-footer-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: #8DA2B7;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .modal-footer-btn:hover {
+            background: #7A92A8;
+        }
+
+        .modal-footer-btn:disabled {
+            background: #BDCBD8;
+            cursor: not-allowed;
+        }
+
+        /* AI Chat Sidebar */
+        .ai-sidebar {
+            position: fixed;
+            right: -450px;
+            top: 64px;
+            width: 450px;
+            height: calc(100vh - 64px);
+            background: #FFFFFF;
+            box-shadow: -2px 0px 8px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ai-sidebar.active {
+            right: 0;
+        }
+
+        .ai-sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #EDF2F7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-header-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: url('kyra-avatar.png') center/contain no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .ai-header-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 2px;
+        }
+
+        .ai-header-text p {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        .ai-close-btn {
+            background: transparent;
+            border: none;
+            color: #8DA2B7;
+            cursor: pointer;
+            font-size: 24px;
+            line-height: 1;
+            padding: 4px;
+        }
+
+        .ai-close-btn:hover {
+            color: #2E4D6B;
+        }
+
+        .ai-chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ai-message {
+            display: flex;
+            gap: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .ai-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ai-message-avatar.ai {
+            background: url('kyra-avatar.png') center/contain no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .ai-message-avatar.user {
+            background: #8DA2B7;
+        }
+
+        .ai-message-content {
+            flex: 1;
+            background: #F8FAFC;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #2E4D6B;
+        }
+
+        .ai-message.user .ai-message-content {
+            background: #E6F3FF;
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .ai-suggestion-btn {
+            padding: 12px 16px;
+            background: #FFFFFF;
+            border: 1px solid #BDCBD8;
+            border-radius: 8px;
+            font-family: 'Nunito Sans';
+            font-size: 13px;
+            font-weight: 600;
+            color: #2E4D6B;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .ai-suggestion-btn:hover {
+            background: #F8FAFC;
+            border-color: #66B1FF;
+        }
+
+        .ai-prospect-table {
+            width: 100%;
+            margin-top: 12px;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .ai-prospect-table th {
+            background: #F8FAFC;
+            padding: 8px;
+            text-align: left;
+            font-weight: 700;
+            color: #557391;
+            border-bottom: 1px solid #EDF2F7;
+        }
+
+        .ai-prospect-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #EDF2F7;
+            color: #2E4D6B;
+        }
+
+        .ai-prospect-table tr:hover {
+            background: #F8FAFC;
+        }
+
+        .ai-input-container {
+            padding: 16px 24px;
+            border-top: 1px solid #EDF2F7;
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #BDCBD8;
+            border-radius: 20px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            outline: none;
+        }
+
+        .ai-input:focus {
+            border-color: #66B1FF;
+        }
+
+        .ai-send-btn {
+            width: 40px;
+            height: 40px;
+            background: #66B1FF;
+            border: none;
+            border-radius: 50%;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-send-btn:hover {
+            background: #5599E6;
+        }
+
+        .ai-send-btn:disabled {
+            background: #BDCBD8;
+            cursor: not-allowed;
+        }
+
+        /* AI Trigger Button in Marketing Section */
+        .ai-trigger-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Nunito Sans';
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .ai-trigger-btn:hover {
+            opacity: 0.9;
+        }
+
+        .ai-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8DA2B7;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            fenergo<span class="brand-dot"></span>
+        </div>
+    </header>
+
+    <!-- Left Navigation -->
+    <nav class="nav-sidebar">
+        <div class="nav-main">
+            <div class="nav-item" onclick="window.location.href='dashboard.html'">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <rect x="3" y="3" width="8" height="8"/>
+                        <rect x="13" y="3" width="8" height="8"/>
+                        <rect x="3" y="13" width="8" height="8"/>
+                        <rect x="13" y="13" width="8" height="8"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Dashboard</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <path d="M12 2L2 7v10c0 5.5 4 10 10 10s10-4.5 10-10V7l-10-5z"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Launches</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Reports</div>
+            </div>
+        </div>
+        
+        <div class="nav-bottom">
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 4" stroke="#FFFFFF" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Settings</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <button class="back-button" onclick="window.location.href='dashboard.html'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 12L6 8l4-4"/>
+            </svg>
+            Back to Dashboard
+        </button>
+
+        <div class="page-header">
+            <div class="title-section">
+                <h1>Global Balanced ETF</h1>
+                <p>Active ETF - US Market</p>
+            </div>
+            <div class="header-actions">
+                <span class="status-badge">In Progress</span>
+                <button class="btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Export Details
+                </button>
+                <button class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    View Timeline
+                </button>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <!-- Overall Progress -->
+            <div class="metric-card">
+                <div class="metric-label">Overall Progress</div>
+                <div style="display: flex; align-items: baseline; gap: 12px;">
+                    <div class="metric-value">65%</div>
+                    <span class="metric-badge">In Progress</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 65%;"></div>
+                </div>
+            </div>
+
+            <!-- Relationship Manager -->
+            <div class="metric-card">
+                <div class="metric-label">Relationship Manager</div>
+                <div class="profile-section">
+                    <div class="profile-avatar"></div>
+                    <div class="profile-info">
+                        <h3>John Smith</h3>
+                        <p>Relationship Manager</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expected Launch -->
+            <div class="metric-card">
+                <div class="metric-label">Expected Launch</div>
+                <div class="metric-value" style="font-size: 32px;">July 30, 2025</div>
+            </div>
+
+            <!-- Product Tags -->
+            <div class="metric-card">
+                <div class="metric-label">Product Tags</div>
+                <div class="tags-container">
+                    <span class="tag">ETF</span>
+                    <span class="tag">Active</span>
+                    <span class="tag">Multi-Asset</span>
+                    <span class="tag">US</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Launch Timeline -->
+        <div class="timeline-section">
+            <div class="timeline-header">
+                <div class="timeline-title">
+                    <h2>Launch Timeline</h2>
+                    <p>Week 6 of 10 • 65% Complete</p>
+                </div>
+                <div class="timeline-meta">
+                    <div class="timeline-info">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        4 weeks to launch
+                    </div>
+                    <span class="phase-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        Phase: Operations
+                    </span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar-container" style="height: 10px;">
+                <div class="progress-bar-fill" style="width: 65%;"></div>
+            </div>
+
+            <!-- Timeline Track -->
+            <div class="timeline-track">
+                <!-- Week 1 -->
+                <div class="timeline-week">
+                    <div class="week-marker completed">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="week-number">Week 1</div>
+                    <div class="week-date">May 1</div>
+                    <div class="week-phase">Legal Setup</div>
+                    <div class="week-task">SEC Filing</div>
+                </div>
+
+                <!-- Week 2 -->
+                <div class="timeline-week">
+                    <div class="week-marker completed">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="week-number">Week 2</div>
+                    <div class="week-date">May 8</div>
+                    <div class="week-phase">Legal Setup</div>
+                    <div class="week-task">Trust Docs</div>
+                </div>
+
+                <!-- Week 3 -->
+                <div class="timeline-week">
+                    <div class="week-marker completed">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="week-number">Week 3</div>
+                    <div class="week-date">May 15</div>
+                    <div class="week-phase">Legal Setup</div>
+                    <div class="week-task">Prospectus</div>
+                </div>
+
+                <!-- Week 4 -->
+                <div class="timeline-week">
+                    <div class="week-marker completed">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="week-number">Week 4</div>
+                    <div class="week-date">May 22</div>
+                    <div class="week-phase">Operations</div>
+                    <div class="week-task">Fund Accounting</div>
+                </div>
+
+                <!-- Week 5 -->
+                <div class="timeline-week">
+                    <div class="week-marker completed">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="week-number">Week 5</div>
+                    <div class="week-date">May 29</div>
+                    <div class="week-phase">Operations</div>
+                    <div class="week-task">Custody Setup</div>
+                </div>
+
+                <!-- Week 6 - Current -->
+                <div class="timeline-week">
+                    <div class="week-marker current">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                            <circle cx="12" cy="12" r="5"/>
+                        </svg>
+                    </div>
+                    <div class="week-number current">Week 6</div>
+                    <div class="week-date">June 5</div>
+                    <div class="week-phase current">Operations</div>
+                    <div class="week-task">Transfer Agency</div>
+                </div>
+
+                <!-- Week 7 -->
+                <div class="timeline-week">
+                    <div class="week-marker upcoming">7</div>
+                    <div class="week-number">Week 7</div>
+                    <div class="week-date">June 12</div>
+                    <div class="week-phase">Technology</div>
+                    <div class="week-task">Data Feeds</div>
+                </div>
+
+                <!-- Week 8 -->
+                <div class="timeline-week">
+                    <div class="week-marker upcoming">8</div>
+                    <div class="week-number">Week 8</div>
+                    <div class="week-date">June 19</div>
+                    <div class="week-phase">Technology</div>
+                    <div class="week-task">API Integration</div>
+                </div>
+
+                <!-- Week 9 -->
+                <div class="timeline-week">
+                    <div class="week-marker upcoming">9</div>
+                    <div class="week-number">Week 9</div>
+                    <div class="week-date">June 26</div>
+                    <div class="week-phase">Marketing</div>
+                    <div class="week-task">Materials</div>
+                </div>
+
+                <!-- Week 10 -->
+                <div class="timeline-week">
+                    <div class="week-marker upcoming">10</div>
+                    <div class="week-number">Week 10</div>
+                    <div class="week-date">July 3</div>
+                    <div class="week-phase">Launch</div>
+                    <div class="week-task">Go Live</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tab active">Tasks & Progress</div>
+            <div class="tab">Timeline</div>
+            <div class="tab">Documents</div>
+        </div>
+
+        <!-- Tasks Grid -->
+        <div class="tasks-grid">
+            <!-- Legal & Regulatory -->
+            <div class="task-section">
+                <div class="task-header">
+                    <h3 class="task-title">Legal & Regulatory</h3>
+                    <span class="task-status completed">Completed</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-label">Progress</div>
+                    <div class="progress-row">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <span class="progress-percent">100%</span>
+                    </div>
+                </div>
+
+                <div class="task-item completed">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#78D690" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>File Form N-1A with SEC</h4>
+                            <p>Completed on May 1, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge completed">Completed</span>
+                </div>
+
+                <div class="task-item completed">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#78D690" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Draft Trust Agreement</h4>
+                            <p>Completed on May 5, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge completed">Completed</span>
+                </div>
+
+                <div class="task-item completed">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#78D690" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Prepare Prospectus & SAI</h4>
+                            <p>Completed on May 12, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge completed">Completed</span>
+                </div>
+            </div>
+
+            <!-- Operations -->
+            <div class="task-section">
+                <div class="task-header">
+                    <h3 class="task-title">Operations</h3>
+                    <span class="task-status in-progress">In Progress</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-label">Progress</div>
+                    <div class="progress-row">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%;"></div>
+                        </div>
+                        <span class="progress-percent">60%</span>
+                    </div>
+                </div>
+
+                <div class="task-item completed">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#78D690" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Set up Fund Accounting</h4>
+                            <p>Completed on May 20, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge completed">Completed</span>
+                </div>
+
+                <div class="task-item completed">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#78D690" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Establish Custody Accounts</h4>
+                            <p>Completed on May 25, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge completed">Completed</span>
+                </div>
+
+                <div class="task-item in-progress">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#FD9C34" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Configure Transfer Agency</h4>
+                            <p class="warning">Due June 10, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge in-progress" id="transferAgencyBadge">In Progress</span>
+                </div>
+                <button class="configure-btn" id="configureBtn" onclick="openTransferAgencyModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                    </svg>
+                    Configure Transfer Agency
+                </button>
+            </div>
+
+            <!-- Technology -->
+            <div class="task-section">
+                <div class="task-header">
+                    <h3 class="task-title">Technology</h3>
+                    <span class="task-status in-progress">In Progress</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-label">Progress</div>
+                    <div class="progress-row">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 30%;"></div>
+                        </div>
+                        <span class="progress-percent">30%</span>
+                    </div>
+                </div>
+
+                <div class="task-item in-progress">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#FD9C34" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Configure Data Feeds</h4>
+                            <p class="warning">Due June 5, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge in-progress">In Progress</span>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Set up API Integration</h4>
+                            <p>Due June 15, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Implement Reporting Framework</h4>
+                            <p>Due June 25, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+            </div>
+
+            <!-- Marketing -->
+            <div class="task-section">
+                <div class="task-header">
+                    <h3 class="task-title">Marketing</h3>
+                    <span class="task-status not-started">Not Started</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-label">Progress</div>
+                    <div class="progress-row">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <span class="progress-percent">0%</span>
+                    </div>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Develop Marketing Materials</h4>
+                            <p>Due July 1, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Create Fact Sheet</h4>
+                            <p>Due July 5, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Prepare Website Content</h4>
+                            <p>Due July 10, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+
+                <div class="task-item">
+                    <div class="task-item-left">
+                        <svg class="task-icon" viewBox="0 0 24 24" fill="none" stroke="#8DA2B7" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div class="task-details">
+                            <h4>Plan Launch Event</h4>
+                            <p>Due July 15, 2025</p>
+                        </div>
+                    </div>
+                    <span class="task-item-badge not-started">Not Started</span>
+                </div>
+
+                <button class="ai-trigger-btn" onclick="openAIChat()">
+                    <div class="ai-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    Find Prospects with Kyra AI
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Transfer Agency Modal -->
+    <div class="modal-overlay" id="transferAgencyModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTransferAgencyModal()">×</button>
+            
+            <h2 class="modal-title">Transfer Agency</h2>
+            
+            <div id="selectionForm">
+                <div class="modal-field">
+                    <label class="modal-label">Select Your Transfer Agent</label>
+                    <select class="modal-select" id="transferAgentSelect">
+                        <option value="">Choose a transfer agent...</option>
+                        <option value="agent1">Transfer Agent 1</option>
+                        <option value="agent2">Transfer Agent 2</option>
+                        <option value="agent3">Transfer Agent 3</option>
+                        <option value="agent4">Transfer Agent 4</option>
+                        <option value="agent5">Transfer Agent 5</option>
+                    </select>
+                </div>
+                <button class="modal-footer-btn" id="confirmBtn" onclick="confirmSelection()" disabled>Confirm Selection</button>
+            </div>
+
+            <div class="status-display" id="loadingStatus">
+                <div class="spinner"></div>
+                <div class="status-text">Setting up Transfer Agency...</div>
+            </div>
+
+            <div class="status-display" id="successStatus">
+                <div class="success-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="status-text">Fund Setup Complete!</div>
+                <button class="modal-footer-btn" onclick="completeSetup()">Return to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Sidebar -->
+    <div class="ai-sidebar" id="aiSidebar">
+        <div class="ai-sidebar-header">
+            <div class="ai-header-content">
+                <div class="ai-avatar">K</div>
+                <div class="ai-header-text">
+                    <h3>Kyra AI</h3>
+                    <p>Fenergo Intelligence</p>
+                </div>
+            </div>
+            <button class="ai-close-btn" onclick="closeAIChat()">×</button>
+        </div>
+
+        <div class="ai-chat-container" id="chatContainer">
+            <div class="ai-message">
+                <div class="ai-message-avatar ai">K</div>
+                <div class="ai-message-content">
+                    <p>Hello! I'm Kyra, your Fenergo AI assistant. I can help you find potential prospects for your Global Balanced ETF launch. What would you like to know?</p>
+                    <div class="ai-suggestions">
+                        <button class="ai-suggestion-btn" onclick="findProspects()">
+                            🎯 Find prospects for my fund
+                        </button>
+                        <button class="ai-suggestion-btn" onclick="marketAnalysis()">
+                            📊 Analyze market opportunities
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-input-container">
+            <input type="text" class="ai-input" id="aiInput" placeholder="Ask Kyra anything..." onkeypress="handleKeyPress(event)">
+            <button class="ai-send-btn" id="sendBtn" onclick="sendMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Enable confirm button when transfer agent is selected
+        document.getElementById('transferAgentSelect').addEventListener('change', function() {
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.disabled = !this.value;
+        });
+
+        function openTransferAgencyModal() {
+            document.getElementById('transferAgencyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTransferAgencyModal() {
+            document.getElementById('transferAgencyModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            // Reset modal state
+            document.getElementById('selectionForm').style.display = 'block';
+            document.getElementById('loadingStatus').classList.remove('active');
+            document.getElementById('successStatus').classList.remove('active');
+            document.getElementById('transferAgentSelect').value = '';
+            document.getElementById('confirmBtn').disabled = true;
+        }
+
+        function confirmSelection() {
+            const selectedAgent = document.getElementById('transferAgentSelect').value;
+            if (!selectedAgent) return;
+
+            // Hide selection form
+            document.getElementById('selectionForm').style.display = 'none';
+            
+            // Show loading spinner
+            document.getElementById('loadingStatus').classList.add('active');
+
+            // Simulate setup delay (2 seconds)
+            setTimeout(function() {
+                // Hide loading
+                document.getElementById('loadingStatus').classList.remove('active');
+                
+                // Show success
+                document.getElementById('successStatus').classList.add('active');
+            }, 2000);
+        }
+
+        function completeSetup() {
+            // Update the task status on the page
+            const badge = document.getElementById('transferAgencyBadge');
+            const taskItem = badge.closest('.task-item');
+            const taskDetails = taskItem.querySelector('.task-details p');
+            const taskIcon = taskItem.querySelector('.task-icon');
+            
+            // Update badge
+            badge.className = 'task-item-badge completed';
+            badge.textContent = 'Completed';
+            
+            // Update task item background
+            taskItem.className = 'task-item completed';
+            
+            // Update task details
+            taskDetails.className = '';
+            taskDetails.textContent = 'Completed on ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            // Update icon
+            taskIcon.innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>';
+            taskIcon.setAttribute('stroke', '#78D690');
+            
+            // Remove the configure button
+            const configureBtn = document.getElementById('configureBtn');
+            if (configureBtn) {
+                configureBtn.style.display = 'none';
+            }
+
+            // Update Operations progress
+            const operationsProgress = document.querySelector('.task-section:nth-child(2) .progress-fill');
+            const operationsPercent = document.querySelector('.task-section:nth-child(2) .progress-percent');
+            const operationsStatus = document.querySelector('.task-section:nth-child(2) .task-status');
+            
+            operationsProgress.style.width = '100%';
+            operationsPercent.textContent = '100%';
+            operationsStatus.className = 'task-status completed';
+            operationsStatus.textContent = 'Completed';
+
+            // Close modal
+            closeTransferAgencyModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('transferAgencyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTransferAgencyModal();
+            }
+        });
+
+        // AI Chat Functions
+        function openAIChat() {
+            document.getElementById('aiSidebar').classList.add('active');
+        }
+
+        function closeAIChat() {
+            document.getElementById('aiSidebar').classList.remove('active');
+        }
+
+        function addMessage(content, isUser = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message${isUser ? ' user' : ''}`;
+            
+            messageDiv.innerHTML = `
+                <div class="ai-message-avatar ${isUser ? 'user' : 'ai'}">${isUser ? '' : 'K'}</div>
+                <div class="ai-message-content">${content}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-message';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="ai-message-avatar ai">K</div>
+                <div class="ai-message-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function findProspects() {
+            addMessage('Find prospects for my fund', true);
+            
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                const prospectTable = `
+                    <p style="margin-bottom: 12px;">Based on your Global Balanced ETF profile, here are the top matching prospects:</p>
+                    <table class="ai-prospect-table">
+                        <thead>
+                            <tr>
+                                <th>Prospect</th>
+                                <th>Portfolio Size</th>
+                                <th>Jurisdiction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cobalt Capital Partners</td>
+                                <td>€2.3bn</td>
+                                <td>North America</td>
+                            </tr>
+                            <tr>
+                                <td>Mariner Equity Group</td>
+                                <td>€1.1bn</td>
+                                <td>North America</td>
+                            </tr>
+                            <tr>
+                                <td>Atlas Growth Holdings</td>
+                                <td>€3.8bn</td>
+                                <td>North America</td>
+                            </tr>
+                            <tr>
+                                <td>Eastbridge Ventures</td>
+                                <td>€950m</td>
+                                <td>North America</td>
+                            </tr>
+                            <tr>
+                                <td>Pinnacle Strategic Capital</td>
+                                <td>€4.2bn</td>
+                                <td>North America</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">💡 These prospects match your fund's investment strategy and target market profile.</p>
+                `;
+                addMessage(prospectTable);
+            }, 1500);
+        }
+
+        function marketAnalysis() {
+            addMessage('Analyze market opportunities', true);
+            
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                addMessage(`
+                    <p style="margin-bottom: 8px;"><strong>Market Analysis Summary:</strong></p>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Strong demand for multi-asset ETFs in North America</li>
+                        <li>Average portfolio size: €2.5bn</li>
+                        <li>Key investor focus: ESG criteria and cost efficiency</li>
+                        <li>Competitive landscape: 15 similar products launched in 2024</li>
+                    </ul>
+                    <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">Would you like me to identify prospects with specific criteria?</p>
+                `);
+            }, 1500);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            
+            // Check for adding prospects to campaign
+            if (message.toLowerCase().includes('add') && (message.toLowerCase().includes('campaign') || message.toLowerCase().includes('marketing') || message.toLowerCase().includes('prospect'))) {
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    const campaignResponse = `
+                        <p style="margin-bottom: 12px;">✅ Great! I've added these prospects to your marketing campaign for the Global Balanced ETF.</p>
+                        <div style="background: #E8F5E9; padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                            <p style="margin: 0; font-weight: 600; color: #2E4D6B;">📋 Campaign Summary:</p>
+                            <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 13px;">
+                                <li>9 prospects added to campaign</li>
+                                <li>Total AUM: €23.3bn</li>
+                                <li>Region: North America</li>
+                            </ul>
+                        </div>
+                        <p style="margin-bottom: 8px;"><strong>When would you like me to reach out to these prospects?</strong></p>
+                        <div class="ai-suggestions">
+                            <button class="ai-suggestion-btn" onclick="scheduleOutreach('now')">
+                                📞 Contact them now to build early interest
+                            </button>
+                            <button class="ai-suggestion-btn" onclick="scheduleOutreach('later')">
+                                📅 Wait until marketing materials are ready
+                            </button>
+                            <button class="ai-suggestion-btn" onclick="scheduleOutreach('custom')">
+                                ⚙️ Let me set a custom timeline
+                            </button>
+                        </div>
+                    `;
+                    addMessage(campaignResponse);
+                }, 1500);
+                return;
+            }
+            
+            // Check for follow-up question about Global ETF interest
+            if (message.toLowerCase().includes('global etf') || message.toLowerCase().includes('expressed interest') || message.toLowerCase().includes('widen')) {
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    const expandedProspects = `
+                        <p style="margin-bottom: 12px;">I've expanded the search to include prospects who have previously expressed interest in Global ETFs. Here are additional matches:</p>
+                        <table class="ai-prospect-table">
+                            <thead>
+                                <tr>
+                                    <th>Prospect</th>
+                                    <th>Portfolio Size</th>
+                                    <th>Jurisdiction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Horizon Investment Group</td>
+                                    <td>€1.8bn</td>
+                                    <td>North America</td>
+                                </tr>
+                                <tr>
+                                    <td>Sterling Asset Management</td>
+                                    <td>€2.7bn</td>
+                                    <td>North America</td>
+                                </tr>
+                                <tr>
+                                    <td>Vanguard Distribution LLC</td>
+                                    <td>€5.1bn</td>
+                                    <td>North America</td>
+                                </tr>
+                                <tr>
+                                    <td>Pacific Wealth Advisors</td>
+                                    <td>€1.4bn</td>
+                                    <td>North America</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">📈 These prospects have shown interest in similar global equity strategies over the past 6 months.</p>
+                    `;
+                    addMessage(expandedProspects);
+                }, 1500);
+            } else {
+                // Generic response
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage("I can help you with prospect identification, market analysis, or other fund launch questions. Would you like me to find more specific prospects or analyze a particular market segment?");
+                }, 1000);
+            }
+        }
+
+        function scheduleOutreach(timing) {
+            let responseMessage = '';
+            
+            if (timing === 'now') {
+                addMessage('Contact them now to build early interest', true);
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    responseMessage = `
+                        <p style="margin-bottom: 12px;">Perfect! I'll initiate early outreach to build interest and gauge appetite for your Global Balanced ETF.</p>
+                        <div style="background: #E6F3FF; padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; color: #2E4D6B;">📧 Outreach Plan:</p>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 13px;">
+                                <li><strong>This week:</strong> Send introduction emails highlighting fund strategy and unique value proposition</li>
+                                <li><strong>Next week:</strong> Follow up with interested prospects to schedule discovery calls</li>
+                                <li><strong>Week 3:</strong> Share preliminary fact sheet and performance projections</li>
+                                <li><strong>Ongoing:</strong> Provide regular updates as launch date approaches</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 13px; color: #557391;">✨ <strong>Tip:</strong> Early engagement helps secure anchor investors and can provide valuable feedback to refine your offering.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">I'll track responses and keep you updated on prospect engagement levels.</p>
+                    `;
+                    addMessage(responseMessage);
+                }, 1500);
+            } else if (timing === 'later') {
+                addMessage('Wait until marketing materials are ready', true);
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    responseMessage = `
+                        <p style="margin-bottom: 12px;">Smart approach! I'll schedule outreach once your marketing materials are complete.</p>
+                        <div style="background: #FFF4E6; padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; color: #2E4D6B;">📅 Scheduled Campaign:</p>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 13px;">
+                                <li><strong>Trigger:</strong> Completion of "Develop Marketing Materials" task (Due July 1, 2025)</li>
+                                <li><strong>Materials included:</strong> Fact sheet, prospectus, performance data, and pitch deck</li>
+                                <li><strong>Launch coordination:</strong> Outreach will align with your July 30 go-live date</li>
+                                <li><strong>Follow-up cadence:</strong> Automated reminders every 5 days until response</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 13px; color: #557391;">✨ <strong>Benefit:</strong> Prospects receive comprehensive information to make informed decisions quickly.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">I'll notify you when the campaign launches and provide real-time analytics on engagement.</p>
+                    `;
+                    addMessage(responseMessage);
+                }, 1500);
+            } else if (timing === 'custom') {
+                addMessage('Let me set a custom timeline', true);
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    responseMessage = `
+                        <p style="margin-bottom: 12px;">I can help you create a customized outreach timeline. Here are some factors to consider:</p>
+                        <div style="background: #F8FAFC; padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; color: #2E4D6B;">⚙️ Timeline Options:</p>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 13px;">
+                                <li><strong>Phased approach:</strong> Contact tier-1 prospects first, then expand to others based on initial feedback</li>
+                                <li><strong>Event-triggered:</strong> Reach out after key milestones (regulatory approval, seed capital secured, etc.)</li>
+                                <li><strong>Soft launch:</strong> Start with warm introductions through existing relationships, then formal campaign</li>
+                                <li><strong>Market timing:</strong> Coordinate with favorable market conditions or quarter-end allocation cycles</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 13px; color: #2E4D6B;">What timeline approach works best for your launch strategy?</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: #8DA2B7;">💡 I can also help you identify the optimal contact sequence for maximum conversion.</p>
+                    `;
+                    addMessage(responseMessage);
+                }, 1500);
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

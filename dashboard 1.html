@@ -1,0 +1,2782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fund Launch Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: #F8FAFC;
+        }
+
+        /* Header Bar */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px #BDCBD8;
+            z-index: 1000;
+        }
+
+        /* Brand Logo */
+        .brand {
+            position: absolute;
+            left: 24px;
+            top: 16px;
+            width: 133px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 400;
+            color: #1a2332;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #00b894;
+            border-radius: 50%;
+            margin-left: 2px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            position: absolute;
+            left: 182px;
+            top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .breadcrumb-item {
+            font-family: 'Nunito Sans';
+            font-size: 12px;
+            line-height: 16px;
+            color: #2E4D6B;
+        }
+
+        .breadcrumb-current {
+            font-weight: 700;
+        }
+
+        /* Search Input */
+        .search-input {
+            position: absolute;
+            right: 128px;
+            top: 16px;
+            width: 232px;
+            height: 32px;
+            background: #F8FAFC;
+            border: 1px solid #BDCBD8;
+            border-radius: 3px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            color: #557391;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+        }
+
+        /* Header Icons */
+        .header-icons {
+            position: absolute;
+            right: 32px;
+            top: 16px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            background: #8DA2B7;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #F26C6C;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        /* Left Navigation */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 65px;
+            width: 64px;
+            height: calc(100vh - 65px);
+            background: #FFFFFF;
+            border-right: 1px solid #EDF2F7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 0 32px;
+            z-index: 999;
+        }
+
+        .nav-main {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            width: 64px;
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #F8FAFC;
+        }
+
+        .nav-item.active {
+            background: #F8FAFC;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .nav-label {
+            font-family: 'Nunito Sans';
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: center;
+            color: #557391;
+            max-width: 64px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 64px;
+            margin-top: 64px;
+            padding: 32px;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2E4D6B;
+        }
+
+        .new-launch-btn {
+            background: #43505F;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            color: #557391;
+            font-weight: 400;
+        }
+
+        .stat-icon {
+            width: 20px;
+            height: 20px;
+            color: #8DA2B7;
+        }
+
+        .stat-value {
+            font-size: 40px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .stat-subtitle {
+            font-size: 12px;
+            color: #557391;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .stat-subtitle.blue {
+            background: #E6F3FF;
+            color: #66B1FF;
+            font-weight: 700;
+        }
+
+        .stat-subtitle.amber {
+            background: #FFF4E6;
+            color: #FD9C34;
+            font-weight: 700;
+        }
+
+        .stat-subtitle.grey {
+            color: #8DA2B7;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        /* Recent Launches Section */
+        .recent-launches {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #8DA2B7;
+            margin-bottom: 24px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 24px;
+            border-bottom: 2px solid #EDF2F7;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #8DA2B7;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: #2E4D6B;
+            border-bottom-color: #2E4D6B;
+        }
+
+        /* Launch Item */
+        .launch-item {
+            padding: 24px;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .launch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .launch-title-section h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .launch-subtitle {
+            font-size: 14px;
+            color: #8DA2B7;
+        }
+
+        .launch-status {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .launch-status.in-progress {
+            background: #E6F3FF;
+            color: #66B1FF;
+        }
+
+        .launch-status.on-hold {
+            background: #FFF4E6;
+            color: #FD9C34;
+        }
+
+        .progress-section {
+            margin-bottom: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: #557391;
+            font-weight: 700;
+        }
+
+        .progress-value {
+            font-size: 14px;
+            color: #557391;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #EDF2F7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #78D690;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .launch-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .launch-owner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #8DA2B7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .owner-name {
+            font-size: 14px;
+            color: #557391;
+        }
+
+        .launch-timeline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #8DA2B7;
+        }
+
+        .launch-timeline.warning {
+            color: #F26C6C;
+        }
+
+        .launch-timeline.paused {
+            color: #8DA2B7;
+        }
+
+        /* View All Button */
+        .view-all-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            color: #557391;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        /* Right Sidebar */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .quick-actions, .recent-activity {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-item {
+            padding: 16px;
+            border: 1px solid #EDF2F7;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .action-item:hover {
+            background: #F8FAFC;
+        }
+
+        .action-icon {
+            width: 20px;
+            height: 20px;
+            color: #557391;
+        }
+
+        .action-text {
+            font-size: 14px;
+            color: #2E4D6B;
+            font-weight: 700;
+        }
+
+        /* Activity Items */
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #EDF2F7;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #8DA2B7;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 48px;
+            position: relative;
+        }
+
+        .modal-step {
+            width: 100%;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #8DA2B7;
+            font-size: 24px;
+        }
+
+        /* Modal Header */
+        .modal-header {
+            margin-bottom: 32px;
+        }
+
+        .modal-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 16px;
+            color: #8DA2B7;
+        }
+
+        .step-indicator {
+            width: 80px;
+            height: 4px;
+            background: #2E4D6B;
+            border-radius: 2px;
+            margin-top: 16px;
+        }
+
+        /* Modal Grid */
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        /* Launch Setup Section */
+        .setup-section {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .setup-section-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .setup-section-subtitle {
+            font-size: 14px;
+            color: #8DA2B7;
+            margin-bottom: 32px;
+        }
+
+        /* Form Fields */
+        .form-field {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            background: #FFFFFF;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #557391;
+        }
+
+        .form-select {
+            width: 100%;
+            height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            background: #FFFFFF;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23557391' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 48px;
+        }
+
+        /* Insights Section */
+        .insights-section {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .insights-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .insight-card {
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .insight-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-list li {
+            font-size: 14px;
+            color: #557391;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .insight-list li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #557391;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #EDF2F7;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #557391;
+            border: none;
+            padding: 12px 24px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 4px;
+        }
+
+        .btn-secondary:hover {
+            background: #F8FAFC;
+        }
+
+        .btn-primary {
+            background: #8DA2B7;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 32px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #7A92A8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .search-input {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 24px;
+                width: 95%;
+            }
+
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            fenergo<span class="brand-dot"></span>
+        </div>
+        
+        <div class="breadcrumb">
+            <span class="breadcrumb-item">Home</span>
+            <span class="breadcrumb-item">›</span>
+            <span class="breadcrumb-item breadcrumb-current">Dashboard</span>
+        </div>
+        
+        <div class="search-input">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="7" cy="7" r="5" stroke="#557391" stroke-width="2"/>
+                <path d="M11 11L14 14" stroke="#557391" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" placeholder="Search...">
+        </div>
+        
+        <div class="header-icons">
+            <div class="header-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFFFFF">
+                    <path d="M8 2C5.8 2 4 3.8 4 6c0 2.4 1.6 4 4 4s4-1.6 4-4c0-2.2-1.8-4-4-4zm0 10c-3.3 0-6 1.3-6 3v1h12v-1c0-1.7-2.7-3-6-3z"/>
+                </svg>
+                <div class="notification-badge">3</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Left Navigation -->
+    <nav class="nav-sidebar">
+        <div class="nav-main">
+            <div class="nav-item active">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <rect x="3" y="3" width="8" height="8"/>
+                        <rect x="13" y="3" width="8" height="8"/>
+                        <rect x="3" y="13" width="8" height="8"/>
+                        <rect x="13" y="13" width="8" height="8"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Dashboard</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <path d="M12 2L2 7v10c0 5.5 4 10 10 10s10-4.5 10-10V7l-10-5z"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Launches</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Reports</div>
+            </div>
+        </div>
+        
+        <div class="nav-bottom">
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 4" stroke="#FFFFFF" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Settings</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Dashboard</h1>
+            <button class="new-launch-btn" onclick="openLaunchModal()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                New Launch
+            </button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Launches</span>
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <div class="stat-value">7</div>
+                <div class="stat-subtitle grey">3 Due This Month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Completed Launches</span>
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-subtitle blue">+3 This Quarter</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Avg. Time to Launch</span>
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <div class="stat-value">6.2</div>
+                <div class="stat-subtitle grey">weeks</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Reviews</span>
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                </div>
+                <div class="stat-value">5</div>
+                <div class="stat-subtitle amber">Action Needed</div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Recent Launches -->
+            <div class="recent-launches">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Launches</h2>
+                    <p class="section-subtitle">Track and manage your active product launches</p>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active">Active (7)</div>
+                    <div class="tab">In Review (5)</div>
+                    <div class="tab">Drafts (3)</div>
+                </div>
+
+                <!-- Launch Items -->
+                <div class="launch-item">
+                    <div class="launch-header">
+                        <div class="launch-title-section">
+                            <h3>Global Balanced ETF</h3>
+                            <p class="launch-subtitle">Active ETF - US Market</p>
+                        </div>
+                        <span class="launch-status in-progress">In Progress</span>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-value">65%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="launch-footer">
+                        <div class="launch-owner">
+                            <div class="avatar">JS</div>
+                            <span class="owner-name">John Smith</span>
+                        </div>
+                        <div class="launch-timeline">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <circle cx="8" cy="8" r="6"/>
+                                <path d="M8 4v4l2 2"/>
+                            </svg>
+                            4 weeks to launch
+                        </div>
+                    </div>
+                </div>
+
+                <div class="launch-item">
+                    <div class="launch-header">
+                        <div class="launch-title-section">
+                            <h3>European Sustainable Bond Fund</h3>
+                            <p class="launch-subtitle">ESG Fixed Income - EU Market</p>
+                        </div>
+                        <span class="launch-status in-progress">In Progress</span>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-value">15%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 15%; background: #F26C6C"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="launch-footer">
+                        <div class="launch-owner">
+                            <div class="avatar">EJ</div>
+                            <span class="owner-name">Emma Johnson</span>
+                        </div>
+                        <div class="launch-timeline warning">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <circle cx="8" cy="8" r="6"/>
+                                <path d="M8 4v4l2 2"/>
+                            </svg>
+                            ~ 8 weeks to launch (2 weeks behind)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="launch-item">
+                    <div class="launch-header">
+                        <div class="launch-title-section">
+                            <h3>Asia Pacific Growth SMA</h3>
+                            <p class="launch-subtitle">Separately Managed Account - APAC</p>
+                        </div>
+                        <span class="launch-status on-hold">On Hold</span>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-value">25%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%; background: #FD9C34"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="launch-footer">
+                        <div class="launch-owner">
+                            <div class="avatar">DL</div>
+                            <span class="owner-name">David Lee</span>
+                        </div>
+                        <div class="launch-timeline paused">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <rect x="5" y="4" width="2" height="8"/>
+                                <rect x="9" y="4" width="2" height="8"/>
+                            </svg>
+                            Timeline Paused
+                        </div>
+                    </div>
+                </div>
+
+                <button class="view-all-btn">
+                    View All Launches
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                        <path d="M6 4l4 4-4 4" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <div class="section-header">
+                        <h2 class="section-title">Quick Actions</h2>
+                        <p class="section-subtitle">Common tasks and shortcuts</p>
+                    </div>
+
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 5v14M5 12h14" stroke-width="2"/>
+                        </svg>
+                        <span class="action-text">Start New Launch</span>
+                    </div>
+
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M9 12h6M9 16h6M9 8h6M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" stroke-width="2"/>
+                        </svg>
+                        <span class="action-text">Review Pending Blueprints</span>
+                    </div>
+
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M3 3v18h18M7 16l4-4 3 3 6-6" stroke-width="2"/>
+                        </svg>
+                        <span class="action-text">View Launch Analytics</span>
+                    </div>
+
+                    <div class="action-item">
+                        <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path d="M12 6v6l4 2" stroke-width="2"/>
+                        </svg>
+                        <span class="action-text">Check SLA Status</span>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Activity</h2>
+                        <p class="section-subtitle">Latest updates across all launches</p>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+                        <div class="activity-content">
+                            <p class="activity-text"><strong>Emma Johnson</strong> updated European Sustainable Bond Fund</p>
+                            <p class="activity-time">10 minutes ago</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+                        <div class="activity-content">
+                            <p class="activity-text"><strong>Rebecca Torres</strong> approved Global Balanced ETF blueprint</p>
+                            <p class="activity-time">1 hour ago</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"></div>
+                        <div class="activity-content">
+                            <p class="activity-text"><strong>David Lee</strong> paused Asia Pacific Growth SMA</p>
+                            <p class="activity-time">3 hours ago</p>
+                        </div>
+                    </div>
+
+                    <button class="view-all-btn">
+                        View All Activity
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Launch Setup Modal -->
+    <div class="modal-overlay" id="launchModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLaunchModal()">×</button>
+            
+            <!-- Step 1: Initial Setup -->
+            <div id="step1" class="modal-step">
+                <div class="modal-header">
+                    <h1 class="modal-title">Initial Setup</h1>
+                    <p class="modal-subtitle">Step 1 of 10: Basic Launch Information</p>
+                    <div class="step-indicator"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Launch Setup Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Launch Setup</h2>
+                        <p class="setup-section-subtitle">Provide the basic information to get started with your launch.</p>
+
+                        <div class="form-field">
+                            <label class="form-label">Fund Name</label>
+                            <input type="text" class="form-input" id="fundName" placeholder="Enter fund name" value="Test Fund">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Activity Type</label>
+                            <select class="form-select" id="activityType">
+                                <option value="fund-launch">Fund Launch</option>
+                                <option value="share-class-launch">Share Class Launch</option>
+                                <option value="in-specie-in">In-Specie In</option>
+                                <option value="in-specie-out">In-Specie Out</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                                Fund Launch Insights
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Complete new fund setup from inception</li>
+                                <li>Average timeline: 12-16 weeks</li>
+                                <li>Requires full regulatory approval process</li>
+                                <li>Initial seed capital typically $10M-50M</li>
+                                <li>Comprehensive documentation package needed</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                                Timeline Considerations
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Regulatory filing: 4-6 weeks</li>
+                                <li>Documentation preparation: 3-4 weeks</li>
+                                <li>Service provider setup: 2-3 weeks</li>
+                                <li>Marketing materials: 2-3 weeks</li>
+                                <li>Final testing and launch: 1-2 weeks</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                                Success Factors
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Clear project timeline and milestones</li>
+                                <li>Early engagement with service providers</li>
+                                <li>Comprehensive regulatory review</li>
+                                <li>Stakeholder communication plan</li>
+                                <li>Contingency planning for delays</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeLaunchModal()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back to Dashboard
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(2)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Client Context -->
+            <div id="step2" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">Client Context</h1>
+                    <p class="modal-subtitle">Step 2 of 10: Capture Client Information</p>
+                    <div class="step-indicator" style="width: 160px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Client Information Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Client Information</h2>
+                        <p class="setup-section-subtitle">Provide details about the client and their requirements for this launch.</p>
+
+                        <div class="form-field">
+                            <label class="form-label">Primary Region</label>
+                            <select class="form-select" id="primaryRegion">
+                                <option value="">Select primary region</option>
+                                <option value="north-america">North America</option>
+                                <option value="europe">Europe</option>
+                                <option value="asia-pacific">Asia Pacific</option>
+                                <option value="latin-america">Latin America</option>
+                                <option value="middle-east-africa">Middle East & Africa</option>
+                                <option value="global">Global</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Launch Urgency</label>
+                            <select class="form-select" id="launchUrgency">
+                                <option value="">Select urgency level</option>
+                                <option value="high">High - Critical timeline</option>
+                                <option value="medium">Medium - Standard timeline</option>
+                                <option value="low">Low - Flexible timeline</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Client Money Model</label>
+                            <select class="form-select" id="clientMoneyModel">
+                                <option value="">Select client money model</option>
+                                <option value="segregated">Segregated</option>
+                                <option value="pooled">Pooled</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Additional Context</label>
+                            <textarea class="form-input" id="additionalContext" style="height: 120px; resize: vertical;" placeholder="Enter any additional information about the client or their requirements"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                                </svg>
+                                Getting Started
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Complete the form to see personalized insights</li>
+                                <li>Each selection will provide relevant context</li>
+                                <li>Industry benchmarks and best practices</li>
+                                <li>Regulatory considerations for your region</li>
+                            </ul>
+                        </div>
+
+                        <!-- Region-specific insights (hidden by default) -->
+                        <div id="regionInsights" style="display: none;">
+                            <!-- North America -->
+                            <div class="insight-card" id="northAmericaInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    North American Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>SEC registration process typically 6-8 weeks</li>
+                                    <li>40 Act fund structures most common</li>
+                                    <li>Average launch cost: $200K-400K</li>
+                                    <li>State blue sky laws may apply</li>
+                                </ul>
+                            </div>
+
+                            <!-- Europe -->
+                            <div class="insight-card" id="europeInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    European Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>UCITS and AIFMD frameworks apply</li>
+                                    <li>CSSF/FCA approval typically 8-12 weeks</li>
+                                    <li>MiFID II and PRIIPs regulations required</li>
+                                    <li>Average launch cost: €250K-500K</li>
+                                </ul>
+                            </div>
+
+                            <!-- Asia Pacific -->
+                            <div class="insight-card" id="asiaPacificInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    Asia Pacific Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>SFC/MAS/ASIC regulatory frameworks</li>
+                                    <li>Cross-border distribution considerations</li>
+                                    <li>Local currency and tax implications</li>
+                                    <li>Timeline varies by jurisdiction (6-16 weeks)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Latin America -->
+                            <div class="insight-card" id="latinAmericaInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    Latin American Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>CVM (Brazil) and local regulators involved</li>
+                                    <li>Currency volatility considerations</li>
+                                    <li>Local custody requirements common</li>
+                                    <li>Average timeline: 10-14 weeks</li>
+                                </ul>
+                            </div>
+
+                            <!-- Middle East & Africa -->
+                            <div class="insight-card" id="middleEastAfricaInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    Middle East & Africa Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>DIFC and ADGM common domiciles</li>
+                                    <li>Sharia-compliant structures available</li>
+                                    <li>Growing institutional investor base</li>
+                                    <li>Regulatory approval: 8-12 weeks</li>
+                                </ul>
+                            </div>
+
+                            <!-- Global -->
+                            <div class="insight-card" id="globalInsights" style="display: none;">
+                                <h3 class="insight-card-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 2v20M2 12h20"/>
+                                    </svg>
+                                    Global Market Context
+                                </h3>
+                                <ul class="insight-list">
+                                    <li>Multiple regulatory approvals required</li>
+                                    <li>Cross-border marketing restrictions apply</li>
+                                    <li>Complex tax and reporting requirements</li>
+                                    <li>Extended timeline: 16-24 weeks typical</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(1)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(3)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Product Details -->
+            <div id="step3" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">Product Details</h1>
+                    <p class="modal-subtitle">Step 3 of 10: Define Product Specifications</p>
+                    <div class="step-indicator" style="width: 240px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Product Specifications Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Product Specifications</h2>
+                        <p class="setup-section-subtitle">Define the key characteristics of the financial product you're launching.</p>
+
+                        <div class="form-field">
+                            <label class="form-label">Product Type</label>
+                            <select class="form-select" id="productType">
+                                <option value="">Select product type</option>
+                                <option value="mutual-fund">Mutual Fund</option>
+                                <option value="etf">Exchange Traded Fund (ETF)</option>
+                                <option value="hedge-fund">Hedge Fund</option>
+                                <option value="private-equity">Private Equity Fund</option>
+                                <option value="ucits">UCITS Fund</option>
+                                <option value="aif">Alternative Investment Fund</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Asset Classes (select all that apply)</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="equity" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Equity</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="fixedIncome" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Fixed Income</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="alternatives" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Alternatives</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="commodities" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Commodities</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="realEstate" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Real Estate</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="multiAsset" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Multi-Asset</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Primary Currency</label>
+                            <select class="form-select" id="primaryCurrency">
+                                <option value="">Select primary currency</option>
+                                <option value="usd">USD - US Dollar</option>
+                                <option value="eur">EUR - Euro</option>
+                                <option value="gbp">GBP - British Pound</option>
+                                <option value="jpy">JPY - Japanese Yen</option>
+                                <option value="chf">CHF - Swiss Franc</option>
+                                <option value="cad">CAD - Canadian Dollar</option>
+                                <option value="aud">AUD - Australian Dollar</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Investor Type</label>
+                            <select class="form-select" id="investorType">
+                                <option value="">Select investor type</option>
+                                <option value="retail">Retail Investors</option>
+                                <option value="institutional">Institutional Investors</option>
+                                <option value="accredited">Accredited Investors</option>
+                                <option value="qualified">Qualified Purchasers</option>
+                                <option value="professional">Professional Investors</option>
+                                <option value="both">Retail & Institutional</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Investment Strategy</label>
+                            <select class="form-select" id="investmentStrategy">
+                                <option value="">Select investment strategy</option>
+                                <option value="active">Active Management</option>
+                                <option value="passive">Passive/Index Tracking</option>
+                                <option value="quantitative">Quantitative/Systematic</option>
+                                <option value="value">Value Investing</option>
+                                <option value="growth">Growth Investing</option>
+                                <option value="income">Income Generation</option>
+                                <option value="balanced">Balanced/Diversified</option>
+                                <option value="thematic">Thematic/Sector Focused</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Strategy Details</label>
+                            <textarea class="form-input" id="strategyDetails" style="height: 100px; resize: vertical;" placeholder="Provide additional details about the investment strategy"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <circle cx="12" cy="12" r="8"/>
+                                </svg>
+                                Getting Started
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Select a product type to see specific insights</li>
+                                <li>Consider your target investor base</li>
+                                <li>Think about your investment strategy approach</li>
+                                <li>Asset class selection drives operational complexity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(2)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(4)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Detailed Launch Schedule -->
+            <div id="step4" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">Detailed Launch Schedule</h1>
+                    <p class="modal-subtitle">Step 4 of 10: Financial and Structural Details</p>
+                    <div class="step-indicator" style="width: 320px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Launch Details Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Launch Schedule</h2>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Launch Date</label>
+                            <input type="date" class="form-input" id="launchDate" value="2026-01-01">
+                        </div>
+
+                        <h2 class="setup-section-title" style="margin-top: 32px;">Pricing Details</h2>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Launch Price</label>
+                            <input type="text" class="form-input" id="launchPrice" value="100,000">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">NDC/Swing Pricing</label>
+                            <select class="form-select" id="ndcSwingPricing">
+                                <option value="ndc" selected>NDC (Net Dealing Charge)</option>
+                                <option value="swing">Swing Pricing</option>
+                                <option value="dual">Dual Pricing</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+
+                        <h2 class="setup-section-title" style="margin-top: 32px;">Share Class Structure</h2>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Number of Share Classes</label>
+                            <input type="number" class="form-input" id="numberOfShareClasses" value="73">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Gross Share Classes</label>
+                            <input type="number" class="form-input" id="grossShareClasses" value="3">
+                        </div>
+
+                        <h2 class="setup-section-title" style="margin-top: 32px;">Investment Strategy Details</h2>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Launch Yield (%)</label>
+                            <input type="text" class="form-input" id="launchYield" placeholder="e.g., 3.50">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Strategy Details</label>
+                            <textarea class="form-input" id="strategyDetailsExtended" style="height: 100px; resize: vertical;" placeholder="Provide additional details about the investment strategy"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                                Launch Timeline Considerations
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Consider regulatory approval timelines</li>
+                                <li>Allow buffer time for unexpected delays</li>
+                                <li>Coordinate with marketing campaigns</li>
+                                <li>Ensure operational readiness before launch</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                                Pricing Strategy
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Initial price should reflect NAV calculation method</li>
+                                <li>Consider market conventions for your asset class</li>
+                                <li>NDC helps manage dealing costs fairly</li>
+                                <li>Swing pricing protects long-term investors</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M3 9h18M9 3v18"/>
+                                </svg>
+                                Share Class Complexity
+                            </h3>
+                            <ul class="insight-list">
+                                <li>More share classes increase operational overhead</li>
+                                <li>Consider different fee structures per class</li>
+                                <li>Currency hedging adds complexity</li>
+                                <li>Distribution channels may require specific classes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(3)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(5)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Operational Configuration -->
+            <div id="step5" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">Operational Configuration</h1>
+                    <p class="modal-subtitle">Step 5 of 10: Configure Operational Aspects</p>
+                    <div class="step-indicator" style="width: 400px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Operational Configuration Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Operational Configuration</h2>
+                        <p class="setup-section-subtitle">Configure the operational aspects of your fund launch.</p>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 24px; margin-bottom: 16px;">Seeding Strategy</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Seeding Approach</label>
+                            <select class="form-select" id="seedingApproach">
+                                <option value="internal" selected>Internal Seeding</option>
+                                <option value="external">External Seeding</option>
+                                <option value="hybrid">Hybrid Approach</option>
+                                <option value="none">No Seeding</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Seed Amount (USD)</label>
+                            <input type="text" class="form-input" id="seedAmount" value="1000000">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Seeding Notes</label>
+                            <textarea class="form-input" id="seedingNotes" style="height: 80px; resize: vertical;" placeholder="Additional details about seeding strategy"></textarea>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Income Distribution</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Distribution Frequency</label>
+                            <select class="form-select" id="distributionFrequency">
+                                <option value="monthly" selected>Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="semi-annual">Semi-Annual</option>
+                                <option value="annual">Annual</option>
+                                <option value="none">No Distribution</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Distribution Policy</label>
+                            <select class="form-select" id="distributionPolicy">
+                                <option value="income-only" selected>Income Only</option>
+                                <option value="income-and-capital">Income and Capital</option>
+                                <option value="accumulation">Accumulation</option>
+                                <option value="flexible">Flexible Distribution</option>
+                            </select>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Hedging Strategy</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Hedging Approach</label>
+                            <select class="form-select" id="hedgingApproach">
+                                <option value="">Select hedging strategy</option>
+                                <option value="currency-hedged">Currency Hedged</option>
+                                <option value="unhedged">Unhedged</option>
+                                <option value="partial-hedge">Partial Hedge</option>
+                                <option value="dynamic-hedge">Dynamic Hedging</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Hedging Instruments (select all that apply)</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="currencyForwards" checked style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Currency Forwards</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="futures" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Futures</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="options" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Options</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="swaps" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Swaps</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Fees & Expenses</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Management Fee (%)</label>
+                            <input type="text" class="form-input" id="managementFee" value=".75">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Performance Fee (%)</label>
+                            <input type="text" class="form-input" id="performanceFee" value="20">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Other Fees</label>
+                            <textarea class="form-input" id="otherFees" style="height: 80px; resize: vertical;" placeholder="List any additional fees (admin, custody, etc.)"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                                Internal Seeding Benefits
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Full control over seeding timeline</li>
+                                <li>No external investor negotiations</li>
+                                <li>Demonstrates manager commitment</li>
+                                <li>Simplified launch process</li>
+                                <li>Better cost control initially</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card" style="background: #E6F3FF; border-color: #66B1FF;">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M12 2v20M2 12h20"/>
+                                </svg>
+                                Monthly Distribution Impact
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Higher operational complexity</li>
+                                <li>Attractive to income-focused investors</li>
+                                <li>More frequent NAV calculations</li>
+                                <li>Increased administrative costs</li>
+                                <li>Better cash flow predictability</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card" style="background: #FFF4E6; border-color: #FD9C34;">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M12 2v20M2 12h20"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                Fund Launch Considerations
+                            </h3>
+                            <ul class="insight-list">
+                                <li>All operational parameters must be defined upfront</li>
+                                <li>Changes post-launch require regulatory approval</li>
+                                <li>Fee structures are difficult to modify later</li>
+                                <li>Distribution policies set investor expectations</li>
+                                <li>Hedging strategy affects risk profile significantly</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                                </svg>
+                                Operational Best Practices
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Align operational choices with investment strategy</li>
+                                <li>Consider target investor preferences</li>
+                                <li>Balance complexity with efficiency</li>
+                                <li>Plan for scalability as assets grow</li>
+                                <li>Document all operational procedures clearly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(4)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(6)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 6: Regulatory & Legal Framework -->
+            <div id="step6" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">Regulatory & Legal Framework</h1>
+                    <p class="modal-subtitle">Step 6 of 10: Define Legal Structure and Requirements</p>
+                    <div class="step-indicator" style="width: 480px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Regulatory Configuration Section -->
+                    <div class="setup-section">
+                        <h2 class="setup-section-title">Regulatory & Legal Framework</h2>
+                        <p class="setup-section-subtitle">Define the legal structure and regulatory requirements for your product.</p>
+
+                        <div class="form-field">
+                            <label class="form-label">Target Jurisdiction</label>
+                            <select class="form-select" id="targetJurisdiction">
+                                <option value="united-states" selected>United States</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="luxembourg">Luxembourg</option>
+                                <option value="ireland">Ireland</option>
+                                <option value="cayman">Cayman Islands</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="hong-kong">Hong Kong</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Legal Structure</label>
+                            <select class="form-select" id="legalStructure">
+                                <option value="limited-partnership" selected>Limited Partnership (LP)</option>
+                                <option value="llc">Limited Liability Company (LLC)</option>
+                                <option value="trust">Unit Trust</option>
+                                <option value="oeic">Open-Ended Investment Company (OEIC)</option>
+                                <option value="sicav">SICAV</option>
+                                <option value="fcp">FCP</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Applicable Regulations (select all that apply)</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="ucits" checked style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">UCITS</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="aifmd" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">AIFMD</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="40act" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">40 Act</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="mifidii" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">MiFID II</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="sfdr" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">SFDR</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="other-reg" style="width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #2E4D6B;">Other</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Launch Method</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Launch Method</label>
+                            <select class="form-select" id="launchMethod">
+                                <option value="phased" selected>Phased Launch</option>
+                                <option value="soft-launch">Soft Launch</option>
+                                <option value="full-launch">Full Launch</option>
+                                <option value="pilot">Pilot Program</option>
+                            </select>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Settlement & Timing</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Settlement Cycle</label>
+                            <select class="form-select" id="settlementCycle">
+                                <option value="t+1" selected>T+1</option>
+                                <option value="t+2">T+2</option>
+                                <option value="t+3">T+3</option>
+                                <option value="same-day">Same Day</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Cut-off Time</label>
+                            <input type="time" class="form-input" id="cutoffTime" placeholder="--:--">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Valuation Point</label>
+                            <input type="time" class="form-input" id="valuationPoint" placeholder="--:--">
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Fund Operations</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">Fund Operations Model</label>
+                            <select class="form-select" id="fundOperationsModel">
+                                <option value="full-service" selected>Full Service</option>
+                                <option value="partial-outsource">Partial Outsource</option>
+                                <option value="fully-outsourced">Fully Outsourced</option>
+                                <option value="in-house">In-House</option>
+                            </select>
+                        </div>
+
+                        <h3 style="font-size: 18px; font-weight: 700; color: #2E4D6B; margin-top: 32px; margin-bottom: 16px;">Identifiers</h3>
+                        
+                        <div class="form-field">
+                            <label class="form-label">ISIN</label>
+                            <input type="text" class="form-input" id="isin" placeholder="e.g., GB00B4L5Y983">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">SEDOL</label>
+                            <input type="text" class="form-input" id="sedol" placeholder="e.g., B4L5Y98">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">CUSIP</label>
+                            <input type="text" class="form-input" id="cusip" placeholder="e.g., 037833100">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">LEI</label>
+                            <input type="text" class="form-input" id="lei" placeholder="e.g., 213800ABCDEFGHIJKL12">
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 2v20M2 12h20"/>
+                                </svg>
+                                US Regulatory Framework
+                            </h3>
+                            <ul class="insight-list">
+                                <li>SEC registration required for public funds</li>
+                                <li>Investment Company Act of 1940 compliance</li>
+                                <li>FINRA oversight for distribution</li>
+                                <li>State blue sky law considerations</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 2v20M2 12h20"/>
+                                </svg>
+                                UCITS Compliance
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Strict diversification and liquidity rules</li>
+                                <li>Daily dealing and redemption rights</li>
+                                <li>Eligible asset restrictions</li>
+                                <li>Risk management and reporting requirements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(5)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(7)">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 7: AI-Generated Setup Blueprint -->
+            <div id="step7" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">AI-Generated Setup Blueprint</h1>
+                    <p class="modal-subtitle">Step 7 of 10: Review Generated Setup Blueprint</p>
+                    <div class="step-indicator" style="width: 560px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Blueprint Section -->
+                    <div class="setup-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div>
+                                <h2 class="setup-section-title" style="margin-bottom: 4px;">ETF Launch Blueprint</h2>
+                                <p class="setup-section-subtitle">AI-generated setup based on your requirements</p>
+                            </div>
+                            <button class="btn-secondary" style="border: 1px solid #BDCBD8; padding: 8px 16px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                                </svg>
+                                Export PDF
+                            </button>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div style="display: flex; gap: 24px; border-bottom: 2px solid #EDF2F7; margin-bottom: 24px;">
+                            <div style="padding: 12px 0; font-size: 14px; font-weight: 700; color: #2E4D6B; border-bottom: 2px solid #2E4D6B; margin-bottom: -2px; cursor: pointer;">Overview</div>
+                            <div style="padding: 12px 0; font-size: 14px; font-weight: 700; color: #8DA2B7; cursor: pointer;">Workflow</div>
+                            <div style="padding: 12px 0; font-size: 14px; font-weight: 700; color: #8DA2B7; cursor: pointer;">Documents</div>
+                            <div style="padding: 12px 0; font-size: 14px; font-weight: 700; color: #8DA2B7; cursor: pointer;">Timeline</div>
+                        </div>
+
+                        <!-- Configuration Summary -->
+                        <div style="background: #F8FAFC; border: 1px solid #EDF2F7; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #2E4D6B; margin-bottom: 16px;">Configuration Summary</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Product Type</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">ETF</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Legal Entity</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">Exchange Statutory Trust</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Asset Classes</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">Equity, Fixed Income</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Regulatory Framework</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">40 Act</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Currency</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">United States</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Service Model</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">Full Service</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Jurisdiction</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">United States</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Estimated Cost</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">$75,000 - $85,000</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Structure</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">Limited Partnership (LP)</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: #8DA2B7; margin-bottom: 4px;">Complexity</div>
+                                    <div style="font-size: 14px; font-weight: 600; color: #2E4D6B;">Medium</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommended Setup -->
+                        <div style="margin-bottom: 24px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #2E4D6B; margin-bottom: 12px;">Recommended Setup</h3>
+                            <div style="background: #FFFFFF; border: 1px solid #EDF2F7; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                                <div style="font-size: 14px; font-weight: 600; color: #2E4D6B; margin-bottom: 8px;">Asset Classes</div>
+                                <div style="font-size: 14px; color: #557391;">Equity, Fixed Income - Diversified allocation suitable for your ETF approach.</div>
+                            </div>
+                        </div>
+
+                        <!-- Key Considerations & Recommendations -->
+                        <div style="background: #FFF4E6; border: 1px solid #FD9C34; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #2E4D6B; margin-bottom: 12px;">Key Considerations & Recommendations</h3>
+                            <div style="font-size: 14px; color: #2E4D6B; line-height: 1.6;">
+                                <p style="margin-bottom: 12px;"><strong>SEC Registration:</strong> Based on your product, we recommend filing a Form N-1A with the SEC at least 75 days before the anticipated launch date.</p>
+                                <p style="margin-bottom: 12px;"><strong>Authorized Participants:</strong> We recommend engaging at least 2 APs to ensure adequate liquidity for your ETF.</p>
+                                <p style="margin-bottom: 12px;"><strong>Seed Capital:</strong> With ETF structures require no seed capital to proceed (0 of $25M) but is advisable. Consider seeding with $25-50M for initial liquidity.</p>
+                                <p style="margin-bottom: 0;"><strong>Compliance Note:</strong> Only publicly offered ETFs are able to use passive investment strategy. Complex internal allocation restrictions will apply to your fund.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card" style="background: #E8F5E9; border-color: #78D690;">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                                Blueprint Generated Successfully
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Review all sections of the generated blueprint</li>
+                                <li>We've analyzed the last 50 fund launches to create this</li>
+                                <li>Export PDF to share with your legal/compliance team</li>
+                                <li>All recommendations align with current regulations</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M12 2v20M2 12h20"/>
+                                </svg>
+                                Next Steps After Blueprint
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Set up regulatory tracking board</li>
+                                <li>Engage service providers for quotes</li>
+                                <li>Start regulatory filing preparation</li>
+                                <li>Review document templates with legal</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card" style="background: #FFF4E6; border-color: #FD9C34;">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
+                                Key Considerations
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Blueprint is based on the latest regulations</li>
+                                <li>Some details may need legal review</li>
+                                <li>Cost estimates are indicative ranges</li>
+                                <li>Timeline may vary by complexity</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+                                </svg>
+                                Blueprint Best Practices
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Share this with all project stakeholders</li>
+                                <li>Track any updates to the original blueprint</li>
+                                <li>Update after key compliance sign-offs</li>
+                                <li>Use this as a living document throughout launch</li>
+                                <li>All recommendations are throughout the project</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(6)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToStep(8)">
+                        Continue to Review
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 8: SME Review Dashboard -->
+            <div id="step8" class="modal-step" style="display: none;">
+                <div class="modal-header">
+                    <h1 class="modal-title">SME Review Dashboard</h1>
+                    <p class="modal-subtitle">Step 8 of 10: Expert Review & Approval</p>
+                    <div class="step-indicator" style="width: 640px;"></div>
+                </div>
+
+                <div class="modal-grid">
+                    <!-- Review Section -->
+                    <div class="setup-section">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                            <div>
+                                <h2 class="setup-section-title" style="margin-bottom: 4px;">ETF Launch Blueprint Review</h2>
+                                <p class="setup-section-subtitle">Subject matter experts review and approve the setup blueprint</p>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; background: #E6F3FF; color: #66B1FF; font-size: 12px; font-weight: 700;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                                Review in Progress
+                            </div>
+                        </div>
+
+                        <!-- Review Sections -->
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
+                            <!-- Legal Review -->
+                            <div style="background: #F8FAFC; border: 1px solid #EDF2F7; border-radius: 8px; padding: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                    <span style="font-size: 16px; font-weight: 700; color: #2E4D6B;">Legal</span>
+                                    <span style="padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; background: #E8F5E9; color: #78D690;">APPROVED</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 700; color: #2E4D6B;">Sarah Johnson</div>
+                                        <div style="font-size: 12px; color: #8DA2B7;">Legal Counsel</div>
+                                    </div>
+                                </div>
+                                <p style="font-size: 14px; color: #557391; line-height: 1.5;">Trust structure is appropriate for the ETF. All regulatory filings look correct.</p>
+                            </div>
+
+                            <!-- Operations Review -->
+                            <div style="background: #F8FAFC; border: 1px solid #EDF2F7; border-radius: 8px; padding: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                    <span style="font-size: 16px; font-weight: 700; color: #2E4D6B;">Operations</span>
+                                    <span style="padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; background: #FFF4E6; color: #FD9C34;">PENDING</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 700; color: #2E4D6B;">Michael Chen</div>
+                                        <div style="font-size: 12px; color: #8DA2B7;">Operations Director</div>
+                                    </div>
+                                </div>
+                                <p style="font-size: 14px; color: #557391; line-height: 1.5; margin-bottom: 16px;">Reviewing custody and fund accounting setup requirements...</p>
+                                <button style="width: 100%; padding: 10px; background: #43505F; color: #FFFFFF; border: none; border-radius: 4px; font-family: 'Nunito Sans'; font-size: 14px; font-weight: 700; cursor: pointer;">Approve Operations Review</button>
+                            </div>
+
+                            <!-- Compliance Review -->
+                            <div style="background: #F8FAFC; border: 1px solid #EDF2F7; border-radius: 8px; padding: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                    <span style="font-size: 16px; font-weight: 700; color: #2E4D6B;">Compliance</span>
+                                    <span style="padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; background: #FFEBEE; color: #F26C6C;">FLAGGED</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 700; color: #2E4D6B;">Rebecca Torres</div>
+                                        <div style="font-size: 12px; color: #8DA2B7;">Compliance Officer</div>
+                                    </div>
+                                </div>
+                                <p style="font-size: 14px; color: #557391; line-height: 1.5; margin-bottom: 16px;">Need to address portfolio transparency requirements for active ETF strategy.</p>
+                                <button style="width: 100%; padding: 10px; background: #43505F; color: #FFFFFF; border: none; border-radius: 4px; font-family: 'Nunito Sans'; font-size: 14px; font-weight: 700; cursor: pointer;">Approve Compliance Review</button>
+                            </div>
+                        </div>
+
+                        <!-- Discussion Thread -->
+                        <h3 style="font-size: 20px; font-weight: 700; color: #2E4D6B; margin-bottom: 16px;">Discussion Thread</h3>
+                        <div style="background: #FFFFFF; border: 1px solid #EDF2F7; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+                            <!-- Comment 1 -->
+                            <div style="display: flex; gap: 12px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #EDF2F7;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); flex-shrink: 0;"></div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span style="font-size: 14px; font-weight: 700; color: #2E4D6B;">Rebecca Torres</span>
+                                        <span style="font-size: 12px; color: #8DA2B7;">2 hours ago</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #557391; line-height: 1.6;">The active ETF strategy requires daily portfolio disclosure. We should consider using the non-transparent ETF structure (ActiveShares) to protect the investment strategy from front-running.</p>
+                                </div>
+                            </div>
+
+                            <!-- Comment 2 -->
+                            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); flex-shrink: 0;"></div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span style="font-size: 14px; font-weight: 700; color: #2E4D6B;">Sarah Johnson</span>
+                                        <span style="font-size: 12px; color: #8DA2B7;">1 hour ago</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #557391; line-height: 1.6;">I agree with Rebecca. The ActiveShares model would require a different exemptive relief filing, but it would better protect the active strategy. We should update the legal documentation section to reflect this.</p>
+                                </div>
+                            </div>
+
+                            <!-- Add Comment -->
+                            <textarea class="form-input" style="height: 80px; resize: vertical; margin-bottom: 12px;" placeholder="Add your comments or questions..."></textarea>
+                            <button style="padding: 10px 20px; background: #FFFFFF; border: 1px solid #BDCBD8; color: #557391; border-radius: 4px; font-family: 'Nunito Sans'; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                                </svg>
+                                Comment
+                            </button>
+                        </div>
+
+                        <!-- Your Review -->
+                        <h3 style="font-size: 20px; font-weight: 700; color: #2E4D6B; margin-bottom: 16px;">Your Review</h3>
+                        <div style="background: #FFFFFF; border: 1px solid #EDF2F7; border-radius: 8px; padding: 24px;">
+                            <div class="form-field">
+                                <label class="form-label">Review Status</label>
+                                <select class="form-select">
+                                    <option value="">Select review status</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="approved-with-comments">Approved with Comments</option>
+                                    <option value="request-changes">Request Changes</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 12px;">
+                                <button class="btn-primary" style="flex: 1;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M9 12l2 2 4-4"/>
+                                    </svg>
+                                    Approve Blueprint
+                                </button>
+                                <button style="flex: 1; padding: 14px 24px; background: #FFFFFF; color: #557391; border: 1px solid #BDCBD8; border-radius: 4px; font-family: 'Nunito Sans'; font-size: 14px; font-weight: 700; cursor: pointer;">Request Changes</button>
+                                <button style="flex: 1; padding: 14px 24px; background: #FFFFFF; color: #F26C6C; border: 1px solid #F26C6C; border-radius: 4px; font-family: 'Nunito Sans'; font-size: 14px; font-weight: 700; cursor: pointer;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-right: 4px;">
+                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                    </svg>
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contextual Insights Section -->
+                    <div class="insights-section">
+                        <h2 class="insights-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <circle cx="12" cy="17" r="1" fill="#2E4D6B"/>
+                            </svg>
+                            Contextual Insights
+                        </h2>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                    <circle cx="8.5" cy="7" r="4"/>
+                                    <path d="M20 8v6M23 11h-6"/>
+                                </svg>
+                                SME Review Process
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Legal review ensures regulatory compliance</li>
+                                <li>Operations review validates operational feasibility</li>
+                                <li>Compliance review identifies risk factors</li>
+                                <li>All reviews must be completed before launch</li>
+                                <li>Comments and feedback improve final blueprint</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card" style="background: #FFF4E6; border-color: #FD9C34;">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
+                                Pending Reviews
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Some reviews are still in progress</li>
+                                <li>Address any flagged issues promptly</li>
+                                <li>Engage with reviewers for clarification</li>
+                                <li>Timeline may be impacted by review delays</li>
+                                <li>Consider parallel workstreams where possible</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                                </svg>
+                                Review Best Practices
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Respond to reviewer comments promptly</li>
+                                <li>Provide additional context when needed</li>
+                                <li>Use discussion thread for clarifications</li>
+                                <li>Document all decisions and rationale</li>
+                                <li>Maintain version control of blueprint changes</li>
+                            </ul>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E4D6B" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                                After Review Completion
+                            </h3>
+                            <ul class="insight-list">
+                                <li>Launch tracker becomes active project dashboard</li>
+                                <li>Begin service provider onboarding</li>
+                                <li>Initiate regulatory filing processes</li>
+                                <li>Set up project communication channels</li>
+                                <li>Schedule regular progress review meetings</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="goToStep(7)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn-primary" onclick="goToLaunchTracker()">
+                        Continue to Launch Tracker
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 9: Launch Tracker (removed - now full screen) -->
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function openLaunchModal() {
+            document.getElementById('launchModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            goToStep(1); // Always start at step 1
+        }
+
+        function closeLaunchModal() {
+            document.getElementById('launchModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentStep = 1; // Reset to step 1
+        }
+
+        function goToLaunchTracker() {
+            closeLaunchModal();
+            window.location.href = 'launch-tracker.html';
+        }
+
+        function goToStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.modal-step').forEach(step => {
+                step.style.display = 'none';
+            });
+            
+            // Show the requested step
+            const stepElement = document.getElementById('step' + stepNumber);
+            if (stepElement) {
+                stepElement.style.display = 'block';
+                currentStep = stepNumber;
+                
+                // Scroll to top of modal content
+                document.querySelector('.modal-content').scrollTop = 0;
+            } else {
+                // If step doesn't exist yet, show alert
+                alert('Proceeding to Step ' + stepNumber + '...');
+            }
+        }
+
+        function updateRegionInsights() {
+            const regionSelect = document.getElementById('primaryRegion');
+            const selectedRegion = regionSelect.value;
+            
+            // Hide all region-specific insights
+            document.getElementById('northAmericaInsights').style.display = 'none';
+            document.getElementById('europeInsights').style.display = 'none';
+            document.getElementById('asiaPacificInsights').style.display = 'none';
+            document.getElementById('latinAmericaInsights').style.display = 'none';
+            document.getElementById('middleEastAfricaInsights').style.display = 'none';
+            document.getElementById('globalInsights').style.display = 'none';
+            
+            // Show the container if a region is selected
+            const regionInsightsContainer = document.getElementById('regionInsights');
+            if (selectedRegion) {
+                regionInsightsContainer.style.display = 'block';
+                
+                // Show the appropriate region insight
+                switch(selectedRegion) {
+                    case 'north-america':
+                        document.getElementById('northAmericaInsights').style.display = 'block';
+                        break;
+                    case 'europe':
+                        document.getElementById('europeInsights').style.display = 'block';
+                        break;
+                    case 'asia-pacific':
+                        document.getElementById('asiaPacificInsights').style.display = 'block';
+                        break;
+                    case 'latin-america':
+                        document.getElementById('latinAmericaInsights').style.display = 'block';
+                        break;
+                    case 'middle-east-africa':
+                        document.getElementById('middleEastAfricaInsights').style.display = 'block';
+                        break;
+                    case 'global':
+                        document.getElementById('globalInsights').style.display = 'block';
+                        break;
+                }
+            } else {
+                regionInsightsContainer.style.display = 'none';
+            }
+        }
+
+        function continueToNext() {
+            alert('Proceeding to Step 8...');
+            // Add navigation logic here
+        }
+
+        // Add event listener to region select when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const regionSelect = document.getElementById('primaryRegion');
+            if (regionSelect) {
+                regionSelect.addEventListener('change', updateRegionInsights);
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('launchModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLaunchModal();
+            }
+        });
+    </script>
+</body>
+</html>

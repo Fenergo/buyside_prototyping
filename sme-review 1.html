@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME Review Dashboard - FundLaunch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: #F8FAFC;
+        }
+
+        /* Header Bar */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px #BDCBD8;
+            z-index: 1000;
+        }
+
+        .brand {
+            position: absolute;
+            left: 24px;
+            top: 16px;
+            width: 133px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 400;
+            color: #1a2332;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #00b894;
+            border-radius: 50%;
+            margin-left: 2px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-top: 64px;
+            padding: 48px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #8DA2B7;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #EDF2F7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #78D690;
+            border-radius: 4px;
+            width: 90%;
+            transition: width 0.3s;
+        }
+
+        /* Main Grid */
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        /* Blueprint Review Card */
+        .blueprint-card {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .blueprint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .blueprint-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2E4D6B;
+            margin-bottom: 4px;
+        }
+
+        .blueprint-subtitle {
+            font-size: 14px;
+            color: #8DA2B7;
+        }
+
+        .review-status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #E6F3FF;
+            color: #66B1FF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Review Sections Grid */
+        .review-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .review-section {
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2E4D6B;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.approved {
+            background: #E8F5E9;
+            color: #78D690;
+        }
+
+        .status-badge.pending {
+            background: #FFF4E6;
+            color: #FD9C34;
+        }
+
+        .status-badge.flagged {
+            background: #FFEBEE;
+            color: #F26C6C;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .reviewer-details {
+            flex: 1;
+        }
+
+        .reviewer-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+        }
+
+        .reviewer-role {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        .review-comment {
+            font-size: 14px;
+            color: #557391;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .approve-button {
+            width: 100%;
+            padding: 10px;
+            background: #43505F;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .approve-button:hover {
+            background: #2E4D6B;
+        }
+
+        /* Discussion Thread */
+        .discussion-section {
+            margin-bottom: 32px;
+        }
+
+        .section-heading {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 16px;
+        }
+
+        .discussion-thread {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #EDF2F7;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .commenter-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: #8DA2B7;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #557391;
+            line-height: 1.6;
+        }
+
+        .comment-input-container {
+            margin-top: 24px;
+        }
+
+        .comment-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            resize: vertical;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: #557391;
+        }
+
+        .comment-button {
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #FFFFFF;
+            border: 1px solid #BDCBD8;
+            color: #557391;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-button:hover {
+            background: #F8FAFC;
+        }
+
+        /* Your Review Section */
+        .your-review-section {
+            background: #FFFFFF;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .form-field {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 8px;
+        }
+
+        .form-select {
+            width: 100%;
+            height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #2E4D6B;
+            background: #FFFFFF;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-approve {
+            flex: 1;
+            padding: 14px 24px;
+            background: #43505F;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-approve:hover {
+            background: #2E4D6B;
+        }
+
+        .btn-request-changes {
+            flex: 1;
+            padding: 14px 24px;
+            background: #FFFFFF;
+            color: #557391;
+            border: 1px solid #BDCBD8;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-request-changes:hover {
+            background: #F8FAFC;
+        }
+
+        .btn-reject {
+            flex: 1;
+            padding: 14px 24px;
+            background: #FFFFFF;
+            color: #F26C6C;
+            border: 1px solid #F26C6C;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-reject:hover {
+            background: #FFEBEE;
+        }
+
+        /* Footer Buttons */
+        .footer-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+        }
+
+        .btn-back {
+            padding: 14px 24px;
+            background: transparent;
+            color: #557391;
+            border: none;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            color: #2E4D6B;
+        }
+
+        .btn-continue {
+            padding: 14px 32px;
+            background: #8DA2B7;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-continue:hover {
+            background: #7A92A8;
+        }
+
+        /* Contextual Insights Sidebar */
+        .insights-sidebar {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 96px;
+            max-height: calc(100vh - 128px);
+            overflow-y: auto;
+        }
+
+        .insights-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-card {
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .insight-card.warning {
+            background: #FFF4E6;
+            border-color: #FD9C34;
+        }
+
+        .insight-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2E4D6B;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-list li {
+            font-size: 13px;
+            color: #557391;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .insight-list li:before {
+            content: "•";
+            position: absolute;
+            left: 4px;
+            color: #557391;
+        }
+
+        .insight-list li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            fenergo<span class="brand-dot"></span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">SME Review Dashboard</h1>
+            <p class="page-subtitle">Step 9 of 10: Expert Review & Approval</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="review-grid">
+            <div class="main-column">
+                <!-- Blueprint Review Card -->
+                <div class="blueprint-card">
+                    <div class="blueprint-header">
+                        <div>
+                            <h2 class="blueprint-title">ETF Launch Blueprint Review</h2>
+                            <p class="blueprint-subtitle">Subject matter experts review and approve the setup blueprint</p>
+                        </div>
+                        <div class="review-status-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            Review in Progress
+                        </div>
+                    </div>
+
+                    <!-- Review Sections -->
+                    <div class="review-sections">
+                        <!-- Legal Review -->
+                        <div class="review-section">
+                            <div class="section-header">
+                                <span class="section-title">Legal</span>
+                                <span class="status-badge approved">Approved</span>
+                            </div>
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">Sarah Johnson</div>
+                                    <div class="reviewer-role">Legal Counsel</div>
+                                </div>
+                            </div>
+                            <p class="review-comment">Trust structure is appropriate for the ETF. All regulatory filings look correct.</p>
+                        </div>
+
+                        <!-- Operations Review -->
+                        <div class="review-section">
+                            <div class="section-header">
+                                <span class="section-title">Operations</span>
+                                <span class="status-badge pending">Pending</span>
+                            </div>
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">Michael Chen</div>
+                                    <div class="reviewer-role">Operations Director</div>
+                                </div>
+                            </div>
+                            <p class="review-comment">Reviewing custody and fund accounting setup requirements...</p>
+                            <button class="approve-button">Approve Operations Review</button>
+                        </div>
+
+                        <!-- Compliance Review -->
+                        <div class="review-section">
+                            <div class="section-header">
+                                <span class="section-title">Compliance</span>
+                                <span class="status-badge flagged">Flagged</span>
+                            </div>
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">Rebecca Torres</div>
+                                    <div class="reviewer-role">Compliance Officer</div>
+                                </div>
+                            </div>
+                            <p class="review-comment">Need to address portfolio transparency requirements for active ETF strategy.</p>
+                            <button class="approve-button">Approve Compliance Review</button>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Thread -->
+                    <div class="discussion-section">
+                        <h3 class="section-heading">Discussion Thread</h3>
+                        <div class="discussion-thread">
+                            <div class="comment-item">
+                                <div class="comment-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="commenter-name">Rebecca Torres</span>
+                                        <span class="comment-time">2 hours ago</span>
+                                    </div>
+                                    <p class="comment-text">The active ETF strategy requires daily portfolio disclosure. We should consider using the non-transparent ETF structure (ActiveShares) to protect the investment strategy from front-running.</p>
+                                </div>
+                            </div>
+
+                            <div class="comment-item">
+                                <div class="comment-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="commenter-name">Sarah Johnson</span>
+                                        <span class="comment-time">1 hour ago</span>
+                                    </div>
+                                    <p class="comment-text">I agree with Rebecca. The ActiveShares model would require a different exemptive relief filing, but it would better protect the active strategy. We should update the legal documentation section to reflect this.</p>
+                                </div>
+                            </div>
+
+                            <div class="comment-input-container">
+                                <textarea class="comment-input" placeholder="Add your comments or questions..."></textarea>
+                                <button class="comment-button">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                                    </svg>
+                                    Comment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Your Review -->
+                    <div class="discussion-section">
+                        <h3 class="section-heading">Your Review</h3>
+                        <div class="your-review-section">
+                            <div class="form-field">
+                                <label class="form-label">Review Status</label>
+                                <select class="form-select">
+                                    <option value="">Select review status</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="approved-with-comments">Approved with Comments</option>
+                                    <option value="request-changes">Request Changes</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button class="btn-approve">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M9 12l2 2 4-4"/>
+                                    </svg>
+                                    Approve Blueprint
+                                </button>
+                                <button class="btn-request-changes">Request Changes</button>
+                                <button class="btn-reject">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                    </svg>
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="footer-buttons">
+                    <button class="btn-back" onclick="window.location.href='dashboard.html'">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 12L6 8l4-4"/>
+                        </svg>
+                        Back to Blueprint
+                    </button>
+                    <button class="btn-continue" onclick="alert('Proceeding to Launch Tracker...')">
+                        Continue to Launch Tracker
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contextual Insights Sidebar -->
+            <div class="insights-sidebar">
+                <h2 class="insights-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                        <circle cx="12" cy="17" r="1" fill="currentColor"/>
+                    </svg>
+                    Contextual Insights
+                </h2>
+
+                <div class="insight-card">
+                    <h3 class="insight-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                            <circle cx="8.5" cy="7" r="4"/>
+                            <path d="M20 8v6M23 11h-6"/>
+                        </svg>
+                        SME Review Process
+                    </h3>
+                    <ul class="insight-list">
+                        <li>Legal review ensures regulatory compliance</li>
+                        <li>Operations review validates operational feasibility</li>
+                        <li>Compliance review identifies risk factors</li>
+                        <li>All reviews must be completed before launch</li>
+                        <li>Comments and feedback improve final blueprint</li>
+                    </ul>
+                </div>
+
+                <div class="insight-card warning">
+                    <h3 class="insight-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v4M12 16h.01"/>
+                        </svg>
+                        Pending Reviews
+                    </h3>
+                    <ul class="insight-list">
+                        <li>Some reviews are still in progress</li>
+                        <li>Address any flagged issues promptly</li>
+                        <li>Engage with reviewers for clarification</li>
+                        <li>Timeline may be impacted by review delays</li>
+                        <li>Consider parallel workstreams where possible</li>
+                    </ul>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                        </svg>
+                        Review Best Practices
+                    </h3>
+                    <ul class="insight-list">
+                        <li>Respond to reviewer comments promptly</li>
+                        <li>Provide additional context when needed</li>
+                        <li>Use discussion thread for clarifications</li>
+                        <li>Document all decisions and rationale</li>
+                        <li>Maintain version control of blueprint changes</li>
+                    </ul>
+                </div>
+
+                <div class="insight-card">
+                    <h3 class="insight-card-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        After Review Completion
+                    </h3>
+                    <ul class="insight-list">
+                        <li>Launch tracker becomes active project dashboard</li>
+                        <li>Begin service provider onboarding</li>
+                        <li>Initiate regulatory filing processes</li>
+                        <li>Set up project communication channels</li>
+                        <li>Schedule regular progress review meetings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
