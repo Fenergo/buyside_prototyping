@@ -52,8 +52,74 @@
             margin-left: 2px;
         }
 
+        /* Left Navigation */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 64px;
+            width: 64px;
+            height: calc(100vh - 64px);
+            background: #FFFFFF;
+            border-right: 1px solid #EDF2F7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 0 32px;
+            z-index: 999;
+        }
+
+        .nav-main {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            width: 64px;
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #F8FAFC;
+        }
+
+        .nav-item.active {
+            background: #F8FAFC;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .nav-label {
+            font-family: 'Nunito Sans';
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 12px;
+            text-align: center;
+            color: #557391;
+            max-width: 64px;
+        }
+
         /* Main Content Area */
         .main-content {
+            margin-left: 64px;
             margin-top: 64px;
             padding: 48px;
             min-height: calc(100vh - 64px);
@@ -570,6 +636,59 @@
         </div>
     </header>
 
+    <!-- Left Navigation -->
+    <nav class="nav-sidebar">
+        <div class="nav-main">
+            <a href="dashboard 1.html" style="text-decoration: none;">
+                <div class="nav-item">
+                    <div class="nav-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                            <rect x="3" y="3" width="8" height="8"/>
+                            <rect x="13" y="3" width="8" height="8"/>
+                            <rect x="3" y="13" width="8" height="8"/>
+                            <rect x="13" y="13" width="8" height="8"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">Dashboard</div>
+                </div>
+            </a>
+            <a href="launch-tracker 1.html" style="text-decoration: none;">
+                <div class="nav-item">
+                    <div class="nav-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                            <path d="M12 2L2 7v10c0 5.5 4 10 10 10s10-4.5 10-10V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">Launches</div>
+                </div>
+            </a>
+            <a href="sme-review 1.html" style="text-decoration: none;">
+                <div class="nav-item active">
+                    <div class="nav-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                            <circle cx="8.5" cy="7" r="4"/>
+                            <path d="M20 8v6M23 11h-6"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">SME Review</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="nav-bottom">
+            <div class="nav-item">
+                <div class="nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#557391">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 4" stroke="#FFFFFF" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="nav-label">Settings</div>
+            </div>
+        </div>
+    </nav>
+
     <!-- Main Content -->
     <main class="main-content">
         <div class="page-header">
@@ -726,13 +845,13 @@
 
                 <!-- Footer Buttons -->
                 <div class="footer-buttons">
-                    <button class="btn-back" onclick="window.location.href='dashboard.html'">
+                    <button class="btn-back" onclick="window.location.href='dashboard 1.html'">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M10 12L6 8l4-4"/>
                         </svg>
                         Back to Blueprint
                     </button>
-                    <button class="btn-continue" onclick="alert('Proceeding to Launch Tracker...')">
+                    <button class="btn-continue" onclick="window.location.href='launch-tracker 1.html'">
                         Continue to Launch Tracker
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M6 4l4 4-4 4"/>
